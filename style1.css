@@ -359,6 +359,31 @@ h1::after {
 }
 
 /* =========================================
+   7. EXTRAS & EXTERNE LINKS
+   ========================================= */
+
+.sidebar a.soundcloud-btn {
+    margin-top: 20px;           
+    color: #ffd700;             
+    border: 1px solid #ffd700;
+    font-weight: bold;
+    display: flex;              
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+.sidebar a.soundcloud-btn:hover {
+    background-color: #ffd700;
+    color: #4a2e15;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    border-bottom: 1px solid #ffd700; 
+    padding-left: 10px;         
+}
+
+
+/* =========================================
    MEDIA QUERY: HANDY (Sidebar nach oben)
    ========================================= */
 @media (max-width: 768px) {
