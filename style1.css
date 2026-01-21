@@ -1,0 +1,392 @@
+/* style1.css */
+
+/* =========================================
+   1. ALLGEMEINES DESIGN (Gilt für alle Seiten)
+   ========================================= */
+
+body {
+   
+    font-family: 'Castellar', serif;
+    text-align: center;
+    background: linear-gradient(to bottom, #4a2e15, #996633); 
+	min-height: 100vh;
+	background-attachment: fixed;
+	margin: 0;
+	padding: 30px;
+	color: white;
+	box-sizing: border-box;
+    display: flex;
+	flex-direction: row;
+    
+}
+
+/* --- DIE SEITENLEISTE (LINKS) --- */
+.sidebar {
+    width: 250px;           
+    background: rgba(0, 0, 0, 0.6); 
+    height: 100vh;          
+    position: sticky;      
+    top: 0;
+    padding: 40px 20px;
+    border-right: 2px solid rgba(255, 255, 255, 0.2);
+    
+    display: flex;
+    flex-direction: column; 
+    gap: 20px;              
+    text-align: center;
+	overflow-y: auto;
+}
+
+/* --- Die Text-Links in der Sidebar --- */
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 1.2rem;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s;
+}
+
+.sidebar a:hover {
+    color: #3498db;   
+    padding-left: 10px;
+    border-bottom: 1px solid #3498db;
+}
+
+.sidebar a.active {
+    pointer-events: none; 
+    cursor: default;      
+    color: #ffd700;       
+    font-weight: bold;    
+    border-bottom: 2px solid #ffd700; 
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- DROPDOWN --- */
+.sidebar details {
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar summary {
+    padding: 10px;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 1.2rem;
+    list-style: none; 
+    transition: color 0.3s;
+    outline: none;
+}
+
+.sidebar summary::-webkit-details-marker {
+    display: none;
+}
+
+.sidebar summary:hover {
+    color: #3498db;
+}
+
+.sidebar details[open] summary {
+    color: #ffd700;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 10px;
+}
+
+.sidebar details a {
+    display: block; 
+    font-size: 1rem; 
+    background-color: rgba(255,255,255,0.05); 
+    border-bottom: none; 
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.sidebar details a:hover {
+    background-color: rgba(52, 152, 219, 0.2); 
+    padding-left: 5px; 
+}
+
+/* --- DER HAUPTINHALT --- */
+.main-content-area {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+	height: 100vh;
+	box-sizing: border-box;
+	display: felx;
+	flex-direction: column;
+}
+
+h1 {
+    font-size: 60px !important; 
+    text-align: center;
+    margin-bottom: 20px;
+    text-decoration: none; 
+    position: relative; 
+
+    background: linear-gradient(
+        110deg,          
+        #8f6B29 10%,     
+        #FDE08D 40%,     
+        #FFFFFF 50%,     
+        #FDE08D 60%,     
+        #8f6B29 90%      
+    );
+    background-size: 300% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0px 2px 0px rgba(0,0,0,0.5));
+    animation: shine 3s linear infinite;
+}
+
+h1::after {
+    content: "—— ❧ ————— ❧ ————— ❧ ——"; 
+    display: block;        
+    font-size: 30px;       
+    margin-top: 10px;      
+    font-family: 'Times New Roman', serif; 
+    
+    background: linear-gradient(
+        110deg,          
+        #8f6B29 10%,     
+        #FDE08D 40%,     
+        #FFFFFF 50%,     
+        #FDE08D 60%,     
+        #8f6B29 90%      
+    );
+    background-size: 300% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shine 2s linear infinite;
+}
+
+@keyframes shine {
+    to {
+        background-position: -200% center; 
+    }
+}
+
+.intro {
+    font-size: 24px;
+    margin-bottom: 50px;
+    color: #ccc;
+    text-align: center;
+}
+
+
+/* ==================
+   BILDER GALERIE 
+   ================== */
+
+.gallery-grid, .nav-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 30px; 
+    justify-content: center;
+    padding: 0;
+    max-width: 100%;
+    margin-bottom: auto; 
+}
+
+.gallery-item, .nav-item {
+    text-decoration: none;
+    color: white !important; 
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto; 
+}
+
+.gallery-item img, .nav-item img {
+    width: 100%;
+    height: 300px;        
+    object-fit: cover;    
+    border-radius: 10px;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.gallery-item span, .nav-item span {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.4rem; 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    color: white !important; 
+    text-align: center;
+}
+
+.gallery-item:hover, .nav-item:hover {
+    transform: translateY(-10px); 
+}
+.gallery-item:hover img, .nav-item:hover img {
+    border-color: #3498db;
+}
+
+
+
+/* =============
+   UNTERSEITEN
+   ============== */
+
+.page-content {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 40px;
+    border-radius: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: auto; 
+}
+
+.page-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 10px;
+    border: 3px solid white;
+    margin-bottom: 20px;
+}
+
+.page-text {
+    font-family: Arial, sans-serif;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    text-align: justify;
+    color: white;
+}
+
+.page-text a, 
+.page-text a:visited {
+    color: #ffd700 !important; 
+    text-decoration: underline;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.page-text a:hover {
+    color: #fff !important;
+    text-shadow: 0 0 5px #ffd700;
+    cursor: pointer;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background: white;
+    color: #4a2e15;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.back-btn:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+/* =====================
+   5. FOOTER (FUSSZEILE)
+   ======================*/
+.footer {
+    margin-top: 80px;           
+    padding-top: 20px;
+    padding-bottom: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2); 
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;          
+    color: #ccc;                
+}
+
+.footer a {
+    color: #ffd700;
+    text-decoration: none;
+    margin: 0 10px; 
+}
+
+.footer a:hover {
+    text-decoration: underline;
+    color: white;
+}
+
+/* =========================================
+   6. JAVASCRIPT WIDGETS (Runen Übersetzer)
+   ========================================= */
+
+.rune-translator {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #ffd700;
+    padding: 20px;
+    margin: 40px auto;
+    max-width: 500px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.rune-translator h3 {
+    color: #ffd700;
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.rune-translator input {
+    width: 80%;
+    padding: 10px;
+    margin: 15px 0;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    background-color: rgba(255,255,255,0.9);
+}
+
+.rune-translator p#runenAusgabe {
+    font-size: 2.5rem; 
+    color: #fff;
+    min-height: 50px;
+    margin-top: 10px;
+    text-shadow: 0 0 10px #ffd700;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+/* =========================================
+   MEDIA QUERY: HANDY (Sidebar nach oben)
+   ========================================= */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; 
+    }
+    .sidebar {
+        width: 100%;        
+        height: auto;       
+        position: relative; 
+        padding: 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+		border-right: none;
+		border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .main-content-area {
+        padding: 20px;
+		height: auto;
+    }
+	
+	h1 {
+        font-size: 35px !important; 
+    }
+    
+    .sidebar details {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

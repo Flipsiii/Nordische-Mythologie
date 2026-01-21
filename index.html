@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Nordische Mythologie</title>
+    <!-- Favicon (Hammer Symbol) -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+
+    <!-- TEIL 1: SEITENLEISTE MIT DROPDOWN -->
+    <nav class="sidebar">
+        <h3>Menü</h3>
+        
+        <a href="index.html">Startseite</a>
+
+        <details>
+            <summary>Themen ▾</summary>
+            <a href="Wikinger.html">Wikinger</a>
+            <a href="Goetter.html">Götter</a>
+            <a href="Thor.html">Thor</a>
+            <a href="Mjolnir.html">Mjolnir</a>
+            <a href="Odin.html">Odin</a>
+            <a href="OdinsRaben.html">Odins Raben</a>
+            <a href="Freya.html">Freya</a>
+            <a href="Loki.html">Loki</a>
+            <a href="Frigg.html">Frigg</a>
+            <a href="Balder.html">Balder</a>
+            <a href="Freyr.html">Freyr</a>
+            <a href="Hel.html">Hel</a>
+            <a href="Heimdall.html">Heimdall</a>
+            <a href="Tyr.html">Tyr</a>
+            <a href="Idun.html">Idun</a>
+            <a href="Njoerd.html">Njörd</a>
+            <a href="Skadi.html">Skadi</a>
+            <a href="Nornen.html">Die Nornen</a>
+            <a href="Yggdrasil.html">Yggdrasil</a>
+            <a href="Ragnarök.html">Ragnarök</a>
+        </details>
+    </nav>
+
+    <!-- TEIL 2: HAUPTINHALT -->
+    <main class="main-content-area">
+    
+        <h1>Nordische Mythologie</h1>
+        <p class="intro">Die Geschichte des Nordens</p>
+        
+        <!-- DER RUNEN ÜBERSETZER -->
+        <div class="rune-translator">
+            <h3>ᚱᚢᚾᛖᚾ Übersetzer</h3>
+            <p>Gib deinen Namen ein:</p>
+            <input type="text" id="meinInput" placeholder="Name hier eingeben..." oninput="uebersetzeInRunen()">
+            <p id="runenAusgabe">...</p>
+        </div>
+
+        <!-- DIE BILDER GALERIE -->
+        <div class="gallery-grid">
+        
+            <a href="Wikinger.html" class="gallery-item">
+                <img src="viking-ragnar-lothbrok-wzcmxavv8ko0472q.jpg" alt="Wikinger">
+                <span><strong>Wikinger</strong></span>
+            </a>
+            
+            <a href="Goetter.html" class="gallery-item">
+                <img src="Goetter.jpg" alt="Die Götter">
+                <span><strong>Die Götter</strong></span>
+            </a>
+            
+            <a href="Thor.html" class="gallery-item">
+                <img src="Thor.jpg" alt="Thor">
+                <span><strong>Thor</strong></span>
+            </a>
+            
+            <a href="Mjolnir.html" class="gallery-item">
+                <img src="Mjolnir.jpg" alt="Mjönir">
+                <span><strong>Mjolnir</strong></span>
+            </a>
+            
+            <a href="Odin.html" class="gallery-item">
+                <img src="Odin.jpg" alt="Odin">
+                <span><strong>Odin</strong></span> 
+            </a>    
+
+            <a href="OdinsRaben.html" class="gallery-item">
+                <img src="OdinsRaben.jpg" alt="Odins Raben">
+                <span><strong>Odins Raben</strong></span>
+            </a>
+            
+            <a href="Freya.html" class="gallery-item">
+                <img src="Freya.jpg" alt="Freya">
+                <span><strong>Freya</strong></span> 
+            </a>
+            
+            <a href="Loki.html" class="gallery-item">
+                <img src="Loki.jpg" alt="Loki">
+                <span><strong>Loki</strong></span>
+            </a>    
+            
+            <a href="Frigg.html" class="gallery-item">
+                <img src="Frigg.jpg" alt="Frigg">
+                <span><strong>Frigg</strong></span>
+            </a>    
+            
+            <a href="Balder.html" class="gallery-item">
+                <img src="Balder.jpg" alt="Balder">
+                <span><strong>Balder</strong></span>
+            </a>            
+            
+            <a href="Freyr.html" class="gallery-item">
+                <img src="Freyr.jpg" alt="Freyr">
+                <span><strong>Freyr</strong></span>
+            </a>   
+
+            <a href="Hel.html" class="gallery-item">
+                <img src="Hel.jpg" alt="Hel">
+                <span><strong>Hel</strong></span>
+            </a> 
+
+            <a href="Heimdall.html" class="gallery-item">
+                <img src="Heimdall.jpg" alt="Heimdall">
+                <span><strong>Heimdall</strong></span>
+            </a>
+
+            <a href="Tyr.html" class="gallery-item">
+                <img src="Tyr.jpg" alt="Tyr">
+                <span><strong>Tyr</strong></span>
+            </a>
+
+            <a href="Idun.html" class="gallery-item">
+                <img src="Idun.jpg" alt="Idun">
+                <span><strong>Idun</strong></span>
+            </a>
+
+            <a href="Njoerd.html" class="gallery-item">
+                <img src="Njoerd.jpg" alt="Njörd">
+                <span><strong>Njörd</strong></span>
+            </a>
+
+            <a href="Skadi.html" class="gallery-item">
+                <img src="Skadi.jpg" alt="Skadi">
+                <span><strong>Skadi</strong></span>
+            </a>
+
+            <!-- Nornen hinzugefügt -->
+            <a href="Nornen.html" class="gallery-item">
+                <img src="Nornen.jpg" alt="Nornen">
+                <span><strong>Die Nornen</strong></span>
+            </a>
+
+            <a href="Yggdrasil.html" class="gallery-item">
+                <img src="yggdrasil.jpg" alt="Yggdrasil">
+                <span><strong>Yggdrasil</strong></span>
+            </a>
+            
+            <a href="Ragnarök.html" class="gallery-item">
+                <img src="Ragnarök.jpg" alt="Ragnarök">
+                <span><strong>Ragnarök</strong></span>
+            </a>        
+
+        </div>
+
+        <!-- DER FOOTER -->
+        <footer class="footer">
+            <p>&copy; 2025 Nordische Mythologie | Geschmiedet für Valhalla</p>
+        </footer>
+
+    </main>
+
+    <!-- VERKNÜPFUNG ZUM JAVASCRIPT (Ganz am Ende!) -->
+    <script src="script.js"></script>
+
+</body>
+</html>
