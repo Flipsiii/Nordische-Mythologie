@@ -1,16 +1,16 @@
-<!-- Gaestebuch.html -->
+<!-- RunenUebersetzer.html -->
 
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Gästebuch</title>
+    <title>Runen Übersetzer</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style1.css">
 </head>
 <body>
 
-<script data-goatcounter="https://flipsiii.goatcounter.com/count"
+	<script data-goatcounter="https://flipsiii.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 
 	<!-- TEIL 1: SEITENLEISTE MIT DROPDOWN -->
@@ -40,54 +40,53 @@
             <a href="Njoerd.html">Njörd</a>
             <a href="Skadi.html">Skadi</a>
             <a href="Nornen.html">Die Nornen</a>
-			<a href="Walkueren.html">Die Walküren</a>
+            <a href="Walkueren.html">Die Walküren</a>
             <a href="Yggdrasil.html">Yggdrasil</a>
             <a href="Ragnarök.html">Ragnarök</a>
-			<a href="Julfest.html">Das Julfest</a>
+            <a href="Julfest.html">Das Julfest</a>
         </details>
-		
-		<a href="Runen.html" class="guestbook-link">ᚱᚢᚾᛖᚾ Übersetzer</a>
 
-        <a href="Gaestebuch.html" class="active guestbook-link">📖 Gästebuch</a>
-
+        <a href="Runen.html" class="active guestbook-link">ᚱᚢᚾᛖᚾ Übersetzer</a>
+        
+		<a href="Gaestebuch.html" class="guestbook-link">📖 Gästebuch</a>
+        
         <a href="https://soundcloud.com/DEIN-LINK" target="_blank" class="soundcloud-btn">
-            Meine Musik 🎵
+            Themen Musik 🎵
         </a>
-        <small class="soundcloud-hint">"Midgard Warrior" auf SoundCloud</small>
-
+       
+	   <small class="soundcloud-hint">"Midgarden Warrior" auf SoundCloud</small>
+		
     </nav>
     
-	<!-- TEIL 2: HAUPTINHALT -->
     <main class="main-content-area">
 
-        <h1>Das Gästebuch</h1>
-        <p class="intro">Verewige dich in den Hallen von Valhalla</p>
+        <h1>Runen Übersetzer</h1>
+        <p class="intro">Schreibe deinen Namen in der Sprache der Wikinger</p>
         
-        <div class="guestbook-form-container">
-            <input type="text" id="guestName" placeholder="Dein Name (oder Wikinger-Name)">
-            <textarea id="guestMessage" placeholder="Deine Nachricht an die Götter..."></textarea>
-            
-            <button id="submitEntryBtn">In Stein meißeln</button>
+        <!-- HIER IST DER ÜBERSETZER -->
+        <div class="rune-translator" style="margin-top: 50px;">
+            <h3>ᚱᚢᚾᛖᚾ</h3>
+            <p>Gib deinen Text ein:</p>
+            <input type="text" id="meinInput" placeholder="Name hier eingeben..." oninput="uebersetzeInRunen()" autocomplete="off">
+            <p id="runenAusgabe">...</p>
         </div>
-
-        <div id="guestbook-entries" class="guestbook-list">
-
-            <div class="entry">
-                <div class="entry-header">
-                    <span class="name">Odin</span>
-                    <span class="date">Vor langer Zeit</span>
-                </div>
-                <div class="message">Willkommen in meiner Halle!</div>
+        
+        <div class="page-content" style="margin-top: 50px; text-align: center;">
+            <div class="page-text">
+                <p>
+                    Dieser Übersetzer nutzt das <strong>Ältere Futhark</strong>, das älteste Runenalphabet. Beachte, dass Runen oft phonetisch (nach Klang) genutzt wurden. Viel Spaß beim Ausprobieren!
+                </p>
             </div>
         </div>
-        
+
         <footer class="footer">
             <p>&copy; 2025 Nordische Mythologie | Geschmiedet für Valhalla</p>
         </footer>
         
     </main>
 
-    <script type="module" src="script.js"></script>
+    <!-- WICHTIG: Das Skript muss hier eingebunden sein -->
+    <script src="script.js"></script>
     
 </body>
 </html>

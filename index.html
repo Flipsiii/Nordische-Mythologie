@@ -1,3 +1,5 @@
+<!-- index -->
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -41,7 +43,10 @@
 			<a href="Walkueren.html">Die Walküren</a>
             <a href="Yggdrasil.html">Yggdrasil</a>
             <a href="Ragnarök.html">Ragnarök</a>
+			<a href="Julfest.html">Das Julfest</a>
         </details>
+		
+		<a href="Runen.html" class="guestbook-link">ᚱᚢᚾᛖᚾ Übersetzer</a>
 		
 		<a href="Gaestebuch.html" class="guestbook-link">📖 Gästebuch</a>
 		
@@ -65,6 +70,17 @@
             <p>Gib deinen Namen ein:</p>
             <input type="text" id="meinInput" placeholder="Name hier eingeben..." oninput="uebersetzeInRunen()">
             <p id="runenAusgabe">...</p>
+        </div>
+
+        <div class="rune-translator" style="margin-top: 30px; margin-bottom: 50px;">
+            <h3>Hávamál</h3>
+            <p>Die Worte des Hohen – Odins Weisheit für dich:</p>
+            
+            <div id="havamalAusgabe" style="min-height: 100px; display: flex; align-items: center; justify-content: center; font-style: italic; font-size: 1.2rem; margin: 20px; transition: opacity 0.5s;">
+                "Klicke auf den Button, um Rat zu erhalten..."
+            </div>
+            
+            <button onclick="zeigeWeisheit()">Weisheit empfangen</button>
         </div>
 
         <!-- DIE BILDER GALERIE -->
@@ -155,10 +171,14 @@
                 <span><strong>Skadi</strong></span>
             </a>
 
-            <!-- Nornen hinzugefügt -->
             <a href="Nornen.html" class="gallery-item">
                 <img src="Nornen.jpg" alt="Nornen">
                 <span><strong>Die Nornen</strong></span>
+            </a>
+
+            <a href="Walkueren.html" class="gallery-item">
+                <img src="Walkueren.jpg" alt="Die Walküren">
+                <span><strong>Die Walküren</strong></span>
             </a>
 
             <a href="Yggdrasil.html" class="gallery-item">
@@ -169,18 +189,21 @@
             <a href="Ragnarök.html" class="gallery-item">
                 <img src="Ragnarök.jpg" alt="Ragnarök">
                 <span><strong>Ragnarök</strong></span>
-            </a>        
+            </a>
+            
+            <a href="Julfest.html" class="gallery-item">
+                <img src="Julfest.jpg" alt="Das Julfest">
+                <span><strong>Das Julfest</strong></span>
+            </a>
 
         </div>
 
-        <!-- DER FOOTER -->
         <footer class="footer">
             <p>&copy; 2026 Nordische Mythologie | Geschmiedet für Valhalla | by Flipsiii</p>
         </footer>
 
     </main>
 
-    <!-- VERKNÜPFUNG ZUM JAVASCRIPT (Ganz am Ende!) -->
     <script src="script.js"></script>
 
 </body>
