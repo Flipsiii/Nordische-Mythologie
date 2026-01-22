@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Gästebuch</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h3>Menü</h3>
+        
+        <a href="index.html">Startseite</a>
+
+        <details>
+            <summary>Themen ▾</summary>
+            <a href="Wikinger.html">Wikinger</a>
+            <a href="Goetter.html">Götter</a>
+            <a href="Thor.html">Thor</a>
+            <a href="Mjolnir.html">Mjölnir</a>
+            <a href="Odin.html">Odin</a>
+            <a href="OdinsRaben.html">Odins Raben</a>
+            <a href="Freya.html">Freya</a>
+            <a href="Loki.html">Loki</a>
+            <a href="Frigg.html">Frigg</a>
+            <a href="Balder.html">Balder</a>
+            <a href="Freyr.html">Freyr</a>
+            <a href="Hel.html">Hel</a>
+            <a href="Heimdall.html">Heimdall</a>
+            <a href="Tyr.html">Tyr</a>
+            <a href="Idun.html">Idun</a>
+            <a href="Njoerd.html">Njörd</a>
+            <a href="Skadi.html">Skadi</a>
+            <a href="Nornen.html">Die Nornen</a>
+            <a href="Yggdrasil.html">Yggdrasil</a>
+            <a href="Ragnarök.html">Ragnarök</a>
+        </details>
+
+        <!-- HIER NEU: Der Gästebuch Button (Aktiv) -->
+        <a href="Gaestebuch.html" class="active guestbook-link">📖 Gästebuch</a>
+
+        <!-- Dein Soundcloud Button -->
+        <a href="https://soundcloud.com/DEIN-LINK" target="_blank" class="soundcloud-btn">
+            Meine Musik 🎵
+        </a>
+        <small class="soundcloud-hint">Geht zur Playlist auf SoundCloud</small>
+
+    </nav>
+    
+    <main class="main-content-area">
+
+        <h1>Das Gästebuch</h1>
+        <p class="intro">Verewige dich in den Hallen von Valhalla</p>
+        
+        <!-- Das Formular zum Schreiben -->
+        <div class="guestbook-form-container">
+            <input type="text" id="guestName" placeholder="Dein Name (oder Wikinger-Name)">
+            <textarea id="guestMessage" placeholder="Deine Nachricht an die Götter..."></textarea>
+            
+            <!-- ÄNDERUNG: "onclick" entfernt und ID hinzugefügt -->
+            <button id="submitEntryBtn">In Stein meißeln</button>
+        </div>
+
+        <!-- Hier werden die Einträge angezeigt -->
+        <div id="guestbook-entries" class="guestbook-list">
+            <!-- Beispiel-Eintrag (wird später vom JS überschrieben) -->
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="name">Odin</span>
+                    <span class="date">Vor langer Zeit</span>
+                </div>
+                <div class="message">Willkommen in meiner Halle!</div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>&copy; 2025 Nordische Mythologie | Geschmiedet für Valhalla</p>
+        </footer>
+        
+    </main>
+
+    <!-- ÄNDERUNG: type="module" hinzugefügt! Das ist wichtig für Firebase. -->
+    <script type="module" src="guestbook.js"></script>
+    
+</body>
+</html>
