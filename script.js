@@ -10,26 +10,22 @@ const runenAlphabet = {
 };
 
 function uebersetzeInRunen() {
-    // 1. Den Text aus dem Eingabefeld holen
+ 
     const eingabeFeld = document.getElementById('meinInput');
-    const text = eingabeFeld.value.toLowerCase(); // Alles in Kleinbuchstaben umwandeln
+    const text = eingabeFeld.value.toLowerCase();
 
-    // 2. Den Text Buchstabe für Buchstabe übersetzen
     let ergebnis = "";
     
     for (let i = 0; i < text.length; i++) {
         const buchstabe = text[i];
         
-        // Prüfen, ob wir eine Rune für diesen Buchstaben haben
         if (runenAlphabet[buchstabe]) {
             ergebnis += runenAlphabet[buchstabe];
         } else {
-            // Falls nicht (z.B. Zahlen oder !?), behalten wir das Originalzeichen
             ergebnis += buchstabe;
         }
     }
-
-    // 3. Das Ergebnis auf der Seite anzeigen
+	
     const ausgabeFeld = document.getElementById('runenAusgabe');
     ausgabeFeld.innerText = ergebnis;
 }

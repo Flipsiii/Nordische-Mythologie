@@ -556,3 +556,68 @@ h1::after {
         margin-top: 10px;
     }
 }
+
+/* =========================================
+   10. SLIDESHOW NAVIGATION (Pfeile)
+   ========================================= */
+
+.nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    user-select: none;
+    padding: 10px;
+}
+
+.nav-arrow:hover {
+    color: #ffd700;
+    text-shadow: 0 0 20px #ffd700;
+    transform: translateY(-50%) scale(1.2);
+    cursor: pointer;
+}
+
+/* Position für den Linken Pfeil (Zurück) */
+.nav-arrow-left {
+    left: 270px; 
+}
+
+/* Position für den Rechten Pfeil (Vor) */
+.nav-arrow-right {
+    right: 20px;
+}
+
+/* Anpassung für Handys */
+@media (max-width: 768px) {
+    .nav-arrow {
+        font-size: 3rem;
+        top: auto;
+        bottom: 20px;
+        transform: none;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 8px;
+        border: 1px solid #ffd700;
+    }
+    
+    .nav-arrow:hover {
+        transform: scale(1.1);
+    }
+
+    .nav-arrow-left {
+        left: 20px;
+    }
+    
+    .nav-arrow-right {
+        right: 20px;
+    }
+}
