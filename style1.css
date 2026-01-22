@@ -415,7 +415,7 @@ h1::after {
     border-radius: 15px;
     border: 2px solid #ffd700;
 	width: 90%;
-	max-width: 900;
+	max-width: 800;
     margin: 0 auto 40px auto;
     display: flex;
     flex-direction: column;
