@@ -324,7 +324,7 @@ h1::after {
     padding: 20px;
     margin: 40px auto;
     width: 100%;
-    max-width: 800px;
+	max-width: 800px;
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
@@ -414,8 +414,9 @@ h1::after {
     padding: 30px;
     border-radius: 15px;
     border: 2px solid #ffd700;
-    max-width: 900px;
-    margin: 0;
+	width: 90%;
+	max-width: 900;
+    margin: 0 auto 40px auto;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -555,8 +556,3 @@ h1::after {
         margin-top: 10px;
     }
 }
-
-
-
-
-
