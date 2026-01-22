@@ -37,14 +37,12 @@
             <a href="Ragnarök.html">Ragnarök</a>
         </details>
 
-        <!-- HIER NEU: Der Gästebuch Button (Aktiv) -->
         <a href="Gaestebuch.html" class="active guestbook-link">📖 Gästebuch</a>
-
-        <!-- Dein Soundcloud Button -->
+        
         <a href="https://soundcloud.com/DEIN-LINK" target="_blank" class="soundcloud-btn">
             Meine Musik 🎵
         </a>
-        <small class="soundcloud-hint">Geht zur Playlist auf SoundCloud</small>
+        <small class="soundcloud-hint">"Midgard Warrior" auf SoundCloud</small>
 
     </nav>
     
@@ -53,18 +51,16 @@
         <h1>Das Gästebuch</h1>
         <p class="intro">Verewige dich in den Hallen von Valhalla</p>
         
-        <!-- Das Formular zum Schreiben -->
+
         <div class="guestbook-form-container">
             <input type="text" id="guestName" placeholder="Dein Name (oder Wikinger-Name)">
             <textarea id="guestMessage" placeholder="Deine Nachricht an die Götter..."></textarea>
             
-            <!-- ÄNDERUNG: "onclick" entfernt und ID hinzugefügt -->
             <button id="submitEntryBtn">In Stein meißeln</button>
         </div>
 
-        <!-- Hier werden die Einträge angezeigt -->
+        
         <div id="guestbook-entries" class="guestbook-list">
-            <!-- Beispiel-Eintrag (wird später vom JS überschrieben) -->
             <div class="entry">
                 <div class="entry-header">
                     <span class="name">Odin</span>
@@ -79,9 +75,9 @@
         </footer>
         
     </main>
-
-    <!-- ÄNDERUNG: type="module" hinzugefügt! Das ist wichtig für Firebase. -->
+    
     <script type="module" src="guestbook.js"></script>
     
 </body>
+
 </html>
