@@ -1,15 +1,13 @@
+console.log("Skript gestartet! Lade Module...");
+
 // 1. Wir importieren die Firebase-Funktionen direkt aus dem Internet
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// 2. DEINE KONFIGURATION (Hier musst du DEINE Daten von der Firebase-Website einfügen!)
-// Kopiere den Block von der Firebase-Konsole und ersetze diesen hier:
-// Import the functions you need from the SDKs you need
+console.log("Module geladen. Konfiguriere Firebase...");
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// 2. DEINE KONFIGURATION
+// Hier sind jetzt deine echten Daten eingetragen:
 const firebaseConfig = {
   apiKey: "AIzaSyCG7peemk2I1MiRLXrS0uEGSa0kY9MsZjQ",
   authDomain: "wikinger-gaestebuch.firebaseapp.com",
@@ -19,22 +17,23 @@ const firebaseConfig = {
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-};
-
 // 3. Firebase starten
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+console.log("Datenbank verbunden.");
 
 // 4. Funktion zum Speichern (Senden an Datenbank)
 async function eintragSenden() {
+    console.log("Button wurde geklickt!");
+    
     const nameInput = document.getElementById('guestName');
     const messageInput = document.getElementById('guestMessage');
     const btn = document.getElementById('submitEntryBtn');
 
     const name = nameInput.value;
     const message = messageInput.value;
+
+    console.log("Name:", name, "Nachricht:", message);
 
     if (name === "" || message === "") {
         alert("Die Götter verlangen einen Namen und eine Nachricht!");
@@ -45,7 +44,9 @@ async function eintragSenden() {
         btn.disabled = true; // Button sperren, damit man nicht doppelt klickt
         btn.innerText = "Wird gemeißelt...";
 
-        // Wir schreiben in die Sammlung "gästebuch"
+        console.log("Sende Daten an Firebase...");
+
+        // Wir schreiben in die Sammlung "gaestebuch"
         await addDoc(collection(db, "gaestebuch"), {
             name: name,
             message: message,
@@ -55,6 +56,8 @@ async function eintragSenden() {
             dateString: new Date().toLocaleDateString('de-DE') + ' um ' + new Date().toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'})
         });
 
+        console.log("Erfolg! Daten gesendet.");
+
         // Felder leeren
         nameInput.value = "";
         messageInput.value = "";
@@ -62,16 +65,16 @@ async function eintragSenden() {
         btn.innerText = "In Stein meißeln";
 
     } catch (e) {
-        console.error("Fehler beim Senden: ", e);
-        alert("Ein Fehler ist aufgetreten. Loki treibt sein Unwesen!");
+        console.error("FEHLER beim Senden: ", e);
+        alert("Ein Fehler ist aufgetreten. Loki treibt sein Unwesen: " + e.message);
         btn.disabled = false;
         btn.innerText = "In Stein meißeln";
     }
 }
 
 // 5. Echtzeit-Listener (Hört auf neue Einträge)
-// Das hier ersetzt "ladeEintraege". Es läuft AUTOMATISCH, wenn jemand anderes etwas postet!
 function liveAbfrageStarten() {
+    console.log("Starte Live-Abfrage...");
     const container = document.getElementById('guestbook-entries');
     
     // Wir fragen die Sammlung "gaestebuch" ab, sortiert nach Zeit (neueste oben)
@@ -79,6 +82,7 @@ function liveAbfrageStarten() {
 
     // onSnapshot läuft immer dann, wenn sich in der Datenbank etwas ändert
     onSnapshot(q, (snapshot) => {
+        console.log("Neue Daten empfangen! Anzahl Einträge:", snapshot.size);
         container.innerHTML = ""; // Liste leeren
 
         if (snapshot.empty) {
@@ -92,7 +96,7 @@ function liveAbfrageStarten() {
             const div = document.createElement('div');
             div.classList.add('entry');
             
-            // Falls timestamp noch lädt (Latenz), nehmen wir "Gerade eben"
+            // Falls timestamp noch lädt (Latenz), nehmen wir "Gerade eben" oder den gespeicherten String
             const datum = daten.dateString || "Gerade eben";
 
             div.innerHTML = `
@@ -104,12 +108,19 @@ function liveAbfrageStarten() {
             `;
             container.appendChild(div);
         });
+    }, (error) => {
+        console.error("Fehler beim Empfangen der Daten:", error);
     });
 }
 
 // 6. Event Listener setzen (Startet alles, wenn die Seite geladen ist)
-// Da wir "module" nutzen, können wir nicht onclick im HTML nutzen.
-document.getElementById('submitEntryBtn').addEventListener('click', eintragSenden);
+const submitBtn = document.getElementById('submitEntryBtn');
+if (submitBtn) {
+    submitBtn.addEventListener('click', eintragSenden);
+    console.log("Event-Listener auf Button gesetzt.");
+} else {
+    console.error("FEHLER: Button mit ID 'submitEntryBtn' wurde im HTML nicht gefunden!");
+}
 
 // Live-Abfrage sofort starten
 liveAbfrageStarten();
