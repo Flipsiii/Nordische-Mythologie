@@ -1,43 +1,39 @@
 /* style1.css */
 
 /* =========================================
-   1. ALLGEMEINES DESIGN (Gilt für alle Seiten)
+   1. ALLGEMEINES DESIGN
    ========================================= */
 
 body {
-   
     font-family: 'Castellar', serif;
     text-align: center;
     background: linear-gradient(to bottom, #4a2e15, #996633); 
-	min-height: 100vh;
-	background-attachment: fixed;
-	margin: 0;
-	padding: 30px;
-	color: white;
-	box-sizing: border-box;
+    min-height: 100vh;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 30px;
+    color: white;
+    box-sizing: border-box;
     display: flex;
-	flex-direction: row;
-    
+    flex-direction: row;
 }
 
-/* --- DIE SEITENLEISTE (LINKS) --- */
 .sidebar {
-    width: 250px;           
+    width: 250px;            
     background: rgba(0, 0, 0, 0.6); 
-    height: 100vh;          
-    position: sticky;      
+    height: 100vh;           
+    position: sticky;       
     top: 0;
     padding: 40px 20px;
     border-right: 2px solid rgba(255, 255, 255, 0.2);
     
     display: flex;
     flex-direction: column; 
-    gap: 20px;              
+    gap: 20px;               
     text-align: center;
-	overflow-y: auto;
+    overflow-y: auto;
 }
 
-/* --- Die Text-Links in der Sidebar --- */
 .sidebar a {
     color: white;
     text-decoration: none;
@@ -49,21 +45,23 @@ body {
 }
 
 .sidebar a:hover {
-    color: #3498db;   
+    color: #3498db;    
     padding-left: 10px;
     border-bottom: 1px solid #3498db;
 }
 
 .sidebar a.active {
     pointer-events: none; 
-    cursor: default;      
-    color: #ffd700;       
-    font-weight: bold;    
+    cursor: default;       
+    color: #ffd700;        
+    font-weight: bold;     
     border-bottom: 2px solid #ffd700; 
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* --- DROPDOWN --- */
+/* ==================
+   Dropdown Menü
+   ================== */
 .sidebar details {
     width: 100%;
     text-align: center;
@@ -109,15 +107,17 @@ body {
     padding-left: 5px; 
 }
 
-/* --- DER HAUPTINHALT --- */
+/* ==================
+   2. Hauptinhalt
+   ================== */
 .main-content-area {
     flex: 1;
     padding: 40px;
     overflow-y: auto;
-	height: 100vh;
-	box-sizing: border-box;
-	display: felx;
-	flex-direction: column;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex; 
+    flex-direction: column;
 }
 
 h1 {
@@ -128,12 +128,12 @@ h1 {
     position: relative; 
 
     background: linear-gradient(
-        110deg,          
-        #8f6B29 10%,     
-        #FDE08D 40%,     
-        #FFFFFF 50%,     
-        #FDE08D 60%,     
-        #8f6B29 90%      
+        110deg,           
+        #8f6B29 10%,      
+        #FDE08D 40%,      
+        #FFFFFF 50%,      
+        #FDE08D 60%,      
+        #8f6B29 90%       
     );
     background-size: 300% auto;
     color: transparent;
@@ -145,18 +145,18 @@ h1 {
 
 h1::after {
     content: "—— ❧ ————— ❧ ————— ❧ ——"; 
-    display: block;        
-    font-size: 30px;       
-    margin-top: 10px;      
+    display: block;         
+    font-size: 30px;        
+    margin-top: 10px;       
     font-family: 'Times New Roman', serif; 
     
     background: linear-gradient(
-        110deg,          
-        #8f6B29 10%,     
-        #FDE08D 40%,     
-        #FFFFFF 50%,     
-        #FDE08D 60%,     
-        #8f6B29 90%      
+        110deg,           
+        #8f6B29 10%,      
+        #FDE08D 40%,      
+        #FFFFFF 50%,      
+        #FDE08D 60%,      
+        #8f6B29 90%       
     );
     background-size: 300% auto;
     color: transparent;
@@ -180,7 +180,7 @@ h1::after {
 
 
 /* ==================
-   BILDER GALERIE 
+   3. BILDER GALERIE 
    ================== */
 
 .gallery-grid, .nav-container {
@@ -205,8 +205,8 @@ h1::after {
 
 .gallery-item img, .nav-item img {
     width: 100%;
-    height: 300px;        
-    object-fit: cover;    
+    height: 300px;         
+    object-fit: cover;     
     border-radius: 10px;
     border: 3px solid white;
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
@@ -230,7 +230,7 @@ h1::after {
 }
 
 /* =============
-   UNTERSEITEN
+   4. UNTERSEITEN
    ============== */
 
 .page-content {
@@ -293,14 +293,14 @@ h1::after {
    5. FOOTER (FUSSZEILE)
    ======================*/
 .footer {
-    margin-top: 80px;           
+    margin-top: 80px;            
     padding-top: 20px;
     padding-bottom: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.2); 
     text-align: center;
     font-family: Arial, sans-serif;
-    font-size: 0.9rem;          
-    color: #ccc;                
+    font-size: 0.9rem;           
+    color: #ccc;                 
 }
 
 .footer a {
@@ -361,11 +361,11 @@ h1::after {
    ========================================= */
 
 .sidebar a.soundcloud-btn {
-    margin-top: 20px;           
-    color: #ffd700;             
+    margin-top: 20px;            
+    color: #ffd700;              
     border: 1px solid #ffd700;
     font-weight: bold;
-    display: flex;              
+    display: flex;               
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -377,13 +377,12 @@ h1::after {
     color: #4a2e15;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
     border-bottom: 1px solid #ffd700; 
-    padding-left: 10px;         
+    padding-left: 10px;          
 }
 
-/* Design für spezielle Extra-Buttons auf Unterseiten */
 .sidebar .extra-link {
-    margin-top: 15px;           
-    color: #e0e0e0;             
+    margin-top: 15px;            
+    color: #e0e0e0;              
     border: 1px dashed #e0e0e0; 
     padding: 10px;
     border-radius: 5px;
@@ -396,23 +395,21 @@ h1::after {
     background-color: rgba(255, 255, 255, 0.1); 
     color: white;
     border-color: white;
-    border-style: solid;        
+    border-style: solid;         
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-/* Der Link in der Sidebar */
+/* =========================================
+   8. Gästebuch
+   ========================================= */
+
 .sidebar a.guestbook-link {
     margin-top: 10px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* =========================================
-   Gästebuch
-   ========================================= */
-
-/* Das Formular (Eingabefeld) */
 .guestbook-form-container {
-    background: rgba(0, 0, 0, 0.6); /* Dunklerer Hintergrund für besseren Kontrast */
+    background: rgba(0, 0, 0, 0.6);
     padding: 30px;
     border-radius: 15px;
     border: 2px solid #ffd700;
@@ -421,30 +418,30 @@ h1::after {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); /* Sanftes goldenes Leuchten */
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
 }
 
 .guestbook-form-container input,
 .guestbook-form-container textarea {
     padding: 15px;
     border-radius: 5px;
-    border: 1px solid #ffd700; /* Goldener Rand */
-    background: rgba(255, 255, 255, 0.1); /* Leicht transparent */
-    color: white; /* Weiße Schrift! Wichtig! */
+    border: 1px solid #ffd700;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
     font-family: Arial, sans-serif;
     font-size: 1.1rem;
-    outline: none; /* Kein blauer Standard-Rahmen */
+    outline: none;
     transition: background 0.3s;
 }
 
 .guestbook-form-container input::placeholder,
 .guestbook-form-container textarea::placeholder {
-    color: rgba(255, 255, 255, 0.6); /* Platzhalter leicht ausgegraut */
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .guestbook-form-container input:focus,
 .guestbook-form-container textarea:focus {
-    background: rgba(255, 255, 255, 0.2); /* Heller beim Reinklicken */
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .guestbook-form-container textarea {
@@ -453,8 +450,8 @@ h1::after {
 }
 
 .guestbook-form-container button {
-    background: linear-gradient(to bottom, #ffd700, #b8860b); /* Goldener Verlauf */
-    color: #4a2e15; /* Dunkle Schrift für Kontrast */
+    background: linear-gradient(to bottom, #ffd700, #b8860b);
+    color: #4a2e15;
     border: none;
     padding: 15px;
     font-weight: bold;
@@ -468,9 +465,9 @@ h1::after {
 }
 
 .guestbook-form-container button:hover {
-    transform: scale(1.02); /* Leicht vergrößern */
-    box-shadow: 0 0 15px #ffd700; /* Leuchten */
-    background: #fff; /* Weiß werden */
+    transform: scale(1.02);
+    box-shadow: 0 0 15px #ffd700;
+    background: #fff;
 }
 
 .guestbook-form-container button:disabled {
@@ -481,21 +478,20 @@ h1::after {
     box-shadow: none;
 }
 
-/* Die Liste der Einträge */
 .guestbook-list {
     max-width: 800px;
     margin: 0 auto;
 }
 
 .entry {
-    background: rgba(0, 0, 0, 0.7); /* Dunkler Hintergrund */
+    background: rgba(0, 0, 0, 0.7); 
     border-left: 4px solid #ffd700; 
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 5px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     animation: fadeIn 0.5s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Feiner Rahmen */
+    border: 1px solid rgba(255, 255, 255, 0.1); 
 }
 
 .entry-header {
@@ -518,7 +514,7 @@ h1::after {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     font-size: 1.1rem;
-    color: #eee; /* Fast weißes Grau */
+    color: #eee;
 }
 
 @keyframes fadeIn {
@@ -527,7 +523,7 @@ h1::after {
 }
 
 /* =========================================
-   MEDIA QUERY: HANDY (Sidebar nach oben)
+   9. MEDIA QUERY: HANDY
    ========================================= */
 @media (max-width: 768px) {
     body {
@@ -541,15 +537,15 @@ h1::after {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-		border-right: none;
-		border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        border-right: none;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     }
     .main-content-area {
         padding: 20px;
-		height: auto;
+        height: auto;
     }
-	
-	h1 {
+    
+    h1 {
         font-size: 35px !important; 
     }
     
@@ -557,5 +553,4 @@ h1::after {
         width: 100%;
         margin-top: 10px;
     }
-
 }
