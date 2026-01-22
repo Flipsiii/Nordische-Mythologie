@@ -60,7 +60,7 @@ body {
 }
 
 /* ==================
-   Dropdown Menü
+   2. Dropdown Menü
    ================== */
 .sidebar details {
     width: 100%;
@@ -108,7 +108,7 @@ body {
 }
 
 /* ==================
-   2. Hauptinhalt
+   3. Hauptinhalt
    ================== */
 .main-content-area {
     flex: 1;
@@ -180,7 +180,7 @@ h1::after {
 
 
 /* ==================
-   3. BILDER GALERIE 
+   4. BILDER GALERIE 
    ================== */
 
 .gallery-grid, .nav-container {
@@ -230,7 +230,7 @@ h1::after {
 }
 
 /* =============
-   4. UNTERSEITEN
+   5. UNTERSEITEN
    ============== */
 
 .page-content {
@@ -290,7 +290,7 @@ h1::after {
 }
 
 /* =====================
-   5. FOOTER (FUSSZEILE)
+   6. FOOTER (FUSSZEILE)
    ======================*/
 .footer {
     margin-top: 80px;            
@@ -315,7 +315,7 @@ h1::after {
 }
 
 /* =========================================
-   6. JAVASCRIPT WIDGETS (Runen Übersetzer)
+   7. JAVASCRIPT WIDGETS (Runen Übersetzer)
    ========================================= */
 
 .rune-translator {
@@ -358,7 +358,7 @@ h1::after {
 }
 
 /* =========================================
-   7. EXTRAS & EXTERNE LINKS
+   8. EXTRAS & EXTERNE LINKS
    ========================================= */
 
 .sidebar a.soundcloud-btn {
@@ -401,7 +401,7 @@ h1::after {
 }
 
 /* =========================================
-   8. Gästebuch
+   9. Gästebuch
    ========================================= */
 
 .sidebar a.guestbook-link {
@@ -414,7 +414,8 @@ h1::after {
     padding: 30px;
     border-radius: 15px;
     border: 2px solid #ffd700;
-    max-width: 600px;
+    width: 100%
+    max-width: 800px;
     margin: 0 auto 40px auto;
     display: flex;
     flex-direction: column;
@@ -524,7 +525,7 @@ h1::after {
 }
 
 /* =========================================
-   9. MEDIA QUERY: HANDY
+   10. MEDIA QUERY: HANDY
    ========================================= */
 @media (max-width: 768px) {
     body {
@@ -555,4 +556,5 @@ h1::after {
         margin-top: 10px;
     }
 }
+
 
