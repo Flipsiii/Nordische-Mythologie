@@ -595,7 +595,7 @@ h1::after {
 
 .havamal-container {
     background: rgba(0, 0, 0, 0.7);
-    border: 3px double #ffd700; /* Doppelter Goldrahmen */
+    border: 3px double #ffd700;
     padding: 30px;
     margin: 40px auto;
     width: 100%;
@@ -619,7 +619,7 @@ h1::after {
     font-size: 1.4rem;
     font-style: italic;
     color: #eee;
-    min-height: 120px; /* Feste Höhe, damit nichts springt */
+    min-height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -639,7 +639,7 @@ h1::after {
     font-weight: bold;
     font-size: 1.2rem;
     cursor: pointer;
-    border-radius: 50px; /* Runder Button */
+    border-radius: 50px;
     transition: all 0.3s;
     font-family: 'Castellar', serif;
     text-transform: uppercase;
