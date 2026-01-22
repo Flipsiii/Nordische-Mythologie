@@ -5,7 +5,7 @@ import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTim
 // 2. DEINE KONFIGURATION (Hier musst du DEINE Daten von der Firebase-Website einfügen!)
 // Kopiere den Block von der Firebase-Konsole und ersetze diesen hier:
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
