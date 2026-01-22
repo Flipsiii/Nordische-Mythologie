@@ -323,7 +323,8 @@ h1::after {
     border: 2px solid #ffd700;
     padding: 20px;
     margin: 40px auto;
-    max-width: 500px;
+    width: 100%;
+    max-width: 800px;
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
@@ -554,3 +555,4 @@ h1::after {
         margin-top: 10px;
     }
 }
+
