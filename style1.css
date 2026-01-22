@@ -581,14 +581,12 @@ h1::after {
     cursor: pointer;
 }
 
-/* Position für den Linken Pfeil (Zurück) */
 .nav-arrow-left {
-    left: 270px; 
+    left: 300px; 
 }
 
-/* Position für den Rechten Pfeil (Vor) */
 .nav-arrow-right {
-    right: 20px;
+    right: 50px;
 }
 
 /* Anpassung für Handys */
