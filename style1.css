@@ -589,6 +589,70 @@ h1::after {
     right: 50px;
 }
 
+/* =========================================
+   11. HÁVAMÁL DESIGN (Orakel)
+   ========================================= */
+
+.havamal-container {
+    background: rgba(0, 0, 0, 0.7);
+    border: 3px double #ffd700; /* Doppelter Goldrahmen */
+    padding: 30px;
+    margin: 40px auto;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
+    position: relative;
+}
+
+.havamal-container h3 {
+    color: #ffd700;
+    font-size: 2rem;
+    margin-top: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.havamal-text {
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #eee;
+    min-height: 120px; /* Feste Höhe, damit nichts springt */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    margin: 20px 0;
+    font-family: 'Times New Roman', serif;
+    line-height: 1.6;
+}
+
+.havamal-btn {
+    background: linear-gradient(to bottom, #ffd700, #b8860b);
+    color: #4a2e15;
+    border: none;
+    padding: 15px 30px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 50px; /* Runder Button */
+    transition: all 0.3s;
+    font-family: 'Castellar', serif;
+    text-transform: uppercase;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.havamal-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 20px #ffd700;
+    color: #000;
+    background: #fff;
+}
+
 /* Anpassung für Handys */
 @media (max-width: 768px) {
     .nav-arrow {
