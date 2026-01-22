@@ -406,6 +406,10 @@ h1::after {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* =========================================
+   Gästebuch
+   ========================================= */
+
 /* Das Formular (Eingabefeld) */
 .guestbook-form-container {
     background: rgba(0, 0, 0, 0.6); /* Dunklerer Hintergrund für besseren Kontrast */
@@ -553,4 +557,5 @@ h1::after {
         width: 100%;
         margin-top: 10px;
     }
+
 }
