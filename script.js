@@ -94,7 +94,7 @@ function renderSidebar() {
                 <a href="Midgard.html" class="${page === 'Midgard.html' ? 'active' : ''}">Midgard (Menschen)</a>
                 <a href="Vanaheim.html" class="${page === 'Vanaheim.html' ? 'active' : ''}">Vanaheim (Wanen)</a>
                 <a href="Alfheim.html" class="${page === 'Alfheim.html' ? 'active' : ''}">Alfheim (Lichtalben)</a>
-                <a href="Jotunheim.html" class="${page === 'Jotunheim.html' ? 'active' : ''}">Jötunheim (Riesen)</a>
+                <a href="Jötunheim.html" class="${page === 'Jötunheim.html' ? 'active' : ''}">Jötunheim (Riesen)</a>
                 <a href="Nidavellir.html" class="${page === 'Nidavellir.html' ? 'active' : ''}">Nidavellir (Zwerge)</a>
                 <a href="Muspelheim.html" class="${page === 'Muspelheim.html' ? 'active' : ''}">Muspelheim (Feuer)</a>
                 <a href="Niflheim.html" class="${page === 'Niflheim.html' ? 'active' : ''}">Niflheim (Eis)</a>
@@ -292,4 +292,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initFirebase();
 
 });
+
 
