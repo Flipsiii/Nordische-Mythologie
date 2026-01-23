@@ -1,6 +1,6 @@
 /**
- * script.js - Zentrale Steuerung für Flipsiii's Nordische Mythologie
- * Beinhaltet: Sidebar, Slideshow, Firebase-Auth & Gästebuch
+ * script.js - Zentrale Steuerung für Flipsiiis Nordische Mythologie
+ * Beinhaltet: Sidebar, Slideshow, Firebase-Auth, Gästebuch & Hávamál
  */
 
 // 1. FIREBASE MODULE IMPORTIEREN
@@ -18,7 +18,10 @@ const firebaseConfig = {
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
 
-// Reihenfolge für die Pfeil-Navigation
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Reihenfolge für die Pfeil-Navigation (Slideshow)
 const pageSequence = [
     "index.html", "Wikinger.html", "Yggdrasil.html", "9Welten.html", 
     "Ragnarök.html", "Julfest.html", "Goetter.html", 
@@ -28,8 +31,18 @@ const pageSequence = [
     "Njoerd.html", "Skadi.html", "Nornen.html", "Walkueren.html", "Hel.html"
 ];
 
-// Variablen für Firebase Services
-let db, auth, currentUser = null;
+// Weisheiten für das Orakel
+const havamalQuotes = [
+    "Der Unweise, wenn er zum Volke kommt, so schweigt er am besten still.",
+    "Besser ist eine gute Gesinnung als viel Geld.",
+    "Ein Gast soll gehen, nicht ewig bleiben am selben Ort.",
+    "Kein besseres Bündel trägt man auf dem Wege als vieles Wissen.",
+    "Das Feuer ist das Beste für die Söhne der Männer, und der Sonne Anblick.",
+    "Gastfreundschaft ist dem Wanderer willkommen, der mit kalten Knien ankommt.",
+    "Teile dein Brot mit dem Hungrigen; was du gibst, kommt zu dir zurück."
+];
+
+let auth, currentUser = null;
 
 // ==========================================
 // 1. FUNKTION: SIDEBAR RENDERN
@@ -38,8 +51,10 @@ function renderSidebar() {
     const container = document.getElementById('sidebar-container');
     if (!container) return;
 
+    // Aktuellen Dateinamen ermitteln
     const path = window.location.pathname;
-    const page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
+    let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
+    if (page === "/") page = "index.html";
 
     container.innerHTML = `
         <nav class="sidebar">
@@ -58,16 +73,33 @@ function renderSidebar() {
             <details ${['Goetter.html', 'Odin.html', 'OdinsRaben.html', 'Frigg.html', 'Thor.html', 'Mjolnir.html', 'Loki.html', 'Freya.html', 'Balder.html', 'Freyr.html', 'Heimdall.html', 'Tyr.html', 'Idun.html', 'Njoerd.html', 'Skadi.html'].includes(page) ? 'open' : ''}>
                 <summary>Die Götter ▾</summary>
                 <a href="Goetter.html" class="${page === 'Goetter.html' ? 'active' : ''}">Übersicht</a>
-                <a href="Odin.html" class="${page === 'Odin.html' ? 'active' : ''}">Odin (Allvater)</a>
+                <a href="Odin.html" class="${page === 'Odin.html' ? 'active' : ''}">Odin</a>
                 <a href="Thor.html" class="${page === 'Thor.html' ? 'active' : ''}">Thor</a>
-                <a href="Freya.html" class="${page === 'Freya.html' ? 'active' : ''}">Freya</a>
                 <a href="Loki.html" class="${page === 'Loki.html' ? 'active' : ''}">Loki</a>
+                <a href="Frigg.html" class="${page === 'Frigg.html' ? 'active' : ''}">Frigg</a>
+                <a href="Freya.html" class="${page === 'Freya.html' ? 'active' : ''}">Freya</a>
+                <a href="Balder.html" class="${page === 'Balder.html' ? 'active' : ''}">Balder</a>
+                <a href="Freyr.html" class="${page === 'Freyr.html' ? 'active' : ''}">Freyr</a>
+                <a href="Heimdall.html" class="${page === 'Heimdall.html' ? 'active' : ''}">Heimdall</a>
+                <a href="Tyr.html" class="${page === 'Tyr.html' ? 'active' : ''}">Tyr</a>
+                <a href="Idun.html" class="${page === 'Idun.html' ? 'active' : ''}">Idun</a>
+                <a href="Njoerd.html" class="${page === 'Njoerd.html' ? 'active' : ''}">Njörd</a>
+                <a href="Skadi.html" class="${page === 'Skadi.html' ? 'active' : ''}">Skadi</a>
+            </details>
+
+            <details ${['Nornen.html', 'Walkueren.html', 'Hel.html', 'OdinsRaben.html', 'Mjolnir.html'].includes(page) ? 'open' : ''}>
+                <summary>Wesen & Mächte ▾</summary>
+                <a href="OdinsRaben.html" class="${page === 'OdinsRaben.html' ? 'active' : ''}">Odins Raben</a>
+                <a href="Mjolnir.html" class="${page === 'Mjolnir.html' ? 'active' : ''}">Mjölnir</a>
+                <a href="Nornen.html" class="${page === 'Nornen.html' ? 'active' : ''}">Die Nornen</a>
+                <a href="Walkueren.html" class="${page === 'Walkueren.html' ? 'active' : ''}">Die Walküren</a>
+                <a href="Hel.html" class="${page === 'Hel.html' ? 'active' : ''}">Hel (Unterwelt)</a>
             </details>
             
-            <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+            <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;">
                 <a href="RunenUebersetzer.html" class="${page === 'RunenUebersetzer.html' ? 'active' : ''} guestbook-link">ᚱᚢᚾᛖᚾ Übersetzer</a>
                 <a href="Gaestebuch.html" class="${page === 'Gaestebuch.html' ? 'active' : ''} guestbook-link">📖 Gästebuch</a>
-                <a href="https://soundcloud.com/t-staude" target="_blank" class="soundcloud-btn">Musik 🎵</a>
+                <a href="https://soundcloud.com/t-staude" target="_blank" class="soundcloud-btn" style="margin-top:10px;">Musik 🎵</a>
             </div>
         </nav>
     `;
@@ -81,44 +113,63 @@ function renderSlideshow() {
     if (!container) return;
 
     const path = window.location.pathname;
-    const page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
-    const index = pageSequence.indexOf(page);
+    let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
+    if (page === "/") page = "index.html";
 
+    const index = pageSequence.indexOf(page);
     if (index === -1) return;
 
     const prev = pageSequence[(index - 1 + pageSequence.length) % pageSequence.length];
     const next = pageSequence[(index + 1) % pageSequence.length];
 
     container.innerHTML = `
-        <a href="${prev}" class="nav-arrow nav-arrow-left">❮</a>
-        <a href="${next}" class="nav-arrow nav-arrow-right">❯</a>
+        <a href="${prev}" class="nav-arrow nav-arrow-left" title="Zurück">❮</a>
+        <a href="${next}" class="nav-arrow nav-arrow-right" title="Weiter">❯</a>
     `;
 }
 
 // ==========================================
-// 3. FIREBASE INITIALISIERUNG & AUTH
+// 3. FUNKTION: HÁVAMÁL ORAKEL
+// ==========================================
+function initHavamal() {
+    const btn = document.getElementById('havamalBtn');
+    const display = document.getElementById('havamalAusgabe');
+    if (!btn || !display) return;
+
+    btn.addEventListener('click', () => {
+        const randomIndex = Math.floor(Math.random() * havamalQuotes.length);
+        display.style.opacity = 0;
+        setTimeout(() => {
+            display.innerText = `"${havamalQuotes[randomIndex]}"`;
+            display.style.opacity = 1;
+        }, 200);
+    });
+}
+
+// ==========================================
+// 4. FIREBASE INITIALISIERUNG & AUTH
 // ==========================================
 async function initFirebase() {
     try {
         const app = initializeApp(firebaseConfig);
         auth = getAuth(app);
-        db = getFirestore(app);
-
+        
         await signInAnonymously(auth);
         
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
+                console.log("Valhalla erkannt: Authentifizierung erfolgreich.");
                 setupGuestbook(); 
             }
         });
     } catch (error) {
-        console.error("Firebase Fehler:", error);
+        console.error("Loki hat die Leitung gekappt (Firebase Fehler):", error);
     }
 }
 
 // ==========================================
-// 4. GÄSTEBUCH LOGIK
+// 5. GÄSTEBUCH LOGIK
 // ==========================================
 function setupGuestbook() {
     const submitBtn = document.getElementById('submitEntryBtn');
@@ -130,7 +181,7 @@ function setupGuestbook() {
         const messageInput = document.getElementById('guestMessage');
         
         if (!nameInput.value || !messageInput.value) {
-            alert("Name und Nachricht fehlen!");
+            alert("Die Götter verlangen einen Namen und eine Nachricht!");
             return;
         }
 
@@ -142,7 +193,7 @@ function setupGuestbook() {
             });
             nameInput.value = "";
             messageInput.value = "";
-        } catch (e) { console.error(e); }
+        } catch (e) { console.error("Fehler beim Meißeln:", e); }
     };
 
     const q = query(collection(db, "gaestebuch"), orderBy("timestamp", "desc"));
@@ -152,7 +203,12 @@ function setupGuestbook() {
             const data = doc.data();
             const div = document.createElement('div');
             div.className = 'entry';
-            div.innerHTML = `<div class="entry-header"><span class="name">⚔️ ${data.name}</span></div><div class="message">${data.message}</div>`;
+            div.innerHTML = `
+                <div class="entry-header">
+                    <span class="name">⚔️ ${data.name}</span>
+                </div>
+                <div class="message">${data.message}</div>
+            `;
             entriesContainer.appendChild(div);
         });
     });
@@ -164,5 +220,18 @@ function setupGuestbook() {
 document.addEventListener('DOMContentLoaded', () => {
     renderSidebar();
     renderSlideshow();
+    initHavamal();
+    
+    // Für die Runenseite
+    const runenInput = document.getElementById('meinInput');
+    if (runenInput) {
+        const runenAlphabet = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ','l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ','v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
+        runenInput.addEventListener('input', (e) => {
+            let text = "";
+            for (let char of e.target.value.toLowerCase()) { text += runenAlphabet[char] || char; }
+            document.getElementById('runenAusgabe').innerText = text || "...";
+        });
+    }
+
     initFirebase();
 });
