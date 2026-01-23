@@ -1,5 +1,5 @@
 /**
- * script.js - Zentrale Steuerung für Flipsiiis Nordische Mythologie
+ * script.js - Zentrale Steuerung für Flipsiii's Nordische Mythologie
  * Beinhaltet: Sidebar, Slideshow, Firebase-Auth & Gästebuch
  */
 
@@ -18,9 +18,10 @@ const firebaseConfig = {
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
 
+// Reihenfolge für die Pfeil-Navigation
 const pageSequence = [
     "index.html", "Wikinger.html", "Yggdrasil.html", "9Welten.html", 
-    "9Welten.html", "Ragnarök.html", "Julfest.html", "Goetter.html", 
+    "Ragnarök.html", "Julfest.html", "Goetter.html", 
     "Odin.html", "OdinsRaben.html", "Frigg.html", "Thor.html", 
     "Mjolnir.html", "Loki.html", "Freya.html", "Balder.html", 
     "Freyr.html", "Heimdall.html", "Tyr.html", "Idun.html", 
@@ -31,15 +32,11 @@ const pageSequence = [
 let db, auth, currentUser = null;
 
 // ==========================================
-// 1. FUNKTION: SIDEBAR RENDERN (SOFORT)
+// 1. FUNKTION: SIDEBAR RENDERN
 // ==========================================
 function renderSidebar() {
-    console.log("Versuche Sidebar zu rendern...");
     const container = document.getElementById('sidebar-container');
-    if (!container) {
-        console.error("Fehler: #sidebar-container nicht im HTML gefunden!");
-        return;
-    }
+    if (!container) return;
 
     const path = window.location.pathname;
     const page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
@@ -70,11 +67,10 @@ function renderSidebar() {
             <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
                 <a href="RunenUebersetzer.html" class="${page === 'RunenUebersetzer.html' ? 'active' : ''} guestbook-link">ᚱᚢᚾᛖᚾ Übersetzer</a>
                 <a href="Gaestebuch.html" class="${page === 'Gaestebuch.html' ? 'active' : ''} guestbook-link">📖 Gästebuch</a>
-                <a href="https://soundcloud.com/t-staude" target="_blank" class="soundcloud-btn">Themen Musik 🎵</a>
+                <a href="https://soundcloud.com/t-staude" target="_blank" class="soundcloud-btn">Musik 🎵</a>
             </div>
         </nav>
     `;
-    console.log("Sidebar erfolgreich eingefügt.");
 }
 
 // ==========================================
@@ -100,7 +96,7 @@ function renderSlideshow() {
 }
 
 // ==========================================
-// 3. FIREBASE INITIALISIERUNG & AUTH (RULE 3)
+// 3. FIREBASE INITIALISIERUNG & AUTH
 // ==========================================
 async function initFirebase() {
     try {
@@ -108,18 +104,16 @@ async function initFirebase() {
         auth = getAuth(app);
         db = getFirestore(app);
 
-        // Anonym anmelden (Wichtig für Firestore Zugriff)
         await signInAnonymously(auth);
         
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
-                console.log("Firebase Auth erfolgreich: UID", user.uid);
-                setupGuestbook(); // Erst wenn User da ist, Gästebuch laden
+                setupGuestbook(); 
             }
         });
     } catch (error) {
-        console.error("Firebase konnte nicht geladen werden:", error);
+        console.error("Firebase Fehler:", error);
     }
 }
 
@@ -135,14 +129,16 @@ function setupGuestbook() {
         const nameInput = document.getElementById('guestName');
         const messageInput = document.getElementById('guestMessage');
         
-        if (!nameInput.value || !messageInput.value) return;
+        if (!nameInput.value || !messageInput.value) {
+            alert("Name und Nachricht fehlen!");
+            return;
+        }
 
         try {
             await addDoc(collection(db, "gaestebuch"), {
                 name: nameInput.value,
                 message: messageInput.value,
-                timestamp: serverTimestamp(),
-                dateString: new Date().toLocaleString('de-DE')
+                timestamp: serverTimestamp()
             });
             nameInput.value = "";
             messageInput.value = "";
@@ -163,13 +159,10 @@ function setupGuestbook() {
 }
 
 // ==========================================
-// START DER SEITE
+// START
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. UI sofort bauen
     renderSidebar();
     renderSlideshow();
-    
-    // 2. Firebase im Hintergrund laden
     initFirebase();
 });
