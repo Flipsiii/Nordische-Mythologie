@@ -1,10 +1,9 @@
-/* style1.css - FINALE VERSION (Mit Slideshow, Hávamál & Full-Width Gästebuch) */
+/*-- style1.css --*/
 
 /* =========================================
    1. ALLGEMEINES DESIGN
    ========================================= */
 
-/* WICHTIG: Sorgt dafür, dass Padding die Breite nicht sprengt */
 * {
     box-sizing: border-box;
 }
@@ -22,7 +21,6 @@ body {
     flex-direction: row;
 }
 
-/* --- DIE SEITENLEISTE (LINKS) --- */
 .sidebar {
     width: 250px;            
     background: rgba(0, 0, 0, 0.6); 
@@ -40,7 +38,6 @@ body {
     overflow-y: auto;
 }
 
-/* --- Die Text-Links in der Sidebar --- */
 .sidebar a {
     color: white;
     text-decoration: none;
@@ -66,7 +63,6 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* --- DROPDOWN --- */
 .sidebar details {
     width: 100%;
     text-align: center;
@@ -386,7 +382,6 @@ h1::after {
     padding-left: 10px;          
 }
 
-/* Der kleine Text unter dem Button */
 .sidebar .soundcloud-hint {
     display: block;
     font-size: 0.75rem;       
@@ -397,7 +392,6 @@ h1::after {
     line-height: 1.2;
 }
 
-/* Design für spezielle Extra-Buttons auf Unterseiten */
 .sidebar .extra-link {
     margin-top: 15px;            
     color: #e0e0e0;              
@@ -432,10 +426,9 @@ h1::after {
     border-radius: 15px;
     border: 2px solid #ffd700;
     
-    /* EXTRA BREIT (keine Begrenzung) */
     max-width: none; 
     width: 100%; 
-    margin: 0 0 40px 0; /* Margin auto entfernt für volle Breite */
+    margin: 0 0 40px 0;
     
     display: flex;
     flex-direction: column;
@@ -501,7 +494,6 @@ h1::after {
 }
 
 .guestbook-list {
-    /* EXTRA BREIT (keine Begrenzung) */
     max-width: none;
     width: 100%;
     margin: 0;
@@ -551,32 +543,29 @@ h1::after {
    ========================================= */
 
 .nav-arrow {
-    position: fixed; /* Klebt am Bildschirm fest */
+    position: fixed;
     top: 50%;
-    transform: translateY(-50%); /* Vertikal exakt mittig */
-    font-size: 4rem; /* Schön groß */
-    color: rgba(255, 255, 255, 0.2); /* Fast durchsichtig im Normalzustand */
+    transform: translateY(-50%);
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.2);
     text-decoration: none;
-    z-index: 1000; /* Liegt über allem anderen */
+    z-index: 1000;
     transition: all 0.3s ease;
-    user-select: none; /* Kann man nicht markieren */
+    user-select: none;
     padding: 10px;
 }
 
 .nav-arrow:hover {
-    color: #ffd700; /* Gold beim Drüberfahren */
-    text-shadow: 0 0 20px #ffd700; /* Leuchter-Effekt */
-    transform: translateY(-50%) scale(1.2); /* Wird größer */
+    color: #ffd700;
+    text-shadow: 0 0 20px #ffd700;
+    transform: translateY(-50%) scale(1.2);
     cursor: pointer;
 }
 
-/* Position für den Linken Pfeil (Zurück) */
 .nav-arrow-left {
-    /* 250px (Sidebar-Breite) + 20px Abstand */
     left: 270px; 
 }
 
-/* Position für den Rechten Pfeil (Vor) */
 .nav-arrow-right {
     right: 20px;
 }
@@ -587,8 +576,7 @@ h1::after {
 
 .havamal-container {
     background: rgba(0, 0, 0, 0.7);
-    border: 3px double #ffd700; /* Doppelter Goldrahmen */
-    padding: 30px;
+    border: 3px double #ffd700;
     margin: 40px auto;
     width: 100%;
     max-width: 800px;
@@ -611,7 +599,7 @@ h1::after {
     font-size: 1.4rem;
     font-style: italic;
     color: #eee;
-    min-height: 120px; /* Feste Höhe, damit nichts springt */
+    min-height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -631,7 +619,7 @@ h1::after {
     font-weight: bold;
     font-size: 1.2rem;
     cursor: pointer;
-    border-radius: 50px; /* Runder Button */
+    border-radius: 50px;
     transition: all 0.3s;
     font-family: 'Castellar', serif;
     text-transform: uppercase;
@@ -676,21 +664,20 @@ h1::after {
         width: 100%;
         margin-top: 10px;
     }
-
-    /* Pfeile auf dem Handy nach unten */
+   
     .nav-arrow {
         font-size: 3rem;
-        top: auto;      /* Nicht mehr mittig */
-        bottom: 20px;   /* Sondern unten am Rand */
+        top: auto;      
+        bottom: 20px;  
         transform: none;
-        background: rgba(0, 0, 0, 0.6); /* Dunkler Hintergrund für Lesbarkeit */
+        background: rgba(0, 0, 0, 0.6);
         border-radius: 50%;
         width: 60px;
         height: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-bottom: 8px; /* Optische Korrektur */
+        padding-bottom: 8px;
         border: 1px solid #ffd700;
     }
     
@@ -699,10 +686,11 @@ h1::after {
     }
 
     .nav-arrow-left {
-        left: 20px; /* Ganz links am Bildschirmrand */
+        left: 20px;
     }
     
     .nav-arrow-right {
-        right: 20px; /* Ganz rechts */
+        right: 20px;
     }
+
 }
