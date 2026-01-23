@@ -23,13 +23,26 @@ const firebaseConfig = {
 };
 
 // Reihenfolge für die Pfeil-Navigation (Slideshow)
+// Hier wurden alle neuen Seiten eingefügt
 const pageSequence = [
-    "index.html", "Wikinger.html", "Yggdrasil.html", "9Welten.html", 
+    "index.html", 
+    "Wikinger.html", 
+    "Yggdrasil.html", 
+    "9Welten.html", // Übersicht
+    // --- Die 9 Welten ---
+    "Asgard.html", "Vanaheim.html", "Alfheim.html", 
+    "Midgard.html", "Jotunheim.html", "Nidavellir.html", 
+    "Muspelheim.html", "Niflheim.html", "Helheim.html",
+    // --- Themen ---
     "Ragnarök.html", "Julfest.html", "Goetter.html", 
-    "Odin.html", "OdinsRaben.html", "Frigg.html", "Thor.html", 
-    "Mjolnir.html", "Loki.html", "Freya.html", "Balder.html", 
-    "Freyr.html", "Heimdall.html", "Tyr.html", "Idun.html", 
-    "Njoerd.html", "Skadi.html", "Nornen.html", "Walkueren.html", "Hel.html"
+    // --- Götter ---
+    "Odin.html", "OdinsRaben.html", "Sleipnir.html", // Sleipnir passt gut zu Odin
+    "Frigg.html", "Thor.html", "Mjolnir.html", 
+    "Loki.html", "Fenrir.html", "Jormungandr.html", "Hel.html", // Lokis Kinder
+    "Freya.html", "Balder.html", "Freyr.html", "Heimdall.html", 
+    "Tyr.html", "Idun.html", "Njoerd.html", "Skadi.html", 
+    // --- Wesen ---
+    "Riesen.html", "Nornen.html", "Walkueren.html"
 ];
 
 // Weisheiten für das Orakel
@@ -67,38 +80,55 @@ function renderSidebar() {
             <a href="index.html" class="${page === 'index.html' ? 'active' : ''}">Startseite</a>
 
             <details ${['Wikinger.html', 'Yggdrasil.html', '9Welten.html', 'Ragnarök.html', 'Julfest.html', 'YggdrasilKarte.html'].includes(page) ? 'open' : ''}>
-                <summary>Mythologie & Welten ▾</summary>
+                <summary>Mythologie & Infos ▾</summary>
                 <a href="Wikinger.html" class="${page === 'Wikinger.html' ? 'active' : ''}">Die Wikinger</a>
                 <a href="Yggdrasil.html" class="${page === 'Yggdrasil.html' ? 'active' : ''}">Yggdrasil</a>
-                <a href="9Welten.html" class="${page === '9Welten.html' ? 'active' : ''}">Die 9 Welten</a>
+                <a href="9Welten.html" class="${page === '9Welten.html' ? 'active' : ''}">Die 9 Welten (Übersicht)</a>
                 <a href="Ragnarök.html" class="${page === 'Ragnarök.html' ? 'active' : ''}">Ragnarök</a>
                 <a href="Julfest.html" class="${page === 'Julfest.html' ? 'active' : ''}">Das Julfest</a>
             </details>
 
-            <details ${['Goetter.html', 'Odin.html', 'OdinsRaben.html', 'Frigg.html', 'Thor.html', 'Mjolnir.html', 'Loki.html', 'Freya.html', 'Balder.html', 'Freyr.html', 'Heimdall.html', 'Tyr.html', 'Idun.html', 'Njoerd.html', 'Skadi.html'].includes(page) ? 'open' : ''}>
+            <details ${['Asgard.html', 'Midgard.html', 'Vanaheim.html', 'Jotunheim.html', 'Alfheim.html', 'Nidavellir.html', 'Muspelheim.html', 'Niflheim.html', 'Helheim.html'].includes(page) ? 'open' : ''}>
+                <summary>Die Welten ▾</summary>
+                <a href="Asgard.html" class="${page === 'Asgard.html' ? 'active' : ''}">Asgard (Asen)</a>
+                <a href="Midgard.html" class="${page === 'Midgard.html' ? 'active' : ''}">Midgard (Menschen)</a>
+                <a href="Vanaheim.html" class="${page === 'Vanaheim.html' ? 'active' : ''}">Vanaheim (Wanen)</a>
+                <a href="Alfheim.html" class="${page === 'Alfheim.html' ? 'active' : ''}">Alfheim (Lichtalben)</a>
+                <a href="Jotunheim.html" class="${page === 'Jotunheim.html' ? 'active' : ''}">Jötunheim (Riesen)</a>
+                <a href="Nidavellir.html" class="${page === 'Nidavellir.html' ? 'active' : ''}">Nidavellir (Zwerge)</a>
+                <a href="Muspelheim.html" class="${page === 'Muspelheim.html' ? 'active' : ''}">Muspelheim (Feuer)</a>
+                <a href="Niflheim.html" class="${page === 'Niflheim.html' ? 'active' : ''}">Niflheim (Eis)</a>
+                <a href="Helheim.html" class="${page === 'Helheim.html' ? 'active' : ''}">Helheim (Totenreich)</a>
+            </details>
+
+            <details ${['Goetter.html', 'Odin.html', 'OdinsRaben.html', 'Sleipnir.html', 'Frigg.html', 'Thor.html', 'Mjolnir.html', 'Loki.html', 'Freya.html', 'Balder.html', 'Freyr.html', 'Heimdall.html', 'Tyr.html', 'Idun.html', 'Njoerd.html', 'Skadi.html'].includes(page) ? 'open' : ''}>
                 <summary>Die Götter ▾</summary>
                 <a href="Goetter.html" class="${page === 'Goetter.html' ? 'active' : ''}">Übersicht</a>
                 <a href="Odin.html" class="${page === 'Odin.html' ? 'active' : ''}">Odin</a>
                 <a href="Thor.html" class="${page === 'Thor.html' ? 'active' : ''}">Thor</a>
-                <a href="Freya.html" class="${page === 'Freya.html' ? 'active' : ''}">Freya</a>
                 <a href="Loki.html" class="${page === 'Loki.html' ? 'active' : ''}">Loki</a>
+                <a href="Freya.html" class="${page === 'Freya.html' ? 'active' : ''}">Freya</a>
                 <a href="Frigg.html" class="${page === 'Frigg.html' ? 'active' : ''}">Frigg</a>
-                <a href="Balder.html" class="${page === 'Balder.html' ? 'active' : ''}">Balder</a>
-                <a href="Freyr.html" class="${page === 'Freyr.html' ? 'active' : ''}">Freyr</a>
                 <a href="Heimdall.html" class="${page === 'Heimdall.html' ? 'active' : ''}">Heimdall</a>
                 <a href="Tyr.html" class="${page === 'Tyr.html' ? 'active' : ''}">Tyr</a>
+                <a href="Balder.html" class="${page === 'Balder.html' ? 'active' : ''}">Balder</a>
+                <a href="Freyr.html" class="${page === 'Freyr.html' ? 'active' : ''}">Freyr</a>
                 <a href="Idun.html" class="${page === 'Idun.html' ? 'active' : ''}">Idun</a>
                 <a href="Njoerd.html" class="${page === 'Njoerd.html' ? 'active' : ''}">Njörd</a>
                 <a href="Skadi.html" class="${page === 'Skadi.html' ? 'active' : ''}">Skadi</a>
             </details>
 
-            <details ${['Nornen.html', 'Walkueren.html', 'Hel.html', 'OdinsRaben.html', 'Mjolnir.html'].includes(page) ? 'open' : ''}>
+            <details ${['Riesen.html', 'Fenrir.html', 'Jormungandr.html', 'Sleipnir.html', 'Nornen.html', 'Walkueren.html', 'Hel.html', 'OdinsRaben.html', 'Mjolnir.html'].includes(page) ? 'open' : ''}>
                 <summary>Wesen & Mächte ▾</summary>
+                <a href="Riesen.html" class="${page === 'Riesen.html' ? 'active' : ''}">Die Riesen (Jötnar)</a>
+                <a href="Fenrir.html" class="${page === 'Fenrir.html' ? 'active' : ''}">Fenrir</a>
+                <a href="Jormungandr.html" class="${page === 'Jormungandr.html' ? 'active' : ''}">Midgardschlange</a>
+                <a href="Sleipnir.html" class="${page === 'Sleipnir.html' ? 'active' : ''}">Sleipnir</a>
+                <a href="Hel.html" class="${page === 'Hel.html' ? 'active' : ''}">Göttin Hel</a>
                 <a href="OdinsRaben.html" class="${page === 'OdinsRaben.html' ? 'active' : ''}">Odins Raben</a>
-                <a href="Mjolnir.html" class="${page === 'Mjolnir.html' ? 'active' : ''}">Mjölnir</a>
-                <a href="Nornen.html" class="${page === 'Nornen.html' ? 'active' : ''}">Die Nornen</a>
                 <a href="Walkueren.html" class="${page === 'Walkueren.html' ? 'active' : ''}">Die Walküren</a>
-                <a href="Hel.html" class="${page === 'Hel.html' ? 'active' : ''}">Hel (Unterwelt)</a>
+                <a href="Nornen.html" class="${page === 'Nornen.html' ? 'active' : ''}">Die Nornen</a>
+                <a href="Mjolnir.html" class="${page === 'Mjolnir.html' ? 'active' : ''}">Mjölnir</a>
             </details>
             
             <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;">
