@@ -1,5 +1,5 @@
 /**
- * script.js - Zentrale Steuerung für Flipsiiis Nordische Mythologie
+ * script.js - Zentrale Steuerung für Flipsiii's Nordische Mythologie
  * Beinhaltet: Sidebar, Slideshow, Firebase-Auth, Gästebuch & Hávamál
  */
 
@@ -17,9 +17,6 @@ const firebaseConfig = {
   messagingSenderId: "890193877785",
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 // Reihenfolge für die Pfeil-Navigation (Slideshow)
 const pageSequence = [
@@ -42,7 +39,8 @@ const havamalQuotes = [
     "Teile dein Brot mit dem Hungrigen; was du gibst, kommt zu dir zurück."
 ];
 
-let auth, currentUser = null;
+// Variablen für Firebase Services
+let db, auth, currentUser = null;
 
 // ==========================================
 // 1. FUNKTION: SIDEBAR RENDERN
@@ -55,16 +53,19 @@ function renderSidebar() {
     const path = window.location.pathname;
     let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
     if (page === "/") page = "index.html";
+    // Fix für URL-kodierte Zeichen
+    page = decodeURIComponent(page);
 
     container.innerHTML = `
         <nav class="sidebar">
             <h3>Menü</h3>
             <a href="index.html" class="${page === 'index.html' ? 'active' : ''}">Startseite</a>
 
-            <details ${['Wikinger.html', 'Yggdrasil.html', '9Welten.html', 'Ragnarök.html', 'Julfest.html'].includes(page) ? 'open' : ''}>
+            <details ${['Wikinger.html', 'Yggdrasil.html', '9Welten.html', 'Ragnarök.html', 'Julfest.html', 'YggdrasilKarte.html'].includes(page) ? 'open' : ''}>
                 <summary>Mythologie & Welten ▾</summary>
                 <a href="Wikinger.html" class="${page === 'Wikinger.html' ? 'active' : ''}">Die Wikinger</a>
                 <a href="Yggdrasil.html" class="${page === 'Yggdrasil.html' ? 'active' : ''}">Yggdrasil</a>
+                <a href="YggdrasilKarte.html" class="${page === 'YggdrasilKarte.html' ? 'active' : ''}">Yggdrasil Karte 🌳</a>
                 <a href="9Welten.html" class="${page === '9Welten.html' ? 'active' : ''}">Die 9 Welten</a>
                 <a href="Ragnarök.html" class="${page === 'Ragnarök.html' ? 'active' : ''}">Ragnarök</a>
                 <a href="Julfest.html" class="${page === 'Julfest.html' ? 'active' : ''}">Das Julfest</a>
@@ -75,9 +76,9 @@ function renderSidebar() {
                 <a href="Goetter.html" class="${page === 'Goetter.html' ? 'active' : ''}">Übersicht</a>
                 <a href="Odin.html" class="${page === 'Odin.html' ? 'active' : ''}">Odin</a>
                 <a href="Thor.html" class="${page === 'Thor.html' ? 'active' : ''}">Thor</a>
+                <a href="Freya.html" class="${page === 'Freya.html' ? 'active' : ''}">Freya</a>
                 <a href="Loki.html" class="${page === 'Loki.html' ? 'active' : ''}">Loki</a>
                 <a href="Frigg.html" class="${page === 'Frigg.html' ? 'active' : ''}">Frigg</a>
-                <a href="Freya.html" class="${page === 'Freya.html' ? 'active' : ''}">Freya</a>
                 <a href="Balder.html" class="${page === 'Balder.html' ? 'active' : ''}">Balder</a>
                 <a href="Freyr.html" class="${page === 'Freyr.html' ? 'active' : ''}">Freyr</a>
                 <a href="Heimdall.html" class="${page === 'Heimdall.html' ? 'active' : ''}">Heimdall</a>
@@ -115,6 +116,7 @@ function renderSlideshow() {
     const path = window.location.pathname;
     let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
     if (page === "/") page = "index.html";
+    page = decodeURIComponent(page);
 
     const index = pageSequence.indexOf(page);
     if (index === -1) return;
@@ -147,13 +149,30 @@ function initHavamal() {
 }
 
 // ==========================================
-// 4. FIREBASE INITIALISIERUNG & AUTH
+// 4. FUNKTION: RUNEN ÜBERSETZER
+// ==========================================
+function initRunes() {
+    const input = document.getElementById('meinInput');
+    const output = document.getElementById('runenAusgabe');
+    if (!input || !output) return;
+
+    const alphabet = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ','l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ','v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
+    input.addEventListener('input', (e) => {
+        let text = "";
+        for (let char of e.target.value.toLowerCase()) { text += alphabet[char] || char; }
+        output.innerText = text || "...";
+    });
+}
+
+// ==========================================
+// 5. FIREBASE AUTH & GÄSTEBUCH
 // ==========================================
 async function initFirebase() {
     try {
         const app = initializeApp(firebaseConfig);
         auth = getAuth(app);
-        
+        db = getFirestore(app);
+
         await signInAnonymously(auth);
         
         onAuthStateChanged(auth, (user) => {
@@ -168,9 +187,6 @@ async function initFirebase() {
     }
 }
 
-// ==========================================
-// 5. GÄSTEBUCH LOGIK
-// ==========================================
 function setupGuestbook() {
     const submitBtn = document.getElementById('submitEntryBtn');
     const entriesContainer = document.getElementById('guestbook-entries');
@@ -189,7 +205,8 @@ function setupGuestbook() {
             await addDoc(collection(db, "gaestebuch"), {
                 name: nameInput.value,
                 message: messageInput.value,
-                timestamp: serverTimestamp()
+                timestamp: serverTimestamp(),
+                dateString: new Date().toLocaleDateString('de-DE')
             });
             nameInput.value = "";
             messageInput.value = "";
@@ -214,24 +231,11 @@ function setupGuestbook() {
     });
 }
 
-// ==========================================
 // START
-// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     renderSidebar();
     renderSlideshow();
     initHavamal();
-    
-    // Für die Runenseite
-    const runenInput = document.getElementById('meinInput');
-    if (runenInput) {
-        const runenAlphabet = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ','l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ','v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
-        runenInput.addEventListener('input', (e) => {
-            let text = "";
-            for (let char of e.target.value.toLowerCase()) { text += runenAlphabet[char] || char; }
-            document.getElementById('runenAusgabe').innerText = text || "...";
-        });
-    }
-
+    initRunes();
     initFirebase();
 });
