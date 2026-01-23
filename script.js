@@ -65,7 +65,6 @@ function renderSidebar() {
                 <summary>Mythologie & Welten ▾</summary>
                 <a href="Wikinger.html" class="${page === 'Wikinger.html' ? 'active' : ''}">Die Wikinger</a>
                 <a href="Yggdrasil.html" class="${page === 'Yggdrasil.html' ? 'active' : ''}">Yggdrasil</a>
-                <a href="YggdrasilKarte.html" class="${page === 'YggdrasilKarte.html' ? 'active' : ''}">Yggdrasil Karte 🌳</a>
                 <a href="9Welten.html" class="${page === '9Welten.html' ? 'active' : ''}">Die 9 Welten</a>
                 <a href="Ragnarök.html" class="${page === 'Ragnarök.html' ? 'active' : ''}">Ragnarök</a>
                 <a href="Julfest.html" class="${page === 'Julfest.html' ? 'active' : ''}">Das Julfest</a>
