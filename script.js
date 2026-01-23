@@ -19,7 +19,7 @@ const firebaseConfig = {
 };
 
 const pageSequence = [
-    "index.html", "Wikinger.html", "Yggdrasil.html", "YggdrasilKarte.html", 
+    "index.html", "Wikinger.html", "Yggdrasil.html", "9Welten.html", 
     "9Welten.html", "Ragnarök.html", "Julfest.html", "Goetter.html", 
     "Odin.html", "OdinsRaben.html", "Frigg.html", "Thor.html", 
     "Mjolnir.html", "Loki.html", "Freya.html", "Balder.html", 
