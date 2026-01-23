@@ -27,7 +27,7 @@ body {
    ========================================= */
 .sidebar {
     width: 250px; 
-    background: rgba(0, 0, 0, 0.9); 
+    background: rgba(102, 51, 0, 1); 
     height: 100vh;
     position: sticky; 
     top: 0; 
@@ -519,3 +519,4 @@ textarea:focus {
         right: 20px; 
     }
 }
+
