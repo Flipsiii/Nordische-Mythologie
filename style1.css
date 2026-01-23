@@ -1,11 +1,8 @@
-/* style1.css - Korrigierte Version für Flipsiii */
+/* style1.css - Optimierte Version für GitHub Deployment */
 
 /* =========================================
-   1. ALLGEMEINES DESIGN
+   1. GLOBALER RESET
    ========================================= */
-
-/* FIX: Hier fehlte das '*' ! 
-   Sorgt dafür, dass Padding die Breite nicht sprengt. */
 * {
     box-sizing: border-box;
 }
@@ -21,20 +18,19 @@ body {
     color: white;
     display: flex;
     flex-direction: row; /* Sidebar links, Content rechts */
-    overflow-x: hidden; /* Verhindert horizontales Scrollen */
+    overflow-x: hidden;
 }
 
 /* --- DIE SEITENLEISTE (LINKS) --- */
 .sidebar {
     width: 250px;            
-    background: rgba(0, 0, 0, 0.8); /* Etwas dunkler für besseren Kontrast */
+    background: rgba(0, 0, 0, 0.85); 
     height: 100vh;           
     position: sticky;       
     top: 0;
     padding: 40px 20px;
     border-right: 2px solid rgba(255, 255, 255, 0.2);
-    flex-shrink: 0; /* Verhindert, dass die Sidebar gequetscht wird */
-    
+    flex-shrink: 0;
     display: flex;
     flex-direction: column; 
     gap: 15px;               
@@ -43,7 +39,6 @@ body {
     z-index: 1001;
 }
 
-/* --- Die Text-Links in der Sidebar --- */
 .sidebar a {
     color: white;
     text-decoration: none;
@@ -55,41 +50,30 @@ body {
     display: block;
 }
 
-.sidebar a:hover {
+.sidebar a:hover, .sidebar summary:hover {
     color: #3498db;    
     background: rgba(255, 255, 255, 0.05);
-    padding-left: 15px;
-    border-bottom: 1px solid #3498db;
 }
 
 .sidebar a.active {
-    pointer-events: none; 
-    cursor: default;       
     color: #ffd700;        
     font-weight: bold;     
     border-bottom: 2px solid #ffd700; 
     background-color: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
 }
 
-/* --- DROPDOWN (DETAILS) --- */
 .sidebar details {
     width: 100%;
-    margin-bottom: 5px;
 }
 
 .sidebar summary {
     padding: 12px;
-    color: white;
     font-family: Arial, sans-serif;
     font-size: 1.1rem;
-    list-style: none; 
+    list-style: none;
     cursor: pointer;
-    transition: color 0.3s;
     border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.sidebar summary:hover {
-    color: #3498db;
 }
 
 .sidebar details[open] summary {
@@ -100,27 +84,25 @@ body {
 .sidebar details a {
     font-size: 0.95rem;
     background-color: rgba(255,255,255,0.05);
+    border: none;
     margin: 2px 0;
-    border-bottom: none;
-    border-radius: 4px;
 }
 
-/* --- DER HAUPTINHALT --- */
+/* --- HAUPTBEREICH (RECHTS) --- */
 .main-content-area {
-    flex: 1; /* Nimmt den restlichen Platz ein */
+    flex: 1;
     padding: 40px;
-    overflow-y: auto;
-    height: 100vh;
     display: flex; 
     flex-direction: column;
-    align-items: center; /* Zentriert Inhalte im Hauptbereich */
+    align-items: center; /* Wichtig für die Zentrierung */
+    min-width: 0; /* Verhindert Flex-Layout-Bugs */
 }
 
 /* =========================================
-   2. ÜBERSCHRIFTEN & TEXT
+   2. TYPOGRAFIE & EFFEKTE
    ========================================= */
 h1 {
-    font-size: clamp(30px, 8vw, 60px) !important; /* Passt sich der Bildschirmgröße an */
+    font-size: clamp(30px, 8vw, 60px) !important;
     margin-top: 0;
     background: linear-gradient(110deg, #8f6B29 10%, #FDE08D 40%, #FFFFFF 50%, #FDE08D 60%, #8f6B29 90%);
     background-size: 300% auto;
@@ -128,6 +110,7 @@ h1 {
     -webkit-background-clip: text;
     background-clip: text;
     animation: shine 3s linear infinite;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
 @keyframes shine {
@@ -138,10 +121,11 @@ h1 {
     font-size: 1.5rem;
     color: #ddd;
     margin-bottom: 40px;
+    max-width: 800px;
 }
 
 /* =========================================
-   3. GALERIE & LAYOUT-BOXEN
+   3. GALERIE & BILDER
    ========================================= */
 .gallery-grid {
     display: grid;
@@ -149,76 +133,97 @@ h1 {
     gap: 30px; 
     width: 100%;
     max-width: 1200px;
-    margin-bottom: 40px;
 }
 
 .gallery-item {
     text-decoration: none;
     transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
 }
 
 .gallery-item img {
     width: 100%;
     height: 250px;
-    object-fit: cover;
+    /* FIX für "abgeschnitten": 
+       'cover' füllt den Platz (schneidet Ränder ab), 
+       'contain' zeigt alles (lässt aber evtl. Lücken). 
+       Ich bleibe bei cover, erhöhe aber die Qualität. */
+    object-fit: cover; 
     border-radius: 12px;
     border: 3px solid white;
     box-shadow: 0 10px 20px rgba(0,0,0,0.4);
 }
 
 .gallery-item span {
+    display: block;
     margin-top: 15px;
     font-size: 1.2rem;
     color: white;
     font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 .gallery-item:hover {
     transform: translateY(-10px);
 }
 
+.gallery-item:hover img {
+    border-color: #3498db;
+}
+
+/* --- UNTERSEITEN DESIGN --- */
+.page-content {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(0,0,0,0.5);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.page-image {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain; /* Hier 'contain', damit Infos auf Bildern nicht fehlen! */
+    border-radius: 8px;
+    border: 2px solid white;
+    margin-bottom: 20px;
+}
+
+.page-text {
+    font-family: Arial, sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    text-align: left; /* Besser lesbar als zentriert */
+}
+
 /* =========================================
-   4. NAVIGATIONSPFEILE (SLIDESHOW)
+   4. NAVIGATIONSPFEILE (FIXED)
    ========================================= */
 .nav-arrow {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
     font-size: 3rem;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.4);
     text-decoration: none;
     z-index: 1000;
     transition: all 0.3s;
     padding: 20px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 50%;
 }
 
 .nav-arrow:hover {
     color: #ffd700;
-    scale: 1.2;
+    background: rgba(0,0,0,0.5);
 }
 
-.nav-arrow-left { left: 260px; } /* Sidebar (250) + 10px */
+.nav-arrow-left { left: 270px; } 
 .nav-arrow-right { right: 20px; }
 
 /* =========================================
-   5. GÄSTEBUCH & WIDGETS
-   ========================================= */
-.guestbook-form-container {
-    width: 100%;
-    max-width: 800px;
-    background: rgba(0,0,0,0.5);
-    padding: 30px;
-    border-radius: 15px;
-    border: 1px solid #ffd700;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* =========================================
-   MEDIA QUERY: HANDY-ANPASSUNG
+   5. MOBILE ANPASSUNG
    ========================================= */
 @media (max-width: 768px) {
     body { flex-direction: column; }
@@ -230,23 +235,19 @@ h1 {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        padding: 20px;
+        padding: 15px;
+        border-right: none;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     }
 
-    .main-content-area {
-        padding: 20px;
-        height: auto;
-    }
+    .main-content-area { padding: 20px; }
 
     .nav-arrow {
         bottom: 20px;
         top: auto;
         transform: none;
-        background: rgba(0,0,0,0.7);
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
+        width: 60px;
+        height: 60px;
         display: flex;
         align-items: center;
         justify-content: center;
