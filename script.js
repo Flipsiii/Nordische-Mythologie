@@ -122,7 +122,7 @@ function renderSidebar() {
                 <summary>Wesen & Mächte ▾</summary>
                 <a href="Riesen.html" class="${page === 'Riesen.html' ? 'active' : ''}">Die Riesen (Jötnar)</a>
                 <a href="Fenrir.html" class="${page === 'Fenrir.html' ? 'active' : ''}">Fenrir</a>
-                <a href="Jörmungandr.html" class="${page === 'Jörmungandr.html' ? 'active' : ''}">Midgardschlange</a>
+                <a href="Jörmungandr.html" class="${page === 'Jörmungandr.html' ? 'active' : ''}">Jörmungandr</a>
                 <a href="Sleipnir.html" class="${page === 'Sleipnir.html' ? 'active' : ''}">Sleipnir</a>
                 <a href="Hel.html" class="${page === 'Hel.html' ? 'active' : ''}">Göttin Hel</a>
                 <a href="OdinsRaben.html" class="${page === 'OdinsRaben.html' ? 'active' : ''}">Odins Raben</a>
@@ -292,5 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initFirebase();
 
 });
+
 
 
