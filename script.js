@@ -3,12 +3,16 @@
  * Beinhaltet: Sidebar, Slideshow, Firebase-Auth, Gästebuch & Hávamál
  */
 
-// 1. FIREBASE MODULE IMPORTIEREN
+// ==========================================
+// 1. IMPORTE
+// ==========================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+// ==========================================
 // 2. KONFIGURATION
+// ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyCG7peemk2I1MiRLXrS0uEGSa0kY9MsZjQ",
   authDomain: "wikinger-gaestebuch.firebaseapp.com",
@@ -39,11 +43,13 @@ const havamalQuotes = [
     "Teile dein Brot mit dem Hungrigen; was du gibst, kommt zu dir zurück."
 ];
 
-// Variablen für Firebase Services
-let db, auth, currentUser = null;
+// Globale Variablen für Firebase Services
+let db;
+let auth;
+let currentUser = null;
 
 // ==========================================
-// 1. FUNKTION: SIDEBAR RENDERN
+// 3. FUNKTION: SIDEBAR RENDERN
 // ==========================================
 function renderSidebar() {
     const container = document.getElementById('sidebar-container');
@@ -53,7 +59,6 @@ function renderSidebar() {
     const path = window.location.pathname;
     let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
     if (page === "/") page = "index.html";
-    // Fix für URL-kodierte Zeichen
     page = decodeURIComponent(page);
 
     container.innerHTML = `
@@ -106,7 +111,7 @@ function renderSidebar() {
 }
 
 // ==========================================
-// 2. FUNKTION: SLIDESHOW RENDERN
+// 4. FUNKTION: SLIDESHOW RENDERN
 // ==========================================
 function renderSlideshow() {
     const container = document.getElementById('slideshow-container');
@@ -130,7 +135,7 @@ function renderSlideshow() {
 }
 
 // ==========================================
-// 3. FUNKTION: HÁVAMÁL ORAKEL
+// 5. FUNKTION: HÁVAMÁL ORAKEL
 // ==========================================
 function initHavamal() {
     const btn = document.getElementById('havamalBtn');
@@ -148,7 +153,7 @@ function initHavamal() {
 }
 
 // ==========================================
-// 4. FUNKTION: RUNEN ÜBERSETZER
+// 6. FUNKTION: RUNEN ÜBERSETZER
 // ==========================================
 function initRunes() {
     const input = document.getElementById('meinInput');
@@ -164,21 +169,27 @@ function initRunes() {
 }
 
 // ==========================================
-// 5. FIREBASE AUTH & GÄSTEBUCH
+// 7. FIREBASE AUTH & GÄSTEBUCH
 // ==========================================
 async function initFirebase() {
     try {
         const app = initializeApp(firebaseConfig);
+        
+        // Globale Variablen zuweisen
         auth = getAuth(app);
         db = getFirestore(app);
 
+        // Anonyme Anmeldung
         await signInAnonymously(auth);
         
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
                 console.log("Valhalla erkannt: Authentifizierung erfolgreich.");
-                setupGuestbook(); 
+                // Nur starten, wenn wir auf der Gästebuch-Seite sind
+                if (document.getElementById('guestbook-entries')) {
+                    setupGuestbook(); 
+                }
             }
         });
     } catch (error) {
@@ -187,10 +198,15 @@ async function initFirebase() {
 }
 
 function setupGuestbook() {
+    // Wenn DB noch nicht da ist, abbrechen
+    if (!db) return;
+
     const submitBtn = document.getElementById('submitEntryBtn');
     const entriesContainer = document.getElementById('guestbook-entries');
+    
     if (!submitBtn || !entriesContainer || !currentUser) return;
 
+    // EVENT LISTENER FÜR SENDEN
     submitBtn.onclick = async () => {
         const nameInput = document.getElementById('guestName');
         const messageInput = document.getElementById('guestMessage');
@@ -209,9 +225,13 @@ function setupGuestbook() {
             });
             nameInput.value = "";
             messageInput.value = "";
-        } catch (e) { console.error("Fehler beim Meißeln:", e); }
+        } catch (e) { 
+            console.error("Fehler beim Meißeln:", e); 
+            alert("Fehler beim Senden: Hast du die Firestore Regeln aktiviert?");
+        }
     };
 
+    // ECHTZEIT LISTENER LADEN
     const q = query(collection(db, "gaestebuch"), orderBy("timestamp", "desc"));
     onSnapshot(q, (snapshot) => {
         entriesContainer.innerHTML = "";
@@ -222,6 +242,7 @@ function setupGuestbook() {
             div.innerHTML = `
                 <div class="entry-header">
                     <span class="name">⚔️ ${data.name}</span>
+                    <span style="font-size:0.8em; opacity:0.7;">${data.dateString || ''}</span>
                 </div>
                 <div class="message">${data.message}</div>
             `;
@@ -230,7 +251,9 @@ function setupGuestbook() {
     });
 }
 
-// START
+// ==========================================
+// START (MAIN)
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     renderSidebar();
     renderSlideshow();
