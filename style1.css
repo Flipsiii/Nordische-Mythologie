@@ -1,11 +1,10 @@
-/* style1.css*/
+/* style1.css - Zentrale Design-Schmiede für Flipsiii */
 
 /* =========================================
-   1. ALLGEMEINES DESIGN
+   1. ALLGEMEINES DESIGN & RESET
    ========================================= */
 
-
-{
+* {
     box-sizing: border-box;
 }
 
@@ -19,73 +18,74 @@ body {
     padding: 0;
     color: white;
     display: flex;
-    flex-direction: row;
+    flex-direction: row; /* Sidebar links, Content rechts */
+    overflow-x: hidden;
 }
 
 /* --- DIE SEITENLEISTE (LINKS) --- */
 .sidebar {
     width: 250px;            
-    background: rgba(0, 0, 0, 0.6); 
+    background: rgba(0, 0, 0, 0.9); 
     height: 100vh;           
     position: sticky;       
     top: 0;
-    padding: 40px 20px;
+    padding: 30px 15px;
     border-right: 2px solid rgba(255, 255, 255, 0.2);
     flex-shrink: 0;
-    
     display: flex;
     flex-direction: column; 
-    gap: 20px;               
+    gap: 10px;               
     text-align: center;
     overflow-y: auto;
+    z-index: 1001;
 }
 
-/* --- Die Text-Links in der Sidebar --- */
+.sidebar h3 {
+    color: #ffd700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
 .sidebar a {
     color: white;
     text-decoration: none;
     font-family: Arial, sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding: 10px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    display: block;
 }
 
 .sidebar a:hover {
     color: #3498db;    
-    padding-left: 10px;
-    border-bottom: 1px solid #3498db;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .sidebar a.active {
-    pointer-events: none; 
-    cursor: default;       
     color: #ffd700;        
     font-weight: bold;     
     border-bottom: 2px solid #ffd700; 
     background-color: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
 }
 
-/* --- DROPDOWN --- */
+/* --- DROPDOWN (DETAILS) --- */
 .sidebar details {
     width: 100%;
-    text-align: center;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .sidebar summary {
-    padding: 10px;
+    padding: 12px;
     color: white;
     font-family: Arial, sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     list-style: none; 
+    cursor: pointer;
     transition: color 0.3s;
-    outline: none;
-}
-
-.sidebar summary::-webkit-details-marker {
-    display: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .sidebar summary:hover {
@@ -94,52 +94,65 @@ body {
 
 .sidebar details[open] summary {
     color: #ffd700;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    margin-bottom: 10px;
+    border-bottom: none;
 }
 
 .sidebar details a {
-    display: block; 
-    font-size: 1rem; 
-    background-color: rgba(255,255,255,0.05); 
-    border-bottom: none; 
-    margin-bottom: 5px;
-    border-radius: 5px;
+    font-size: 0.9rem;
+    background-color: rgba(255,255,255,0.05);
+    border-bottom: none;
+    margin: 2px 0;
+    border-radius: 4px;
 }
 
-.sidebar details a:hover {
-    background-color: rgba(52, 152, 219, 0.2); 
-    padding-left: 5px; 
+/* --- SPEZIELLE SIDEBAR BUTTONS (Runen, Gästebuch, Musik) --- */
+.guestbook-link {
+    margin-top: 5px;
+    border: 1px solid #ffd700 !important;
+    border-radius: 5px;
+    font-weight: bold;
+    background: rgba(255, 215, 0, 0.05);
+}
+
+.guestbook-link:hover {
+    background: rgba(255, 215, 0, 0.2) !important;
+    color: #ffd700 !important;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.soundcloud-btn {
+    margin-top: 15px;
+    color: #ff5500 !important; /* SoundCloud Orange */
+    border: 1px solid #ff5500 !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem !important;
+}
+
+.soundcloud-btn:hover {
+    background: #ff5500 !important;
+    color: white !important;
+    box-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
 }
 
 /* --- DER HAUPTINHALT --- */
 .main-content-area {
     flex: 1;
-    padding: 30px;
-    overflow-y: auto;
-    height: 100vh;
+    padding: 40px;
     display: flex; 
     flex-direction: column;
+    align-items: center;
+    min-width: 0;
 }
 
 /* =========================================
    2. ÜBERSCHRIFT MIT GOLD-EFFEKT
    ========================================= */
 h1 {
-    font-size: 60px !important; 
+    font-size: clamp(30px, 8vw, 60px) !important;
     text-align: center;
-    margin-bottom: 20px;
-    text-decoration: none; 
-    position: relative; 
-
-    background: linear-gradient(
-        110deg,           
-        #8f6B29 10%,      
-        #FDE08D 40%,      
-        #FFFFFF 50%,      
-        #FDE08D 60%,      
-        #8f6B29 90%       
-    );
+    margin-bottom: 10px;
+    background: linear-gradient(110deg, #8f6B29 10%, #FDE08D 40%, #FFFFFF 50%, #FDE08D 60%, #8f6B29 90%);
     background-size: 300% auto;
     color: transparent;
     -webkit-background-clip: text;
@@ -151,553 +164,191 @@ h1 {
 h1::after {
     content: "—— ❧ ————— ❧ ————— ❧ ——"; 
     display: block;         
-    font-size: 30px;        
-    margin-top: 10px;       
+    font-size: 25px;        
+    margin-top: 5px;        
     font-family: 'Times New Roman', serif; 
-    
-    background: linear-gradient(
-        110deg,           
-        #8f6B29 10%,      
-        #FDE08D 40%,      
-        #FFFFFF 50%,      
-        #FDE08D 60%,      
-        #8f6B29 90%       
-    );
-    background-size: 300% auto;
-    color: transparent;
+    background: linear-gradient(110deg, #8f6B29, #FDE08D, #FFFFFF, #FDE08D, #8f6B29);
     -webkit-background-clip: text;
-    background-clip: text;
-    animation: shine 2s linear infinite;
+    color: transparent;
 }
 
-@keyframes shine {
-    to {
-        background-position: -200% center; 
-    }
-}
+@keyframes shine { to { background-position: -200% center; } }
 
 .intro {
-    font-size: 24px;
-    margin-bottom: 50px;
-    color: #ccc;
-    text-align: center;
+    font-size: 1.5rem;
+    color: #ddd;
+    margin-bottom: 40px;
 }
-
 
 /* =========================================
-   3. BILDER GALERIE 
+   3. GALERIE & BILDER
    ========================================= */
-
-.gallery-grid, .nav-container {
+.gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
     gap: 30px; 
-    justify-content: center;
-    padding: 0;
-    max-width: 100%;
-    margin-bottom: auto; 
+    width: 100%;
+    max-width: 1200px;
 }
 
-.gallery-item, .nav-item {
+.gallery-item {
     text-decoration: none;
-    color: white !important; 
-    transition: transform 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: auto; 
+    transition: transform 0.3s ease;
 }
 
-.gallery-item img, .nav-item img {
+.gallery-item img {
     width: 100%;
     height: 300px;         
     object-fit: cover;     
-    border-radius: 10px;
+    border-radius: 12px;
     border: 3px solid white;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
 }
 
-.gallery-item span, .nav-item span {
+.gallery-item span {
     display: block;
     margin-top: 15px;
+    font-size: 1.2rem;
+    color: white;
     font-weight: bold;
-    font-size: 1.4rem; 
     text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    color: white !important; 
-    text-align: center;
 }
 
-.gallery-item:hover, .nav-item:hover {
-    transform: translateY(-10px); 
-}
-.gallery-item:hover img, .nav-item:hover img {
-    border-color: #3498db;
-}
+.gallery-item:hover { transform: translateY(-10px); }
+.gallery-item:hover img { border-color: #3498db; }
 
-/* =========================================
-   4. UNTERSEITEN 
-   ========================================= */
-
+/* --- UNTERSEITEN DESIGN --- */
 .page-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    padding: 40px;
+    width: 100%;
+    max-width: 1000px;
+    background: rgba(0,0,0,0.5);
+    padding: 30px;
     border-radius: 15px;
     border: 2px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: auto; 
 }
 
 .page-image {
     width: 100%;
-    max-width: 800px;
-    height: auto;
+    max-height: 500px;
+    object-fit: contain; 
     border-radius: 10px;
-    border: 3px solid white;
+    border: 2px solid white;
     margin-bottom: 20px;
+    background: rgba(0,0,0,0.2);
 }
 
 .page-text {
     font-family: Arial, sans-serif;
-    font-size: 1.3rem;
-    line-height: 1.6;
-    text-align: justify;
-    color: white;
-}
-
-.page-text a, 
-.page-text a:visited {
-    color: #ffd700 !important; 
-    text-decoration: underline;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.page-text a:hover {
-    color: #fff !important;
-    text-shadow: 0 0 5px #ffd700;
-    cursor: pointer;
-}
-
-.back-btn {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 10px 20px;
-    background: white;
-    color: #4a2e15;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 5px;
-}
-.back-btn:hover {
-    background-color: #ccc;
-    cursor: pointer;
-}
-
-/* =========================================
-   5. FOOTER (FUSSZEILE)
-   ========================================= */
-.footer {
-    margin-top: 80px;            
-    padding-top: 20px;
-    padding-bottom: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2); 
-    text-align: center;
-    font-family: Arial, sans-serif;
-    font-size: 0.9rem;           
-    color: #ccc;                 
-}
-
-.footer a {
-    color: #ffd700;
-    text-decoration: none;
-    margin: 0 10px; 
-}
-
-.footer a:hover {
-    text-decoration: underline;
-    color: white;
-}
-
-/* =========================================
-   6. JAVASCRIPT WIDGETS (Runen Übersetzer)
-   ========================================= */
-
-.rune-translator {
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid #ffd700;
-    padding: 20px;
-    margin: 40px auto;
-    width: 100%;
-    max-width: 1200px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-}
-
-.rune-translator h3 {
-    color: #ffd700;
-    margin-top: 0;
-    font-size: 1.5rem;
-}
-
-.rune-translator input {
-    width: 80%;
-    padding: 10px;
-    margin: 15px 0;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    background-color: rgba(255,255,255,0.9);
-}
-
-.rune-translator p#runenAusgabe {
-    font-size: 2.5rem; 
-    color: #fff;
-    min-height: 50px;
-    margin-top: 10px;
-    text-shadow: 0 0 10px #ffd700;
-    font-weight: bold;
-    letter-spacing: 5px;
-}
-
-/* =========================================
-   7.EXTERNE LINKS
-   ========================================= */
-
-.sidebar a.soundcloud-btn {
-    margin-top: 20px;            
-    color: #ffd700;              
-    border: 1px solid #ffd700;
-    font-weight: bold;
-    display: flex;               
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
-}
-
-.sidebar a.soundcloud-btn:hover {
-    background-color: #ffd700;
-    color: #4a2e15;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-    border-bottom: 1px solid #ffd700; 
-    padding-left: 10px;          
-}
-
-.sidebar .soundcloud-hint {
-    display: block;
-    font-size: 0.75rem;       
-    color: #bbb;              
-    margin-top: 5px;          
-    font-family: Arial, sans-serif; 
-    font-style: italic;       
-    line-height: 1.2;
-}
-
-.sidebar .extra-link {
-    margin-top: 15px;            
-    color: #e0e0e0;              
-    border: 1px dashed #e0e0e0; 
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-}
-
-.sidebar .extra-link:hover {
-    background-color: rgba(255, 255, 255, 0.1); 
-    color: white;
-    border-color: white;
-    border-style: solid;         
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-/* =========================================
-   8. GÄSTEBUCH DESIGN
-   ========================================= */
-
-.sidebar a.guestbook-link {
-    margin-top: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.guestbook-form-container {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 30px;
-    border-radius: 15px;
-    border: 2px solid #ffd700;
-    
-    max-width: none; 
-    width: 100%; 
-    margin: 0 0 40px 0;
-    
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
-}
-
-.guestbook-form-container input,
-.guestbook-form-container textarea {
-    padding: 15px;
-    border-radius: 5px;
-    border: 1px solid #ffd700;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    font-family: Arial, sans-serif;
-    font-size: 1.1rem;
-    outline: none;
-    transition: background 0.3s;
-}
-
-.guestbook-form-container input::placeholder,
-.guestbook-form-container textarea::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.guestbook-form-container input:focus,
-.guestbook-form-container textarea:focus {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.guestbook-form-container textarea {
-    height: 150px; 
-    resize: vertical; 
-}
-
-.guestbook-form-container button {
-    background: linear-gradient(to bottom, #ffd700, #b8860b);
-    color: #4a2e15;
-    border: none;
-    padding: 15px;
-    font-weight: bold;
     font-size: 1.2rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    font-family: 'Castellar', serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.guestbook-form-container button:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 15px #ffd700;
-    background: #fff;
-}
-
-.guestbook-form-container button:disabled {
-    background: #555;
-    color: #ccc;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.guestbook-list {
-
-    max-width: none;
-    width: 100%;
-    margin: 0;
-}
-
-.entry {
-    background: rgba(0, 0, 0, 0.7); 
-    border-left: 4px solid #ffd700; 
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    animation: fadeIn 0.5s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1); 
-}
-
-.entry-header {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-    color: #ccc;
-}
-
-.entry .name {
-    color: #ffd700;
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-.entry .message {
-    font-family: Arial, sans-serif;
     line-height: 1.6;
-    font-size: 1.1rem;
-    color: #eee;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    text-align: left;
 }
 
 /* =========================================
-   10. SLIDESHOW NAVIGATION (Pfeile)
+   4. WIDGETS (RUNEN, ORAKEL, GÄSTEBUCH)
    ========================================= */
-
-.nav-arrow {
-    position: fixed; 
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 4rem;
-    color: rgba(255, 255, 255, 0.2);
-    text-decoration: none;
-    z-index: 1000;
-    transition: all 0.3s ease;
-    user-select: none;
-    padding: 10px;
-}
-
-.nav-arrow:hover {
-    color: #ffd700;
-    text-shadow: 0 0 20px #ffd700;
-    transform: translateY(-50%) scale(1.2);
-    cursor: pointer;
-}
-
-.nav-arrow-left {
-
-    left: 270px; 
-}
-
-.nav-arrow-right {
-    right: 20px;
-}
-
-/* =========================================
-   11. HÁVAMÁL DESIGN (Orakel)
-   ========================================= */
-
-.havamal-container {
+.rune-translator, .havamal-container, .guestbook-form-container {
     background: rgba(0, 0, 0, 0.7);
-    border: 3px double #ffd700;
+    border: 2px solid #ffd700;
     padding: 30px;
-    margin: 40px auto;
+    margin-bottom: 40px;
     width: 100%;
     max-width: 800px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
-    position: relative;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-.havamal-container h3 {
-    color: #ffd700;
-    font-size: 2rem;
-    margin-top: 0;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+/* Input Felder Styling */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+}
+
+input:focus, textarea:focus {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 8px #ffd700;
 }
 
 .havamal-text {
     font-size: 1.4rem;
     font-style: italic;
-    color: #eee;
-    min-height: 120px;
+    min-height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 5px;
     margin: 20px 0;
-    font-family: 'Times New Roman', serif;
-    line-height: 1.6;
+    padding: 20px;
+    border-radius: 8px;
 }
 
-.havamal-btn {
+.havamal-btn, #submitEntryBtn {
     background: linear-gradient(to bottom, #ffd700, #b8860b);
     color: #4a2e15;
     border: none;
     padding: 15px 30px;
     font-weight: bold;
-    font-size: 1.2rem;
     cursor: pointer;
     border-radius: 50px;
-    transition: all 0.3s;
     font-family: 'Castellar', serif;
+    transition: 0.3s;
     text-transform: uppercase;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-.havamal-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 0 20px #ffd700;
-    color: #000;
-    background: #fff;
+.havamal-btn:hover, #submitEntryBtn:hover { 
+    transform: scale(1.05); 
+    background: white; 
+    box-shadow: 0 0 15px #ffd700;
+}
+
+/* Gästebuch Einträge */
+.entry {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #ffd700;
+    text-align: left;
+}
+
+.entry-header .name {
+    color: #ffd700;
+    font-weight: bold;
 }
 
 /* =========================================
-   MEDIA QUERY: HANDY
+   5. NAVIGATIONSPFEILE (SLIDESHOW)
+   ========================================= */
+.nav-arrow {
+    position: fixed; 
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3.5rem;
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+    z-index: 1000;
+    transition: 0.3s;
+    padding: 10px;
+}
+
+.nav-arrow:hover { color: #ffd700; transform: translateY(-50%) scale(1.2); }
+.nav-arrow-left { left: 270px; }
+.nav-arrow-right { right: 20px; }
+
+/* =========================================
+   6. MOBILE ANPASSUNG
    ========================================= */
 @media (max-width: 768px) {
-    body {
-        flex-direction: column; 
-    }
-    .sidebar {
-        width: 100%;        
-        height: auto;       
-        position: relative; 
-        padding: 20px;
-        flex-direction: row; 
-        flex-wrap: wrap;
-        justify-content: center;
-        border-right: none;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    }
-    .main-content-area {
-        padding: 20px;
-        height: auto;
-    }
-    
-    h1 {
-        font-size: 35px !important; 
-    }
-    
-    .sidebar details {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-
-    .nav-arrow {
-        font-size: 3rem;
-        top: auto;
-        bottom: 20px;
-        transform: none;
-        background: rgba(0, 0, 0, 0.6);
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-bottom: 8px;
-        border: 1px solid #ffd700;
-    }
-    
-    .nav-arrow:hover {
-        transform: scale(1.1);
-    }
-
-    .nav-arrow-left {
-        left: 20px;
-    }
-    
-    .nav-arrow-right {
-        right: 20px;
-    }
+    body { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 2px solid rgba(255,255,255,0.2); padding: 15px; }
+    .nav-arrow { bottom: 20px; top: auto; transform: none; background: rgba(0,0,0,0.6); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .nav-arrow-left { left: 20px; }
+    .nav-arrow-right { right: 20px; }
 }
