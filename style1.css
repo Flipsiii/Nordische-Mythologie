@@ -1,3 +1,5 @@
+/* style1.css - Finale Version mit leuchtenden Links */
+
 /* =========================================
    1. BASIS & LAYOUT
    ========================================= */
@@ -25,7 +27,7 @@ body {
    ========================================= */
 .sidebar {
     width: 250px; 
-    background: rgba(102, 51, 0, 1); 
+    background: rgba(0, 0, 0, 0.9); 
     height: 100vh;
     position: sticky; 
     top: 0; 
@@ -275,6 +277,24 @@ h1::after {
     background-color: #ccc; 
 }
 
+/* --- NEU: LEUCHTENDE TEXT-LINKS --- */
+.page-text a {
+    color: #ffd700;           /* Grundfarbe Gold */
+    text-decoration: none;    /* Kein Standard-Unterstrich */
+    font-weight: bold;        /* Fett gedruckt */
+    transition: all 0.3s ease; /* Weicher Übergang */
+    border-bottom: 1px dotted rgba(255, 215, 0, 0.5); /* Zarte Linie */
+}
+
+/* Hover-Effekt (Maus drüber) */
+.page-text a:hover {
+    color: #fff;              /* Text wird weiß */
+    /* Der Glüh-Effekt (Glow) */
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; 
+    border-bottom: 1px solid #ffd700; /* Linie wird fest */
+    cursor: pointer;
+}
+
 /* =========================================
    6. WIDGETS (Gästebuch, Runen, Hávamál)
    ========================================= */
@@ -498,5 +518,4 @@ textarea:focus {
     .nav-arrow-right { 
         right: 20px; 
     }
-
 }
