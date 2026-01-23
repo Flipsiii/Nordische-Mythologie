@@ -1,11 +1,14 @@
 /**
- * script.js
- * Firebase (Gästebuch), Runen-Übersetzer & Hávamál-Orakel
+ * script.js - Zentrale Steuerung für Flipsiiis Nordische Mythologie
+ * Beinhaltet: Sidebar, Slideshow, Firebase-Auth & Gästebuch
  */
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// 1. FIREBASE MODULE IMPORTIEREN
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+// 2. KONFIGURATION
 const firebaseConfig = {
   apiKey: "AIzaSyCG7peemk2I1MiRLXrS0uEGSa0kY9MsZjQ",
   authDomain: "wikinger-gaestebuch.firebaseapp.com",
@@ -15,132 +18,159 @@ const firebaseConfig = {
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const pageSequence = [
+    "index.html", "Wikinger.html", "Yggdrasil.html", "YggdrasilKarte.html", 
+    "9Welten.html", "Ragnarök.html", "Julfest.html", "Goetter.html", 
+    "Odin.html", "OdinsRaben.html", "Frigg.html", "Thor.html", 
+    "Mjolnir.html", "Loki.html", "Freya.html", "Balder.html", 
+    "Freyr.html", "Heimdall.html", "Tyr.html", "Idun.html", 
+    "Njoerd.html", "Skadi.html", "Nornen.html", "Walkueren.html", "Hel.html"
+];
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("Skript erfolgreich als Modul geladen!");
+// Variablen für Firebase Services
+let db, auth, currentUser = null;
 
-    // ==========================================
-    // TEIL A: HAVAMAL ORAKEL
-    // ==========================================
-    const havamalBtn = document.getElementById('havamalBtn');
-    const havamalAusgabe = document.getElementById('havamalAusgabe');
-    
-    if (havamalBtn && havamalAusgabe) {
-        const sprueche = [
-            "Ein Brand entbrennt am anderen, bis er verbrannt ist; der Mensch wird durch den Menschen klug.",
-            "Besser ist keine Last, die man nach Hause trägt, als viel Menschenverstand.",
-            "Der Unweise, wenn er zum Volke kommt, so schweigt er am besten still.",
-            "Den Weg zum Freunde, sei er auch weit, geh oft und pflege ihn.",
-            "Vieh stirbt, Freunde sterben, endlich stirbt man selbst; doch eines weiß ich, das niemals stirbt: Das Urteil über den Toten.",
-            "Ein eigener Herd ist Goldes wert, und wär's nur 'ne Hütte klein.",
-            "Mäßig klug sei jedermann, nicht allzu klug.",
-            "Früh aufstehen muss, wer eines anderen Gut oder Leben will.",
-            "Gabe will Gegen-Gabe; ein Lächeln für ein Lächeln.",
-            "Keiner ist so gut, dass er keinen Fehler hätte, und keiner so schlecht, dass er zu nichts nütze wäre."
-        ];
+// ==========================================
+// 1. FUNKTION: SIDEBAR RENDERN (SOFORT)
+// ==========================================
+function renderSidebar() {
+    console.log("Versuche Sidebar zu rendern...");
+    const container = document.getElementById('sidebar-container');
+    if (!container) {
+        console.error("Fehler: #sidebar-container nicht im HTML gefunden!");
+        return;
+    }
 
-        havamalBtn.addEventListener('click', () => {
-            const zufall = Math.floor(Math.random() * sprueche.length);
+    const path = window.location.pathname;
+    const page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
+
+    container.innerHTML = `
+        <nav class="sidebar">
+            <h3>Menü</h3>
+            <a href="index.html" class="${page === 'index.html' ? 'active' : ''}">Startseite</a>
+
+            <details ${['Wikinger.html', 'Yggdrasil.html', 'YggdrasilKarte.html', '9Welten.html', 'Ragnarök.html', 'Julfest.html'].includes(page) ? 'open' : ''}>
+                <summary>Mythologie & Welten ▾</summary>
+                <a href="Wikinger.html" class="${page === 'Wikinger.html' ? 'active' : ''}">Die Wikinger</a>
+                <a href="Yggdrasil.html" class="${page === 'Yggdrasil.html' ? 'active' : ''}">Yggdrasil</a>
+                <a href="YggdrasilKarte.html" class="${page === 'YggdrasilKarte.html' ? 'active' : ''}">Yggdrasil Karte 🌳</a>
+                <a href="9Welten.html" class="${page === '9Welten.html' ? 'active' : ''}">Die 9 Welten</a>
+                <a href="Ragnarök.html" class="${page === 'Ragnarök.html' ? 'active' : ''}">Ragnarök</a>
+                <a href="Julfest.html" class="${page === 'Julfest.html' ? 'active' : ''}">Das Julfest</a>
+            </details>
+
+            <details ${['Goetter.html', 'Odin.html', 'OdinsRaben.html', 'Frigg.html', 'Thor.html', 'Mjolnir.html', 'Loki.html', 'Freya.html', 'Balder.html', 'Freyr.html', 'Heimdall.html', 'Tyr.html', 'Idun.html', 'Njoerd.html', 'Skadi.html'].includes(page) ? 'open' : ''}>
+                <summary>Die Götter ▾</summary>
+                <a href="Goetter.html" class="${page === 'Goetter.html' ? 'active' : ''}">Übersicht</a>
+                <a href="Odin.html" class="${page === 'Odin.html' ? 'active' : ''}">Odin (Allvater)</a>
+                <a href="Thor.html" class="${page === 'Thor.html' ? 'active' : ''}">Thor</a>
+                <a href="Freya.html" class="${page === 'Freya.html' ? 'active' : ''}">Freya</a>
+                <a href="Loki.html" class="${page === 'Loki.html' ? 'active' : ''}">Loki</a>
+            </details>
             
-            havamalAusgabe.style.opacity = "0";
-            setTimeout(() => {
-                havamalAusgabe.innerText = '"' + sprueche[zufall] + '"';
-                havamalAusgabe.style.opacity = "1";
-            }, 300);
-        });
-    }
+            <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+                <a href="RunenUebersetzer.html" class="${page === 'RunenUebersetzer.html' ? 'active' : ''} guestbook-link">ᚱᚢᚾᛖᚾ Übersetzer</a>
+                <a href="Gaestebuch.html" class="${page === 'Gaestebuch.html' ? 'active' : ''} guestbook-link">📖 Gästebuch</a>
+                <a href="https://soundcloud.com/t-staude" target="_blank" class="soundcloud-btn">Themen Musik 🎵</a>
+            </div>
+        </nav>
+    `;
+    console.log("Sidebar erfolgreich eingefügt.");
+}
 
-    // ==========================================
-    // TEIL B: RUNEN ÜBERSETZER
-    // ==========================================
-    const runenInput = document.getElementById('meinInput');
-    const runenAusgabe = document.getElementById('runenAusgabe');
+// ==========================================
+// 2. FUNKTION: SLIDESHOW RENDERN
+// ==========================================
+function renderSlideshow() {
+    const container = document.getElementById('slideshow-container');
+    if (!container) return;
 
-    if (runenInput && runenAusgabe) {
-        const runenAlphabet = {
-            'a': 'ᚨ', 'b': 'ᛒ', 'c': 'ᚲ', 'd': 'ᛞ', 'e': 'ᛖ', 'f': 'ᚠ', 'g': 'ᚷ', 'h': 'ᚺ', 'i': 'ᛁ', 'j': 'ᛃ',
-            'k': 'ᚲ', 'l': 'ᛚ', 'm': 'ᛗ', 'n': 'ᚾ', 'o': 'ᛟ', 'p': 'ᛈ', 'q': 'ᚲ', 'r': 'ᚱ', 's': 'ᛊ', 't': 'ᛏ',
-            'u': 'ᚢ', 'v': 'ᚹ', 'w': 'ᚹ', 'x': 'ᛒ', 'y': 'ᛃ', 'z': 'ᛉ', ' ': ' ', 'ä': 'ᛇ', 'ö': 'ᛟ', 'ü': 'ᚢ'
-        };
+    const path = window.location.pathname;
+    const page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
+    const index = pageSequence.indexOf(page);
 
-        runenInput.addEventListener('input', (e) => {
-            const text = e.target.value.toLowerCase();
-            let ergebnis = "";
-            for (let char of text) {
-                ergebnis += runenAlphabet[char] || char;
+    if (index === -1) return;
+
+    const prev = pageSequence[(index - 1 + pageSequence.length) % pageSequence.length];
+    const next = pageSequence[(index + 1) % pageSequence.length];
+
+    container.innerHTML = `
+        <a href="${prev}" class="nav-arrow nav-arrow-left">❮</a>
+        <a href="${next}" class="nav-arrow nav-arrow-right">❯</a>
+    `;
+}
+
+// ==========================================
+// 3. FIREBASE INITIALISIERUNG & AUTH (RULE 3)
+// ==========================================
+async function initFirebase() {
+    try {
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        // Anonym anmelden (Wichtig für Firestore Zugriff)
+        await signInAnonymously(auth);
+        
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                console.log("Firebase Auth erfolgreich: UID", user.uid);
+                setupGuestbook(); // Erst wenn User da ist, Gästebuch laden
             }
-            runenAusgabe.innerText = ergebnis || "...";
         });
+    } catch (error) {
+        console.error("Firebase konnte nicht geladen werden:", error);
     }
+}
 
-    // ==========================================
-    // TEIL C: GÄSTEBUCH
-    // ==========================================
+// ==========================================
+// 4. GÄSTEBUCH LOGIK
+// ==========================================
+function setupGuestbook() {
     const submitBtn = document.getElementById('submitEntryBtn');
-    const guestbookContainer = document.getElementById('guestbook-entries');
+    const entriesContainer = document.getElementById('guestbook-entries');
+    if (!submitBtn || !entriesContainer || !currentUser) return;
 
-    if (submitBtn && guestbookContainer) {
-  
-        submitBtn.addEventListener('click', async () => {
-            const nameInput = document.getElementById('guestName');
-            const messageInput = document.getElementById('guestMessage');
+    submitBtn.onclick = async () => {
+        const nameInput = document.getElementById('guestName');
+        const messageInput = document.getElementById('guestMessage');
+        
+        if (!nameInput.value || !messageInput.value) return;
 
-            if (!nameInput.value || !messageInput.value) {
-                alert("Die Götter verlangen einen Namen und eine Nachricht!");
-                return;
-            }
-
-            try {
-                submitBtn.disabled = true;
-                submitBtn.innerText = "Wird gemeißelt...";
-
-                await addDoc(collection(db, "gaestebuch"), {
-                    name: nameInput.value,
-                    message: messageInput.value,
-                    timestamp: serverTimestamp(),
-                    dateString: new Date().toLocaleDateString('de-DE') + ' um ' + new Date().toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'})
-                });
-
-                nameInput.value = "";
-                messageInput.value = "";
-                submitBtn.disabled = false;
-                submitBtn.innerText = "In Stein meißeln";
-            } catch (error) {
-                console.error("Fehler beim Senden:", error);
-                alert("Loki hat die Verbindung unterbrochen. Versuche es später erneut!");
-                submitBtn.disabled = false;
-                submitBtn.innerText = "In Stein meißeln";
-            }
-        });
-
-        const q = query(collection(db, "gaestebuch"), orderBy("timestamp", "desc"));
-        onSnapshot(q, (snapshot) => {
-            guestbookContainer.innerHTML = "";
-            
-            if (snapshot.empty) {
-                guestbookContainer.innerHTML = "<p style='text-align:center; color:#ccc;'>Noch ist es ruhig in den Hallen...</p>";
-                return;
-            }
-
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const div = document.createElement('div');
-                div.className = 'entry';
-                
-                div.innerHTML = `
-                    <div class="entry-header">
-                        <span class="name">⚔️ ${data.name}</span>
-                        <span class="date">${data.dateString || 'Gerade eben'}</span>
-                    </div>
-                    <div class="message">${data.message}</div>
-                `;
-                guestbookContainer.appendChild(div);
+        try {
+            await addDoc(collection(db, "gaestebuch"), {
+                name: nameInput.value,
+                message: messageInput.value,
+                timestamp: serverTimestamp(),
+                dateString: new Date().toLocaleString('de-DE')
             });
-        }, (error) => {
-            console.error("Fehler beim Laden der Daten:", error);
-        });
-    }
+            nameInput.value = "";
+            messageInput.value = "";
+        } catch (e) { console.error(e); }
+    };
 
+    const q = query(collection(db, "gaestebuch"), orderBy("timestamp", "desc"));
+    onSnapshot(q, (snapshot) => {
+        entriesContainer.innerHTML = "";
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const div = document.createElement('div');
+            div.className = 'entry';
+            div.innerHTML = `<div class="entry-header"><span class="name">⚔️ ${data.name}</span></div><div class="message">${data.message}</div>`;
+            entriesContainer.appendChild(div);
+        });
+    });
+}
+
+// ==========================================
+// START DER SEITE
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. UI sofort bauen
+    renderSidebar();
+    renderSlideshow();
+    
+    // 2. Firebase im Hintergrund laden
+    initFirebase();
 });

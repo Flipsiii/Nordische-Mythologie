@@ -2,68 +2,30 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Runen Übersetzer</title>
+    <title>Runen Übersetzer - Nordische Mythologie</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style1.css">
 </head>
 <body>
 
+    <!-- GoatCounter Tracking -->
     <script data-goatcounter="https://flipsiii.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 
-    <nav class="sidebar">
-        
-        <h3>Menü</h3>
-        
-        <a href="index.html">Startseite</a>
-
-        <details>
-            <summary>Themen ▾</summary>
-            <a href="Wikinger.html">Wikinger</a>
-            <a href="Goetter.html">Götter</a>
-            <a href="Thor.html">Thor</a>
-            <a href="Mjolnir.html">Mjölnir</a>
-            <a href="Odin.html">Odin</a>
-            <a href="OdinsRaben.html">Odins Raben</a>
-            <a href="Freya.html">Freya</a>
-            <a href="Loki.html">Loki</a>
-            <a href="Frigg.html">Frigg</a>
-            <a href="Balder.html">Balder</a>
-            <a href="Freyr.html">Freyr</a>
-            <a href="Hel.html">Hel</a>
-            <a href="Heimdall.html">Heimdall</a>
-            <a href="Tyr.html">Tyr</a>
-            <a href="Idun.html">Idun</a>
-            <a href="Njoerd.html">Njörd</a>
-            <a href="Skadi.html">Skadi</a>
-            <a href="Nornen.html">Die Nornen</a>
-            <a href="Walkueren.html">Die Walküren</a>
-            <a href="Yggdrasil.html">Yggdrasil</a>
-            <a href="Ragnarök.html">Ragnarök</a>
-            <a href="Julfest.html">Das Julfest</a>
-        </details>
-
-        <a href="RunenUebersetzer.html" class="active guestbook-link">ᚱᚢᚾᛖᚾ Übersetzer</a>
-        
-        <a href="Gaestebuch.html" class="guestbook-link">📖 Gästebuch</a>
-        
-        <a href="https://soundcloud.com/t-staude" target="_blank" class="soundcloud-btn">
-            Themen Musik 🎵
-        </a>
-        
-       <small class="soundcloud-hint">"Midgarden Warrior" auf SoundCloud</small>
-        
-    </nav>
+    <!-- Platzhalter für die automatische Sidebar -->
+    <div id="sidebar-container"></div>
     
     <main class="main-content-area">
 
         <h1>Runen Übersetzer</h1>
         <p class="intro">Schreibe deinen Namen in der Sprache der Wikinger</p>
         
+        <!-- HIER IST DER ÜBERSETZER -->
         <div class="rune-translator" style="margin-top: 50px;">
-            <h3>ᚱᚢᚾᛖᚾ</h3>
+            <h3>ᚱᚢᚾᛖᚾ</h3> <!-- Korrekte Runen für "RUNEN" -->
             <p>Gib deinen Text ein:</p>
-            <input type="text" id="meinInput" placeholder="Name hier eingeben..." oninput="uebersetzeInRunen()" autocomplete="off">
+            <!-- Die Funktion setupRunes() in script.js übernimmt die Logik -->
+            <input type="text" id="meinInput" placeholder="Name hier eingeben..." autocomplete="off">
             <p id="runenAusgabe">...</p>
         </div>
         
@@ -76,13 +38,15 @@
         </div>
 
         <footer class="footer">
-            <p>&copy; 2025 Nordische Mythologie | Geschmiedet für Valhalla</p>
+            <p>&copy; 2025 Nordische Mythologie | Geschmiedet für Valhalla | by Flipsiii</p>
         </footer>
         
     </main>
 
+    <!-- WICHTIG: type="module" für die zentrale Logik -->
     <script type="module" src="script.js"></script>
-    
-</body>
 
+    <!-- Platzhalter für die Slideshow -->
+    <div id="slideshow-container"></div>
+</body>
 </html>
