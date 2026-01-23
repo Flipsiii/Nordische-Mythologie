@@ -1,13 +1,11 @@
 /**
- * script.js - Zentrale Logik für die Nordische Mythologie Webseite
- * Beinhaltet: Firebase (Gästebuch), Runen-Übersetzer & Hávamál-Orakel
+ * script.js
+ * Firebase (Gästebuch), Runen-Übersetzer & Hávamál-Orakel
  */
 
-// 1. Firebase Module importieren (muss ganz oben stehen)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// 2. Deine Firebase Konfiguration (wurde aus deinem letzten Stand übernommen)
 const firebaseConfig = {
   apiKey: "AIzaSyCG7peemk2I1MiRLXrS0uEGSa0kY9MsZjQ",
   authDomain: "wikinger-gaestebuch.firebaseapp.com",
@@ -17,16 +15,14 @@ const firebaseConfig = {
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
 
-// 3. Firebase initialisieren
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Warten, bis das HTML vollständig geladen ist, bevor wir IDs suchen
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Skript erfolgreich als Modul geladen!");
 
     // ==========================================
-    // TEIL A: HÁVAMÁL ORAKEL (Startseite)
+    // TEIL A: HAVAMAL ORAKEL
     // ==========================================
     const havamalBtn = document.getElementById('havamalBtn');
     const havamalAusgabe = document.getElementById('havamalAusgabe');
@@ -48,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         havamalBtn.addEventListener('click', () => {
             const zufall = Math.floor(Math.random() * sprueche.length);
             
-            // Kleiner optischer Fade-Effekt
             havamalAusgabe.style.opacity = "0";
             setTimeout(() => {
                 havamalAusgabe.innerText = '"' + sprueche[zufall] + '"';
@@ -58,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // TEIL B: RUNEN ÜBERSETZER (Runen-Seite)
+    // TEIL B: RUNEN ÜBERSETZER
     // ==========================================
     const runenInput = document.getElementById('meinInput');
     const runenAusgabe = document.getElementById('runenAusgabe');
@@ -81,13 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // TEIL C: GÄSTEBUCH (Gästebuch-Seite)
+    // TEIL C: GÄSTEBUCH
     // ==========================================
     const submitBtn = document.getElementById('submitEntryBtn');
     const guestbookContainer = document.getElementById('guestbook-entries');
 
     if (submitBtn && guestbookContainer) {
-        // 1. Nachricht an Firebase senden
+  
         submitBtn.addEventListener('click', async () => {
             const nameInput = document.getElementById('guestName');
             const messageInput = document.getElementById('guestMessage');
@@ -108,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     dateString: new Date().toLocaleDateString('de-DE') + ' um ' + new Date().toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'})
                 });
 
-                // Felder leeren
                 nameInput.value = "";
                 messageInput.value = "";
                 submitBtn.disabled = false;
@@ -121,7 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 2. Nachrichten in Echtzeit aus Firebase laden
         const q = query(collection(db, "gaestebuch"), orderBy("timestamp", "desc"));
         onSnapshot(q, (snapshot) => {
             guestbookContainer.innerHTML = "";
@@ -149,4 +142,5 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Fehler beim Laden der Daten:", error);
         });
     }
+
 });
