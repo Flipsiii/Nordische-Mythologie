@@ -31,14 +31,14 @@ const pageSequence = [
     "9Welten.html", // Übersicht
     // --- Die 9 Welten ---
     "Asgard.html", "Vanaheim.html", "Alfheim.html", 
-    "Midgard.html", "Jotunheim.html", "Nidavellir.html", 
+    "Midgard.html", "Jötunheim.html", "Nidavellir.html", 
     "Muspelheim.html", "Niflheim.html", "Helheim.html",
     // --- Themen ---
     "Ragnarök.html", "Julfest.html", "Goetter.html", 
     // --- Götter ---
     "Odin.html", "OdinsRaben.html", "Sleipnir.html", // Sleipnir passt gut zu Odin
     "Frigg.html", "Thor.html", "Mjolnir.html", 
-    "Loki.html", "Fenrir.html", "Jormungandr.html", "Hel.html", // Lokis Kinder
+    "Loki.html", "Fenrir.html", "Jörmungandr.html", "Hel.html", // Lokis Kinder
     "Freya.html", "Balder.html", "Freyr.html", "Heimdall.html", 
     "Tyr.html", "Idun.html", "Njoerd.html", "Skadi.html", 
     // --- Wesen ---
@@ -292,3 +292,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initFirebase();
 
 });
+
