@@ -1,14 +1,14 @@
-/* style1.css - Finale Version mit leuchtenden Links */
+/* style1.css */
 
 /* =========================================
-   1. BASIS & LAYOUT
+   1. BASIS
    ========================================= */
 * { 
     box-sizing: border-box; 
 }
 
 body {
-    font-family: 'Castellar', serif; /* Fallback: serif */
+    font-family: 'Castellar', serif;
     text-align: center;
     background: linear-gradient(to bottom, #4a2e15, #996633); 
     min-height: 100vh;
@@ -16,14 +16,13 @@ body {
     margin: 0; 
     padding: 0;
     color: white;
-    /* Flexbox für Sidebar + Content Layout */
     display: flex;
     flex-direction: row; 
     overflow-x: hidden;
 }
 
 /* =========================================
-   2. SIDEBAR (LINKS)
+   2. SIDEBAR
    ========================================= */
 .sidebar {
     width: 250px; 
@@ -33,7 +32,7 @@ body {
     top: 0; 
     padding: 30px 15px;
     border-right: 2px solid rgba(255, 255, 255, 0.2); 
-    flex-shrink: 0; /* Verhindert das Schrumpfen */
+    flex-shrink: 0;
     display: flex; 
     flex-direction: column; 
     gap: 10px; 
@@ -50,7 +49,6 @@ body {
     font-size: 1.2rem; 
 }
 
-/* Links in der Sidebar */
 .sidebar a {
     color: white; 
     text-decoration: none; 
@@ -75,7 +73,6 @@ body {
     pointer-events: none;
 }
 
-/* Dropdown Menüs (Details/Summary) */
 .sidebar details { 
     width: 100%; 
 }
@@ -108,7 +105,6 @@ body {
     border-radius: 4px; 
 }
 
-/* Spezielle Buttons in Sidebar */
 .guestbook-link {
     margin-top: 5px; 
     border: 1px solid #ffd700 !important; 
@@ -143,7 +139,7 @@ body {
 }
 
 /* =========================================
-   3. HAUPTINHALT (MAIN CONTENT)
+   3. HAUPTINHALT
    ========================================= */
 .main-content-area { 
     flex: 1; 
@@ -154,12 +150,10 @@ body {
     min-width: 0; 
 }
 
-/* Überschriften Design */
 h1 {
     font-size: clamp(35px, 8vw, 60px) !important; 
     text-align: center; 
     margin-bottom: 20px;
-    /* Goldener Schimmer Effekt */
     background: linear-gradient(110deg, #8f6B29 10%, #FDE08D 40%, #FFFFFF 50%, #FDE08D 60%, #8f6B29 90%);
     background-size: 300% auto; 
     color: transparent; 
@@ -192,7 +186,7 @@ h1::after {
 }
 
 /* =========================================
-   4. GALERIE & BILDER
+   4. GALERIE
    ========================================= */
 .gallery-grid { 
     display: grid; 
@@ -234,7 +228,7 @@ h1::after {
 }
 
 /* =========================================
-   5. UNTERSEITEN INHALT
+   5. UNTERSEITEN
    ========================================= */
 .page-content {
     width: 100%; 
@@ -277,21 +271,18 @@ h1::after {
     background-color: #ccc; 
 }
 
-/* --- NEU: LEUCHTENDE TEXT-LINKS --- */
 .page-text a {
-    color: #ffd700;           /* Grundfarbe Gold */
-    text-decoration: none;    /* Kein Standard-Unterstrich */
-    font-weight: bold;        /* Fett gedruckt */
-    transition: all 0.3s ease; /* Weicher Übergang */
-    border-bottom: 1px dotted rgba(255, 215, 0, 0.5); /* Zarte Linie */
+    color: #ffd700;      /* GOLD */     
+    text-decoration: none;    
+    font-weight: bold;    /* FETT */    
+    transition: all 0.3s ease; 
+    border-bottom: 1px dotted rgba(255, 215, 0, 0.5);
 }
 
-/* Hover-Effekt (Maus drüber) */
 .page-text a:hover {
-    color: #fff;              /* Text wird weiß */
-    /* Der Glüh-Effekt (Glow) */
+    color: #fff;
     text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; 
-    border-bottom: 1px solid #ffd700; /* Linie wird fest */
+    border-bottom: 1px solid #ffd700;
     cursor: pointer;
 }
 
@@ -311,7 +302,6 @@ h1::after {
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
 }
 
-/* Runen Output */
 #runenAusgabe { 
     font-size: 3.5rem; 
     color: #fff; 
@@ -322,7 +312,6 @@ h1::after {
     letter-spacing: 8px; 
 }
 
-/* Formularfelder */
 input[type="text"], 
 textarea {
     width: 100%; 
@@ -356,7 +345,6 @@ textarea:focus {
     border-radius: 8px;
 }
 
-/* Buttons Allgemein */
 .havamal-btn, 
 #submitEntryBtn, 
 .guestbook-form-container button {
@@ -382,7 +370,6 @@ textarea:focus {
     color: #000;
 }
 
-/* Gästebucheinträge */
 .entry {
     background: rgba(0, 0, 0, 0.7); 
     padding: 20px; 
@@ -403,7 +390,7 @@ textarea:focus {
 }
 
 /* =========================================
-   7. NAVIGATION (SEITENWECHSEL PFEILE)
+   7. NAVIGATION
    ========================================= */
 .nav-arrow {
     position: fixed; 
@@ -423,7 +410,6 @@ textarea:focus {
     transform: translateY(-50%) scale(1.2); 
 }
 
-/* Linker Pfeil wird um Sidebar-Breite (250px) + 20px verschoben */
 .nav-arrow-left { 
     left: 270px; 
 }
@@ -433,16 +419,14 @@ textarea:focus {
 }
 
 /* =========================================
-   8. SLIDESHOW / BILDER-CONTAINER (NEU)
+   8. SLIDESHOW
    ========================================= */
 #slideshow-container {
     position: relative;
     max-width: 1000px;
     margin: 20px auto;
-    /* Damit die Pfeile innerhalb positioniert werden können */
 }
 
-/* Diese Pfeile fehlten in deinem Code-Snippet */
 .prev, .next {
     cursor: pointer;
     position: absolute;
@@ -477,15 +461,13 @@ textarea:focus {
 }
 
 /* =========================================
-   9. RESPONSIVE DESIGN (HANDY)
+   9. HANDY LAYOUT
    ========================================= */
 @media (max-width: 768px) {
-    /* Layout wird vertikal */
     body { 
         flex-direction: column; 
     }
 
-    /* Sidebar nimmt volle Breite ein */
     .sidebar { 
         width: 100%; 
         height: auto; 
@@ -495,7 +477,6 @@ textarea:focus {
         padding: 15px; 
     }
 
-    /* Anpassung der Navigationspfeile für Mobile */
     .nav-arrow { 
         bottom: 20px; 
         top: auto; 
@@ -519,5 +500,6 @@ textarea:focus {
         right: 20px; 
     }
 }
+
 
 
