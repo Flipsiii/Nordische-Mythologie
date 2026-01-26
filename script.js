@@ -1,5 +1,5 @@
 /**
- * script.js - Zentrale Steuerung für Flipsiii's Nordische Mythologie
+ * script.js
  * Beinhaltet: Sidebar, Slideshow, Firebase-Auth, Gästebuch & Hávamál
  */
 
@@ -22,13 +22,11 @@ const firebaseConfig = {
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
 
-// Reihenfolge für die Pfeil-Navigation (Slideshow)
-// Hier wurden alle neuen Seiten eingefügt
 const pageSequence = [
     "index.html", 
     "Wikinger.html", 
     "Yggdrasil.html", 
-    "9Welten.html", // Übersicht
+    "9Welten.html",
     // --- Die 9 Welten ---
     "Asgard.html", "Vanaheim.html", "Alfheim.html", 
     "Midgard.html", "Jötunheim.html", "Nidavellir.html", 
@@ -36,9 +34,9 @@ const pageSequence = [
     // --- Themen ---
     "Ragnarök.html", "Julfest.html", "Goetter.html", 
     // --- Götter ---
-    "Odin.html", "OdinsRaben.html", "Sleipnir.html", // Sleipnir passt gut zu Odin
+    "Odin.html", "OdinsRaben.html", "Sleipnir.html",
     "Frigg.html", "Thor.html", "Mjolnir.html", 
-    "Loki.html", "Fenrir.html", "Jörmungandr.html", "Hel.html", // Lokis Kinder
+    "Loki.html", "Fenrir.html", "Jörmungandr.html", "Hel.html",
     "Freya.html", "Balder.html", "Freyr.html", "Heimdall.html", 
     "Tyr.html", "Idun.html", "Njoerd.html", "Skadi.html", 
     // --- Wesen ---
@@ -68,7 +66,6 @@ function renderSidebar() {
     const container = document.getElementById('sidebar-container');
     if (!container) return;
 
-    // Aktuellen Dateinamen ermitteln
     const path = window.location.pathname;
     let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
     if (page === "/") page = "index.html";
@@ -228,7 +225,6 @@ async function initFirebase() {
 }
 
 function setupGuestbook() {
-    // Wenn DB noch nicht da ist, abbrechen
     if (!db) return;
 
     const submitBtn = document.getElementById('submitEntryBtn');
@@ -261,7 +257,6 @@ function setupGuestbook() {
         }
     };
 
-    // ECHTZEIT LISTENER LADEN
     const q = query(collection(db, "gaestebuch"), orderBy("timestamp", "desc"));
     onSnapshot(q, (snapshot) => {
         entriesContainer.innerHTML = "";
@@ -282,7 +277,7 @@ function setupGuestbook() {
 }
 
 // ==========================================
-// START (MAIN)
+// START
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     renderSidebar();
@@ -292,6 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFirebase();
 
 });
+
 
 
 
