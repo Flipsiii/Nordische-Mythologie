@@ -48,11 +48,11 @@ const havamalQuotes = [
     "Das Feuer ist das Beste für die Söhne der Männer, und der Sonne Anblick.",
     "Gastfreundschaft ist dem Wanderer willkommen, der mit kalten Knien ankommt.",
     "Teile dein Brot mit dem Hungrigen; was du gibst, kommt zu dir zurück.",
-	  "Mittelweise soll jeder Mensch sein, niemals allzu weise; denn dessen Herz ist selten heiter, der vieles voraus schon weiß.",
-	  "Hast du einen Freund, dem du wohl vertraust, so suche ihn oftmals auf; denn mit Gestrüpp und hohem Gras wächst zu der Weg, den niemand wandert.",
-	  "Der unweise Mann wacht alle Nächte und sorgt um jede Sache; müde ist er, wenn der Morgen kommt, und der Jammer steht wie zuvor.",
-	  "Besser ein Haus, und sei es noch so klein, als fremder Leute Bettler zu sein. Zwei Ziegen nur und ein strohgedeckt Dach sind besser als Bettelstab.",
-	  "Bessere Bürde trägt keiner auf Reisen als Wissen und viel Verstand. Besser als Reichtum ist er in der Fremde, der Kümmernis bester Trost."
+	"Mittelweise soll jeder Mensch sein, niemals allzu weise; denn dessen Herz ist selten heiter, der vieles voraus schon weiß.",
+	"Hast du einen Freund, dem du wohl vertraust, so suche ihn oftmals auf; denn mit Gestrüpp und hohem Gras wächst zu der Weg, den niemand wandert.",
+	"Der unweise Mann wacht alle Nächte und sorgt um jede Sache; müde ist er, wenn der Morgen kommt, und der Jammer steht wie zuvor.",
+	"Besser ein Haus, und sei es noch so klein, als fremder Leute Bettler zu sein. Zwei Ziegen nur und ein strohgedeckt Dach sind besser als Bettelstab.",
+	"Bessere Bürde trägt keiner auf Reisen als Wissen und viel Verstand. Besser als Reichtum ist er in der Fremde, der Kümmernis bester Trost."
 
 let db;
 let auth;
@@ -282,3 +282,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initFirebase();
 
 });
+
