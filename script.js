@@ -1,5 +1,5 @@
 /**
- * script.js
+ * script.js -online Version
  * Beinhaltet: Sidebar, Slideshow, Firebase-Auth, Gästebuch & Hávamál
  */
 
@@ -22,18 +22,21 @@ const firebaseConfig = {
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
 
+
 const pageSequence = [
     "index.html", 
-    "Wikinger.html", "Yggdrasil.html", "9Welten.html",
+    "Wikinger.html", 
+    "Yggdrasil.html", 
+    "9Welten.html", 
     "Asgard.html", "Vanaheim.html", "Alfheim.html", 
-    "Midgard.html", "Jötunheim.html", "Nidavellir.html", 
+    "Midgard.html", "Jotunheim.html", "Nidavellir.html", 
     "Muspelheim.html", "Niflheim.html", "Helheim.html",
     "Ragnarök.html", "Julfest.html", "Goetter.html", 
     "Odin.html", "OdinsRaben.html", "Sleipnir.html",
     "Frigg.html", "Thor.html", "Mjolnir.html", 
-    "Loki.html", "Fenrir.html", "Jörmungandr.html", "Hel.html",
+    "Loki.html", "Fenrir.html", "Jormungandr.html", "Hel.html",
     "Freya.html", "Balder.html", "Freyr.html", "Heimdall.html", 
-    "Tyr.html", "Idun.html", "Njoerd.html", "Skadi.html",
+    "Tyr.html", "Idun.html", "Njoerd.html", "Skadi.html", 
     "Riesen.html", "Nornen.html", "Walkueren.html"
 ];
 
@@ -111,7 +114,7 @@ function renderSidebar() {
                 <summary>Wesen & Mächte ▾</summary>
                 <a href="Riesen.html" class="${page === 'Riesen.html' ? 'active' : ''}">Die Riesen (Jötnar)</a>
                 <a href="Fenrir.html" class="${page === 'Fenrir.html' ? 'active' : ''}">Fenrir</a>
-                <a href="Jörmungandr.html" class="${page === 'Jörmungandr.html' ? 'active' : ''}">Jörmungandr</a>
+                <a href="Jörmungandr.html" class="${page === 'Jörmungandr.html' ? 'active' : ''}">Midgardschlange</a>
                 <a href="Sleipnir.html" class="${page === 'Sleipnir.html' ? 'active' : ''}">Sleipnir</a>
                 <a href="Hel.html" class="${page === 'Hel.html' ? 'active' : ''}">Göttin Hel</a>
                 <a href="OdinsRaben.html" class="${page === 'OdinsRaben.html' ? 'active' : ''}">Odins Raben</a>
@@ -130,7 +133,7 @@ function renderSidebar() {
 }
 
 // ==========================================
-// 4. SLIDESHOW
+// 4. FUNKTION: SLIDESHOW RENDERN
 // ==========================================
 function renderSlideshow() {
     const container = document.getElementById('slideshow-container');
@@ -154,7 +157,7 @@ function renderSlideshow() {
 }
 
 // ==========================================
-// 5. HÁVAMÁL ORAKEL
+// 5. FUNKTION: HÁVAMÁL ORAKEL
 // ==========================================
 function initHavamal() {
     const btn = document.getElementById('havamalBtn');
@@ -172,16 +175,14 @@ function initHavamal() {
 }
 
 // ==========================================
-// 6. RUNEN ÜBERSETZER
+// 6. FUNKTION: RUNEN ÜBERSETZER
 // ==========================================
 function initRunes() {
     const input = document.getElementById('meinInput');
     const output = document.getElementById('runenAusgabe');
     if (!input || !output) return;
 
-    const alphabet = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ',
-                      'l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ',
-                      'v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
+    const alphabet = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ','l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ','v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
     input.addEventListener('input', (e) => {
         let text = "";
         for (let char of e.target.value.toLowerCase()) { text += alphabet[char] || char; }
@@ -275,10 +276,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initHavamal();
     initRunes();
     initFirebase();
-
 });
-
-
-
-
-

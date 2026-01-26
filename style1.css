@@ -1,89 +1,145 @@
 /* style1.css */
 
 /* =========================================
-   1. BASIS
+   1. BASIS & LAYOUT
+   Hier werden die Grundeinstellungen für die gesamte Seite festgelegt.
    ========================================= */
+
+/* Der "Universal Selector": Wählt ALLE Elemente aus */
 * { 
+    /* WICHTIG: Sorgt dafür, dass Padding und Rahmen in die Breite eingerechnet werden.
+       Ohne das würden Elemente breiter werden, wenn man Padding hinzufügt. */
     box-sizing: border-box; 
 }
 
+/* Das Hauptelement der Seite */
 body {
+    /* Die Schriftart 'Castellar' für den antiken Look, sonst eine Serifenschrift */
     font-family: 'Castellar', serif;
     text-align: center;
+    
+    /* Ein Farbverlauf von Dunkelbraun zu Mittelbraun */
     background: linear-gradient(to bottom, #4a2e15, #996633); 
+    
+    /* Die Seite ist mindestens so hoch wie der Bildschirm (100vh = 100% Viewport Height) */
     min-height: 100vh;
+    
+    /* Der Hintergrund bleibt beim Scrollen stehen (Parallax-Effekt) */
     background-attachment: fixed;
+    
+    /* Entfernt die Standard-Ränder des Browsers */
     margin: 0; 
     padding: 0;
     color: white;
-    display: flex;
-    flex-direction: row; 
+    
+    /* FLEXBOX: Das wichtigste Layout-Tool! */
+    display: flex; /* Aktiviert Flexbox */
+    flex-direction: row; /* Ordnet Sidebar (links) und Inhalt (rechts) NEBENEINANDER an */
+    
+    /* Verhindert horizontales Scrollen, falls etwas zu breit ist */
     overflow-x: hidden;
 }
 
 /* =========================================
-   2. SIDEBAR
+   2. SIDEBAR (LINKS)
+   Die Navigation auf der linken Seite.
    ========================================= */
 .sidebar {
-    width: 250px; 
-    background: rgba(102, 51, 0, 1); 
-    height: 100vh;
+    width: 250px; /* Feste Breite */
+    background: rgba(102, 51, 0, 1); /* Dunkelbraun */
+    height: 100vh; /* Geht über die volle Höhe des Bildschirms */
+    
+    /* STICKY: Die Sidebar bleibt kleben, wenn man scrollt! */
     position: sticky; 
     top: 0; 
+    
     padding: 30px 15px;
+    
+    /* Eine feine Linie rechts als Trennung zum Inhalt */
     border-right: 2px solid rgba(255, 255, 255, 0.2); 
+    
+    /* Verhindert, dass die Sidebar zusammengedrückt wird, wenn der Platz eng wird */
     flex-shrink: 0;
+    
+    /* Flexbox für den Inhalt DER Sidebar (untereinander angeordnet) */
     display: flex; 
     flex-direction: column; 
-    gap: 10px; 
+    gap: 10px; /* Abstand zwischen den Elementen */
+    
     text-align: center;
+    
+    /* Falls die Sidebar zu lang für den Bildschirm ist, kann man IN ihr scrollen */
     overflow-y: auto; 
+    
+    /* Stellt sicher, dass die Sidebar über anderen Elementen liegt */
     z-index: 1001;
 }
 
+/* Überschriften in der Sidebar (z.B. "Menü") */
 .sidebar h3 { 
-    color: #ffd700; 
-    text-transform: uppercase; 
-    letter-spacing: 2px; 
+    color: #ffd700; /* Gold */
+    text-transform: uppercase; /* Alles GROSSBUCHSTABEN */
+    letter-spacing: 2px; /* Buchstabenabstand */
     margin-bottom: 15px; 
     font-size: 1.2rem; 
 }
 
+/* Die Links in der Sidebar */
 .sidebar a {
     color: white; 
-    text-decoration: none; 
+    text-decoration: none; /* Kein Unterstrich */
     font-family: Arial, sans-serif;
-    font-size: 1rem; 
+    font-size: 1rem; /* 1rem = 16px rem sorgt dafür das die Schriftgröße so wird wie im Browser eingestellt */
     padding: 10px; 
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.3s ease; 
-    display: block;
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Dünne Trennlinie */
+    transition: all 0.3s ease; /* Weicher Übergang beim Hovern */
+    display: block; /* Macht den ganzen Bereich klickbar, nicht nur den Text */
 }
 
-.sidebar a:hover { 
-    color: #3498db; 
-    background: rgba(255, 255, 255, 0.05); 
+//* 1. Normale Links & Dropdown-Titel beim Drüberfahren */
+.sidebar a:hover,
+.sidebar summary:hover {
+    color: #ffd700 !important;           /* Text wird Gold */
+    background: rgba(255, 215, 0, 0.15); /* Hintergrund wird leicht golden transparent */
+    
+    
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);	/* box Leuchteffekt */
+    
+  
+    text-shadow: 0 0 8px #ffd700;	  /* Text-Leuchten */
+    
+    border-color: #ffd700;               /* Ränder werden gold */
+    transform: translateX(5px);          /* Bewegt den Link leicht nach rechts */
+    cursor: pointer;
 }
 
+.sidebar a,
+.sidebar summary {
+    transition: all 0.3s ease; /* weiches Aufleuchten */
+}
+
+/* Der Link der aktuellen Seite (wird per JS gesetzt) */
 .sidebar a.active {
-    color: #ffd700; 
+    color: #ffd700; /* Gold */
     font-weight: bold; 
     border-bottom: 2px solid #ffd700;
     background-color: rgba(255, 255, 255, 0.1); 
-    pointer-events: none;
+    pointer-events: none; /* Man kann nicht nochmal draufklicken */
 }
 
+/* Das Aufklapp-Menü (Dropdown) */
 .sidebar details { 
     width: 100%; 
 }
 
+/* Die Überschrift Dropdown */
 .sidebar summary {
     padding: 12px; 
     color: white; 
     font-family: Arial, sans-serif;
     font-size: 1.1rem; 
-    list-style: none; 
-    cursor: pointer;
+    list-style: none; /* Entfernt das Standard-Dreieck mancher Browser */
+    cursor: pointer; /* Zeigt Hand-Symbol */
     transition: color 0.3s; 
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
@@ -92,22 +148,25 @@ body {
     color: #3498db; 
 }
 
+/* Wenn das Menü offen ist */
 .sidebar details[open] summary { 
     color: #ffd700; 
     border-bottom: none; 
 }
 
+/* Die Links IM Aufklapp-Menü */
 .sidebar details a { 
-    font-size: 0.9rem; 
-    background-color: rgba(255,255,255,0.05); 
+    font-size: 0.9rem;
+    background-color: rgba(255,255,255,0.05);	/* Dunkler hinterlegt */
     border-bottom: none; 
     margin: 2px 0; 
     border-radius: 4px; 
 }
 
+/* Spezielle Links (Gästebuch & Soundcloud) */
 .guestbook-link {
     margin-top: 5px; 
-    border: 1px solid #ffd700 !important; 
+    border: 1px solid #ffd700 !important;	/* !important= die Regel vorziehen/priorisieren */
     border-radius: 5px;
     font-weight: bold; 
     background: rgba(255, 215, 0, 0.05);
@@ -116,12 +175,12 @@ body {
 .guestbook-link:hover { 
     background: rgba(255, 215, 0, 0.2) !important; 
     color: #ffd700 !important; 
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); 
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); /* Leucht-Effekt */
 }
 
 .soundcloud-btn {
     margin-top: 15px; 
-    color: #ff5500 !important; 
+    color: #ff5500 !important; /* SoundCloud Orange */
     border: 1px solid #ff5500 !important;
     border-radius: 5px; 
     font-weight: bold; 
@@ -140,29 +199,36 @@ body {
 
 /* =========================================
    3. HAUPTINHALT
+   Der Bereich rechts neben der Sidebar.
    ========================================= */
 .main-content-area { 
-    flex: 1; 
+    flex: 1; /* Nimmt den RESTLICHEN Platz ein (neben den 250px der Sidebar) */
     padding: 40px; 
     display: flex; 
     flex-direction: column; 
-    align-items: center; 
-    min-width: 0; 
+    align-items: center; /* Zentriert alles horizontal */
+    min-width: 0; /* Verhindert Layout-Bruch bei zu breiten Inhalten */
 }
 
+/* Die große Hauptüberschrift */
 h1 {
+    /* CLAMP: Macht die Schrift responsive! Min: 35px, Ideal: 8% der Breite, Max: 60px */
     font-size: clamp(35px, 8vw, 60px) !important; 
     text-align: center; 
     margin-bottom: 20px;
+    
+    /* Der goldene Metallic-Effekt auf dem Text */
     background: linear-gradient(110deg, #8f6B29 10%, #FDE08D 40%, #FFFFFF 50%, #FDE08D 60%, #8f6B29 90%);
     background-size: 300% auto; 
-    color: transparent; 
-    -webkit-background-clip: text; 
+    color: transparent; /* Text selbst unsichtbar machen... */
+    -webkit-background-clip: text; /* ...damit der Hintergrund (Verlauf) durchscheint */
     background-clip: text;
+    
     filter: drop-shadow(0px 2px 0px rgba(0,0,0,0.5)); 
-    animation: shine 3s linear infinite;
+    animation: shine 3s linear infinite; /* Animation starten */
 }
 
+/* Die Verzierung unter der Überschrift */
 h1::after {
     content: "—— ❧ ————— ❧ ————— ❧ ——"; 
     display: block; 
@@ -175,6 +241,7 @@ h1::after {
     animation: shine 2s linear infinite;
 }
 
+/* Die Glanz-Animation für den goldenen Text */
 @keyframes shine { 
     to { background-position: -200% center; } 
 }
@@ -187,24 +254,29 @@ h1::after {
 
 /* =========================================
    4. GALERIE
+   Das Grid-System für die Kacheln auf der Startseite.
    ========================================= */
 .gallery-grid { 
-    display: grid; 
+    display: grid; /* Aktiviert das Raster-Layout */
+    
+    /* MAGISCHE FORMEL: Erstellt automatisch so viele Spalten wie passen.
+       Eine Spalte ist mindestens 280px breit, sonst 1fr (1 Teil vom Platz) */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-    gap: 30px; 
+    
+    gap: 30px; /* Abstand zwischen den Kacheln */
     width: 100%; 
     max-width: 1200px; 
 }
 
 .gallery-item { 
     text-decoration: none; 
-    transition: transform 0.3s ease; 
+    transition: transform 0.3s ease; /* Animation beim Bewegen */
 }
 
 .gallery-item img {
     width: 100%; 
-    height: 300px; 
-    object-fit: cover; 
+    height: 300px; /* Einheitliche Höhe für alle Bilder */
+    object-fit: cover; /* Schneidet Bilder zu, damit sie nicht verzerrt werden */
     border-radius: 12px;
     border: 3px solid white; 
     box-shadow: 0 10px 20px rgba(0,0,0,0.4);
@@ -219,21 +291,23 @@ h1::after {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.8); 
 }
 
+/* Schwebe-Effekt für die Kacheln */
 .gallery-item:hover { 
-    transform: translateY(-10px); 
+    transform: translateY(-10px); /* Bewegt das Element 10px nach oben */
 }
 
 .gallery-item:hover img { 
-    border-color: #3498db; 
+    border-color: #3498db; /* Blauer Rahmen beim Hover */
 }
 
 /* =========================================
-   5. UNTERSEITEN
+   5. UNTERSEITEN INHALT
+   Styles für die Texte auf Seiten wie "Odin.html" etc.
    ========================================= */
 .page-content {
     width: 100%; 
-    max-width: 1000px; 
-    background: rgba(0,0,0,0.5); 
+    max-width: 1000px; /* Nicht breiter als 1000px */
+    background: rgba(0,0,0,0.5); /* Halbtransparenter schwarzer Hintergrund */
     padding: 30px;
     border-radius: 15px; 
     border: 2px solid rgba(255, 255, 255, 0.2);
@@ -242,7 +316,7 @@ h1::after {
 .page-image {
     width: 100%; 
     max-height: 500px; 
-    object-fit: contain; 
+    object-fit: contain; /* Bild wird komplett angezeigt (nicht zugeschnitten) */
     border-radius: 10px;
     border: 2px solid white; 
     margin-bottom: 20px; 
@@ -252,8 +326,8 @@ h1::after {
 .page-text { 
     font-family: Arial, sans-serif; 
     font-size: 1.2rem; 
-    line-height: 1.6; 
-    text-align: left; 
+    line-height: 1.6; /* Zeilenabstand für bessere Lesbarkeit */
+    text-align: left; /* Text linksbündig */
 }
 
 .back-btn {
@@ -271,16 +345,17 @@ h1::after {
     background-color: #ccc; 
 }
 
+/* Links IM Text (z.B. Verweis von Odin auf Thor) */
 .page-text a {
-    color: #ffd700;      /* GOLD */     
-    text-decoration: none;    
-    font-weight: bold;    /* FETT */    
-    transition: all 0.3s ease; 
+    color: #ffd700;            
+    text-decoration: none;     
+    font-weight: bold;        
+    transition: all 0.3s ease;
     border-bottom: 1px dotted rgba(255, 215, 0, 0.5);
 }
 
 .page-text a:hover {
-    color: #fff;
+    color: #fff;               
     text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; 
     border-bottom: 1px solid #ffd700;
     cursor: pointer;
@@ -288,6 +363,7 @@ h1::after {
 
 /* =========================================
    6. WIDGETS (Gästebuch, Runen, Hávamál)
+   Styles für die interaktiven Boxen.
    ========================================= */
 .rune-translator, 
 .havamal-container, 
@@ -302,6 +378,7 @@ h1::after {
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
 }
 
+/* Ausgabe der Runen */
 #runenAusgabe { 
     font-size: 3.5rem; 
     color: #fff; 
@@ -309,9 +386,10 @@ h1::after {
     margin-top: 20px; 
     text-shadow: 0 0 15px #ffd700; 
     font-weight: bold; 
-    letter-spacing: 8px; 
+    letter-spacing: 8px; /* Abstand zwischen den Runen */
 }
 
+/* Eingabefelder */
 input[type="text"], 
 textarea {
     width: 100%; 
@@ -322,16 +400,16 @@ textarea {
     background: rgba(255, 255, 255, 0.1); 
     color: white;
     font-size: 1.1rem; 
-    outline: none;
+    outline: none; /* Entfernt den blauen Standard-Rahmen des Browsers */
 }
 
+/* Wenn man ins Feld klickt */
 input:focus, 
 textarea:focus { 
     background: rgba(255, 255, 255, 0.2); 
     box-shadow: 0 0 8px #ffd700; 
 }
 
-/* Hávamál Textfeld */
 .havamal-text {
     font-size: 1.4rem; 
     font-style: italic; 
@@ -345,6 +423,7 @@ textarea:focus {
     border-radius: 8px;
 }
 
+/* Buttons (Senden, Orakel) */
 .havamal-btn, 
 #submitEntryBtn, 
 .guestbook-form-container button {
@@ -354,28 +433,29 @@ textarea:focus {
     padding: 15px 30px; 
     font-weight: bold; 
     cursor: pointer; 
-    border-radius: 50px;
+    border-radius: 50px; /* Runde Buttons */
     font-family: 'Castellar', serif; 
     transition: all 0.3s; 
     text-transform: uppercase;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-.havamal-btn:hover, 
-#submitEntryBtn:hover, 
+.havamal-btn:hover,		/* . = class="name" */
+#submitEntryBtn:hover,	/* # = id="name" */ 
 .guestbook-form-container button:hover { 
-    transform: scale(1.02); 
+    transform: scale(1.02); /* Leicht vergrößern */
     background: #fff; 
     box-shadow: 0 0 15px #ffd700; 
     color: #000;
 }
 
+/* Gästebucheinträge */
 .entry {
     background: rgba(0, 0, 0, 0.7); 
     padding: 20px; 
     margin-bottom: 20px; 
     border-radius: 8px;
-    border-left: 5px solid #ffd700; 
+    border-left: 5px solid #ffd700; /* Goldener Balken links */
     text-align: left; 
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
@@ -390,14 +470,15 @@ textarea:focus {
 }
 
 /* =========================================
-   7. NAVIGATION
+   7. NAVIGATION (PFEILE)
+   Die großen Pfeile links und rechts.
    ========================================= */
 .nav-arrow {
-    position: fixed; 
-    top: 50%; 
-    transform: translateY(-50%); 
+    position: fixed; /* Fixiert am Bildschirmrand, scrollt nicht mit */
+    top: 50%; /* Vertikal mittig */
+    transform: translateY(-50%); /* Exakte Zentrierung */
     font-size: 4rem;
-    color: rgba(255, 255, 255, 0.2); 
+    color: rgba(255, 255, 255, 0.2); /* Transparentes Weiß */
     text-decoration: none; 
     z-index: 1000;
     transition: 0.3s; 
@@ -411,7 +492,7 @@ textarea:focus {
 }
 
 .nav-arrow-left { 
-    left: 270px; 
+    left: 270px; /* Abstand von links (muss größer als Sidebar-Breite sein) */
 }
 
 .nav-arrow-right { 
@@ -419,7 +500,8 @@ textarea:focus {
 }
 
 /* =========================================
-   8. SLIDESHOW
+   8. SLIDESHOW (Optional)
+   Falls du die kleinen Pfeile in einer Box nutzt.
    ========================================= */
 #slideshow-container {
     position: relative;
@@ -461,24 +543,27 @@ textarea:focus {
 }
 
 /* =========================================
-   9. HANDY LAYOUT
+   9. HANDY ANPASSUNG (Responsive)
+   Alles, was passiert, wenn der Bildschirm schmaler als 768px ist.
    ========================================= */
 @media (max-width: 768px) {
     body { 
+        /* Layout von Nebeneinander (row) auf Untereinander (column) ändern */
         flex-direction: column; 
     }
 
     .sidebar { 
-        width: 100%; 
-        height: auto; 
-        position: relative; 
+        width: 100%; /* Volle Breite */
+        height: auto; /* Höhe passt sich dem Inhalt an */
+        position: relative; /* Nicht mehr sticky, scrollt mit */
         border-right: none; 
         border-bottom: 2px solid rgba(255,255,255,0.2); 
         padding: 15px; 
     }
 
+    /* Die großen Pfeile für Mobile anpassen */
     .nav-arrow { 
-        bottom: 20px; 
+        bottom: 20px; /* Nach unten schieben */
         top: auto; 
         transform: none; 
         background: rgba(0,0,0,0.6); 
@@ -500,6 +585,3 @@ textarea:focus {
         right: 20px; 
     }
 }
-
-
-
