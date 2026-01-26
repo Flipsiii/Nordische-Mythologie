@@ -24,26 +24,19 @@ const firebaseConfig = {
 
 const pageSequence = [
     "index.html", 
-    "Wikinger.html", 
-    "Yggdrasil.html", 
-    "9Welten.html",
-    // --- Die 9 Welten ---
+    "Wikinger.html", "Yggdrasil.html", "9Welten.html",
     "Asgard.html", "Vanaheim.html", "Alfheim.html", 
     "Midgard.html", "Jötunheim.html", "Nidavellir.html", 
     "Muspelheim.html", "Niflheim.html", "Helheim.html",
-    // --- Themen ---
     "Ragnarök.html", "Julfest.html", "Goetter.html", 
-    // --- Götter ---
     "Odin.html", "OdinsRaben.html", "Sleipnir.html",
     "Frigg.html", "Thor.html", "Mjolnir.html", 
     "Loki.html", "Fenrir.html", "Jörmungandr.html", "Hel.html",
     "Freya.html", "Balder.html", "Freyr.html", "Heimdall.html", 
-    "Tyr.html", "Idun.html", "Njoerd.html", "Skadi.html", 
-    // --- Wesen ---
+    "Tyr.html", "Idun.html", "Njoerd.html", "Skadi.html",
     "Riesen.html", "Nornen.html", "Walkueren.html"
 ];
 
-// Weisheiten für das Orakel
 const havamalQuotes = [
     "Der Unweise, wenn er zum Volke kommt, so schweigt er am besten still.",
     "Besser ist eine gute Gesinnung als viel Geld.",
@@ -54,7 +47,6 @@ const havamalQuotes = [
     "Teile dein Brot mit dem Hungrigen; was du gibst, kommt zu dir zurück."
 ];
 
-// Globale Variablen für Firebase Services
 let db;
 let auth;
 let currentUser = null;
@@ -138,7 +130,7 @@ function renderSidebar() {
 }
 
 // ==========================================
-// 4. FUNKTION: SLIDESHOW RENDERN
+// 4. SLIDESHOW
 // ==========================================
 function renderSlideshow() {
     const container = document.getElementById('slideshow-container');
@@ -162,7 +154,7 @@ function renderSlideshow() {
 }
 
 // ==========================================
-// 5. FUNKTION: HÁVAMÁL ORAKEL
+// 5. HÁVAMÁL ORAKEL
 // ==========================================
 function initHavamal() {
     const btn = document.getElementById('havamalBtn');
@@ -180,14 +172,16 @@ function initHavamal() {
 }
 
 // ==========================================
-// 6. FUNKTION: RUNEN ÜBERSETZER
+// 6. RUNEN ÜBERSETZER
 // ==========================================
 function initRunes() {
     const input = document.getElementById('meinInput');
     const output = document.getElementById('runenAusgabe');
     if (!input || !output) return;
 
-    const alphabet = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ','l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ','v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
+    const alphabet = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ',
+                      'l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ',
+                      'v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
     input.addEventListener('input', (e) => {
         let text = "";
         for (let char of e.target.value.toLowerCase()) { text += alphabet[char] || char; }
@@ -202,18 +196,15 @@ async function initFirebase() {
     try {
         const app = initializeApp(firebaseConfig);
         
-        // Globale Variablen zuweisen
         auth = getAuth(app);
         db = getFirestore(app);
 
-        // Anonyme Anmeldung
         await signInAnonymously(auth);
         
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
                 console.log("Valhalla erkannt: Authentifizierung erfolgreich.");
-                // Nur starten, wenn wir auf der Gästebuch-Seite sind
                 if (document.getElementById('guestbook-entries')) {
                     setupGuestbook(); 
                 }
@@ -232,7 +223,6 @@ function setupGuestbook() {
     
     if (!submitBtn || !entriesContainer || !currentUser) return;
 
-    // EVENT LISTENER FÜR SENDEN
     submitBtn.onclick = async () => {
         const nameInput = document.getElementById('guestName');
         const messageInput = document.getElementById('guestMessage');
@@ -287,6 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFirebase();
 
 });
+
 
 
 
