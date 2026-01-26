@@ -3,8 +3,6 @@
 /* =========================================
    1. BASIS & LAYOUT
    ========================================= */
-
-
 * {  
     box-sizing: border-box; 
 }
@@ -498,4 +496,5 @@ textarea:focus {
     .nav-arrow-right { 
         right: 20px; 
     }
+
 }
