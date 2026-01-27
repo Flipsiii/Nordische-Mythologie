@@ -166,5 +166,29 @@
     {
         "titel": "Nidhögg",
         "url": "nidhoegg.html"
+    },
+    {
+        "titel": "Gungnir",
+        "url": "gungnir.html"
+    },
+    {
+        "titel": "Skidbladnir",
+        "url": "skidbladnir.html"
+    },
+    {
+        "titel": "Gleipnir",
+        "url": "gleipnir.html"
+    },
+    {
+        "titel": "Hlidskjalf",
+        "url": "hlidskjalf.html"
+    },
+    {
+        "titel": "Blutadler & Rituale",
+        "url": "blutadler__rituale.html"
+    },
+    {
+        "titel": "Garm",
+        "url": "garm.html"
     }
 ]

@@ -264,10 +264,17 @@ h1::after {
 .page-content {
     width: 100%; 
     max-width: 1000px; 
-    background: rgba(0,0,0,0.5); 
+    /* HIER IST DIE ÄNDERUNG: Hintergrund fast komplett weg (0.05 statt 0.4) */
+    background: rgba(0, 0, 0, 0.05); 
     padding: 30px;
     border-radius: 15px; 
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    /* Rahmen dezenter machen */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: auto;
+    
+    /* OPTIONAL: Lässt den Hintergrund leicht verschwimmen, sieht sehr edel aus */
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 }
 
 .page-image {
@@ -277,13 +284,13 @@ h1::after {
     border-radius: 10px;
     border: 2px solid white; 
     margin-bottom: 20px; 
-    background: rgba(0,0,0,0.2);
+    background: transparent;
 }
 
 .page-text { 
     font-family: Arial, sans-serif; 
-    font-size: 1.3rem; 
-    line-height: 1.5; 
+    font-size: 1.4rem; 
+    line-height: 1.6; 
     text-align: left; 
 }
 
