@@ -1,8 +1,10 @@
-/* style1.css - ONLINE */
+/* style1.css - OFFLINE */
 
 /* =========================================
    1. BASIS & LAYOUT
    ========================================= */
+
+
 * {  
     box-sizing: border-box; 
 }
@@ -36,7 +38,7 @@ body {
    ========================================= */
 .sidebar {
     width: 250px; 
-    background: rgba(102, 51, 0, 1); /* Dunkelbraun */
+    background: rgb(49, 25, 0);
     height: 100vh; 
     
     /* Sticky: Sidebar bleibt beim Scrollen fixiert */
@@ -194,7 +196,7 @@ h1 {
     background-clip: text;
     
     filter: drop-shadow(0px 2px 0px rgba(0,0,0,0.5)); 
-    animation: shine 2s linear infinite;
+    animation: shine 3s linear infinite;
 }
 
 h1::after {
@@ -496,6 +498,39 @@ textarea:focus {
     .nav-arrow-right { 
         right: 20px; 
     }
-
 }
 
+/* Toast Nachricht Styling */
+#toast {
+    visibility: hidden;
+    min-width: 280px;
+    background-color: #ffd700; /* Gold wie Draupnir */
+    color: #1a1a1a;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 2000;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-family: 'Cinzel', serif; /* Falls du die Wikinger-Schrift nutzt */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    border: 1px solid #000;
+}
+
+#toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 40px; opacity: 1;}
+}
+
+@keyframes fadeout {
+    from {bottom: 40px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}

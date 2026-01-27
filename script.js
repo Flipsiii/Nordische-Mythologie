@@ -1,6 +1,6 @@
 /**
- * script.js -online Version
- * Beinhaltet: Sidebar, Slideshow, Firebase-Auth, Gästebuch & Hávamál
+ * script.js - Dynamische Version mit JSON-Anbindung
+ * Beinhaltet: Sidebar (Auto-Update), Slideshow, Firebase-Auth, Gästebuch & Hávamál
  */
 
 // ==========================================
@@ -22,22 +22,9 @@ const firebaseConfig = {
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
 
-
-const pageSequence = [
-    "index.html", 
-    "Wikinger.html", 
-    "Yggdrasil.html", 
-    "9Welten.html", 
-    "Asgard.html", "Vanaheim.html", "Alfheim.html", 
-    "Midgard.html", "Jotunheim.html", "Nidavellir.html", 
-    "Muspelheim.html", "Niflheim.html", "Helheim.html",
-    "Ragnarök.html", "Julfest.html", "Goetter.html", 
-    "Odin.html", "OdinsRaben.html", "Sleipnir.html",
-    "Frigg.html", "Thor.html", "Mjolnir.html", 
-    "Loki.html", "Fenrir.html", "Jormungandr.html", "Hel.html",
-    "Freya.html", "Balder.html", "Freyr.html", "Heimdall.html", 
-    "Tyr.html", "Idun.html", "Njoerd.html", "Skadi.html", 
-    "Riesen.html", "Nornen.html", "Walkueren.html"
+// Diese Liste dient als Fallback, falls die JSON mal nicht lädt
+let dynamicPageSequence = [
+    "index.html", "Wikinger.html", "Yggdrasil.html", "9Welten.html", "Ragnarök.html"
 ];
 
 const havamalQuotes = [
@@ -48,11 +35,11 @@ const havamalQuotes = [
     "Das Feuer ist das Beste für die Söhne der Männer, und der Sonne Anblick.",
     "Gastfreundschaft ist dem Wanderer willkommen, der mit kalten Knien ankommt.",
     "Teile dein Brot mit dem Hungrigen; was du gibst, kommt zu dir zurück.",
-	"Mittelweise soll jeder Mensch sein, niemals allzu weise; denn dessen Herz ist selten heiter, der vieles voraus schon weiß.",
-	"Hast du einen Freund, dem du wohl vertraust, so suche ihn oftmals auf; denn mit Gestrüpp und hohem Gras wächst zu der Weg, den niemand wandert.",
-	"Der unweise Mann wacht alle Nächte und sorgt um jede Sache; müde ist er, wenn der Morgen kommt, und der Jammer steht wie zuvor.",
-	"Besser ein Haus, und sei es noch so klein, als fremder Leute Bettler zu sein. Zwei Ziegen nur und ein strohgedeckt Dach sind besser als Bettelstab.",
-	"Bessere Bürde trägt keiner auf Reisen als Wissen und viel Verstand. Besser als Reichtum ist er in der Fremde, der Kümmernis bester Trost."
+    "Mittelweise soll jeder Mensch sein, niemals allzu weise; denn dessen Herz ist selten heiter, der vieles voraus schon weiß.",
+    "Hast du einen Freund, dem du wohl vertraust, so suche ihn oftmals auf; denn mit Gestrüpp und hohem Gras wächst zu der Weg, den niemand wandert.",
+    "Der unweise Mann wacht alle Nächte und sorgt um jede Sache; müde ist er, wenn der Morgen kommt, und der Jammer steht wie zuvor.",
+    "Besser ein Haus, und sei es noch so klein, als fremder Leute Bettler zu sein.",
+    "Bessere Bürde trägt keiner auf Reisen als Wissen und viel Verstand."
 ];
 
 let db;
@@ -60,9 +47,35 @@ let auth;
 let currentUser = null;
 
 // ==========================================
-// 3. FUNKTION: SIDEBAR RENDERN
+// 3. NEU: DATEN LADEN & INITIALISIERUNG
 // ==========================================
-function renderSidebar() {
+async function initApp() {
+    let seitenVomAgent = [];
+    try {
+        const response = await fetch('seiten.json');
+        if (response.ok) {
+            seitenVomAgent = await response.json();
+            dynamicPageSequence = seitenVomAgent.map(s => s.url);
+            
+            // OPTIONAL: Zeige Nachricht, wenn mehr als die Standardseiten da sind
+            if (seitenVomAgent.length > 37) { // 37 ist die Anzahl deiner aktuellen Seiten
+                 showToast("✨ Neue Saga in der Bibliothek entdeckt!");
+            }
+        }
+    } catch (e) {
+        console.log("JSON noch nicht bereit.");
+    }
+    renderSidebar(seitenVomAgent);
+    renderSlideshow();
+    initHavamal();
+    initRunes();
+    initFirebase();
+}
+
+// ==========================================
+// 4. FUNKTION: SIDEBAR RENDERN (DYNAMISCH)
+// ==========================================
+function renderSidebar(extraSeiten = []) {
     const container = document.getElementById('sidebar-container');
     if (!container) return;
 
@@ -70,6 +83,18 @@ function renderSidebar() {
     let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
     if (page === "/") page = "index.html";
     page = decodeURIComponent(page);
+
+    // Wir filtern die extraSeiten, damit Standardseiten nicht doppelt erscheinen
+    const standardSeitenUrls = [
+        "index.html", "Wikinger.html", "Yggdrasil.html", "9Welten.html", "Ragnarök.html", "Julfest.html",
+        "Asgard.html", "Midgard.html", "Vanaheim.html", "Alfheim.html", "Jotunheim.html", "Nidavellir.html",
+        "Muspelheim.html", "Niflheim.html", "Helheim.html", "Goetter.html", "Odin.html", "Thor.html",
+        "Loki.html", "Freya.html", "Frigg.html", "Heimdall.html", "Tyr.html", "Balder.html", "Freyr.html",
+        "Idun.html", "Njoerd.html", "Skadi.html", "Riesen.html", "Fenrir.html", "Jormungandr.html",
+        "Sleipnir.html", "Hel.html", "OdinsRaben.html", "Walkueren.html", "Nornen.html", "Mjolnir.html"
+    ];
+
+    const neueEntdeckungen = extraSeiten.filter(s => !standardSeitenUrls.includes(s.url));
 
     container.innerHTML = `
         <nav class="sidebar">
@@ -84,14 +109,14 @@ function renderSidebar() {
                 <a href="Ragnarök.html" class="${page === 'Ragnarök.html' ? 'active' : ''}">Ragnarök</a>
                 <a href="Julfest.html" class="${page === 'Julfest.html' ? 'active' : ''}">Das Julfest</a>
             </details>
-
+            
             <details ${['Asgard.html', 'Midgard.html', 'Vanaheim.html', 'Jotunheim.html', 'Alfheim.html', 'Nidavellir.html', 'Muspelheim.html', 'Niflheim.html', 'Helheim.html'].includes(page) ? 'open' : ''}>
                 <summary>Die Welten ▾</summary>
                 <a href="Asgard.html" class="${page === 'Asgard.html' ? 'active' : ''}">Asgard (Asen)</a>
                 <a href="Midgard.html" class="${page === 'Midgard.html' ? 'active' : ''}">Midgard (Menschen)</a>
                 <a href="Vanaheim.html" class="${page === 'Vanaheim.html' ? 'active' : ''}">Vanaheim (Wanen)</a>
                 <a href="Alfheim.html" class="${page === 'Alfheim.html' ? 'active' : ''}">Alfheim (Lichtalben)</a>
-                <a href="Jötunheim.html" class="${page === 'Jötunheim.html' ? 'active' : ''}">Jötunheim (Riesen)</a>
+                <a href="Jotunheim.html" class="${page === 'Jotunheim.html' ? 'active' : ''}">Jötunheim (Riesen)</a>
                 <a href="Nidavellir.html" class="${page === 'Nidavellir.html' ? 'active' : ''}">Nidavellir (Zwerge)</a>
                 <a href="Muspelheim.html" class="${page === 'Muspelheim.html' ? 'active' : ''}">Muspelheim (Feuer)</a>
                 <a href="Niflheim.html" class="${page === 'Niflheim.html' ? 'active' : ''}">Niflheim (Eis)</a>
@@ -119,7 +144,7 @@ function renderSidebar() {
                 <summary>Wesen & Mächte ▾</summary>
                 <a href="Riesen.html" class="${page === 'Riesen.html' ? 'active' : ''}">Die Riesen (Jötnar)</a>
                 <a href="Fenrir.html" class="${page === 'Fenrir.html' ? 'active' : ''}">Fenrir</a>
-                <a href="Jörmungandr.html" class="${page === 'Jörmungandr.html' ? 'active' : ''}">Midgardschlange</a>
+                <a href="Jormungandr.html" class="${page === 'Jormungandr.html' ? 'active' : ''}">Midgardschlange</a>
                 <a href="Sleipnir.html" class="${page === 'Sleipnir.html' ? 'active' : ''}">Sleipnir</a>
                 <a href="Hel.html" class="${page === 'Hel.html' ? 'active' : ''}">Göttin Hel</a>
                 <a href="OdinsRaben.html" class="${page === 'OdinsRaben.html' ? 'active' : ''}">Odins Raben</a>
@@ -127,18 +152,26 @@ function renderSidebar() {
                 <a href="Nornen.html" class="${page === 'Nornen.html' ? 'active' : ''}">Die Nornen</a>
                 <a href="Mjolnir.html" class="${page === 'Mjolnir.html' ? 'active' : ''}">Mjölnir</a>
             </details>
+
+            ${neueEntdeckungen.length > 0 ? `
+            <details open>
+                <summary style="color: #ffd700;">Neu entdeckt ▾</summary>
+                ${neueEntdeckungen.map(s => `
+                    <a href="${s.url}" class="${page === s.url ? 'active' : ''}">✨ ${s.titel}</a>
+                `).join('')}
+            </details>
+            ` : ''}
             
             <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;">
                 <a href="RunenUebersetzer.html" class="${page === 'RunenUebersetzer.html' ? 'active' : ''} guestbook-link">ᚱᚢᚾᛖᚾ Übersetzer</a>
                 <a href="Gaestebuch.html" class="${page === 'Gaestebuch.html' ? 'active' : ''} guestbook-link">📖 Gästebuch</a>
                 <a href="https://soundcloud.com/t-staude" target="_blank" class="soundcloud-btn" style="margin-top:10px;">Musik 🎵</a>
             </div>
-        </nav>
-    `;
+        </nav>`;
 }
 
 // ==========================================
-// 4. FUNKTION: SLIDESHOW RENDERN
+// 5. FUNKTION: SLIDESHOW (DYNAMISCH)
 // ==========================================
 function renderSlideshow() {
     const container = document.getElementById('slideshow-container');
@@ -146,29 +179,26 @@ function renderSlideshow() {
 
     const path = window.location.pathname;
     let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
-    if (page === "/") page = "index.html";
     page = decodeURIComponent(page);
 
-    const index = pageSequence.indexOf(page);
+    const index = dynamicPageSequence.indexOf(page);
     if (index === -1) return;
 
-    const prev = pageSequence[(index - 1 + pageSequence.length) % pageSequence.length];
-    const next = pageSequence[(index + 1) % pageSequence.length];
+    const prev = dynamicPageSequence[(index - 1 + dynamicPageSequence.length) % dynamicPageSequence.length];
+    const next = dynamicPageSequence[(index + 1) % dynamicPageSequence.length];
 
     container.innerHTML = `
-        <a href="${prev}" class="nav-arrow nav-arrow-left" title="Zurück">❮</a>
-        <a href="${next}" class="nav-arrow nav-arrow-right" title="Weiter">❯</a>
+        <a href="${prev}" class="nav-arrow nav-arrow-left">❮</a>
+        <a href="${next}" class="nav-arrow nav-arrow-right">❯</a>
     `;
 }
 
-// ==========================================
-// 5. FUNKTION: HÁVAMÁL ORAKEL
-// ==========================================
+// ... (Restliche Funktionen: initHavamal, initRunes, initFirebase, setupGuestbook bleiben identisch)
+
 function initHavamal() {
     const btn = document.getElementById('havamalBtn');
     const display = document.getElementById('havamalAusgabe');
     if (!btn || !display) return;
-
     btn.addEventListener('click', () => {
         const randomIndex = Math.floor(Math.random() * havamalQuotes.length);
         display.style.opacity = 0;
@@ -179,14 +209,10 @@ function initHavamal() {
     });
 }
 
-// ==========================================
-// 6. FUNKTION: RUNEN ÜBERSETZER
-// ==========================================
 function initRunes() {
     const input = document.getElementById('meinInput');
     const output = document.getElementById('runenAusgabe');
     if (!input || !output) return;
-
     const alphabet = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ','l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ','v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
     input.addEventListener('input', (e) => {
         let text = "";
@@ -195,49 +221,31 @@ function initRunes() {
     });
 }
 
-// ==========================================
-// 7. FIREBASE AUTH & GÄSTEBUCH
-// ==========================================
 async function initFirebase() {
     try {
         const app = initializeApp(firebaseConfig);
-        
         auth = getAuth(app);
         db = getFirestore(app);
-
         await signInAnonymously(auth);
-        
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
-            if (user) {
-                console.log("Valhalla erkannt: Authentifizierung erfolgreich.");
-                if (document.getElementById('guestbook-entries')) {
-                    setupGuestbook(); 
-                }
+            if (user && document.getElementById('guestbook-entries')) {
+                setupGuestbook(); 
             }
         });
-    } catch (error) {
-        console.error("Loki hat die Leitung gekappt (Firebase Fehler):", error);
-    }
+    } catch (error) { console.error("Firebase Fehler:", error); }
 }
 
 function setupGuestbook() {
     if (!db) return;
-
     const submitBtn = document.getElementById('submitEntryBtn');
     const entriesContainer = document.getElementById('guestbook-entries');
-    
     if (!submitBtn || !entriesContainer || !currentUser) return;
 
     submitBtn.onclick = async () => {
         const nameInput = document.getElementById('guestName');
         const messageInput = document.getElementById('guestMessage');
-        
-        if (!nameInput.value || !messageInput.value) {
-            alert("Die Götter verlangen einen Namen und eine Nachricht!");
-            return;
-        }
-
+        if (!nameInput.value || !messageInput.value) return;
         try {
             await addDoc(collection(db, "gaestebuch"), {
                 name: nameInput.value,
@@ -245,12 +253,8 @@ function setupGuestbook() {
                 timestamp: serverTimestamp(),
                 dateString: new Date().toLocaleDateString('de-DE')
             });
-            nameInput.value = "";
-            messageInput.value = "";
-        } catch (e) { 
-            console.error("Fehler beim Meißeln:", e); 
-            alert("Fehler beim Senden: Hast du die Firestore Regeln aktiviert?");
-        }
+            nameInput.value = ""; messageInput.value = "";
+        } catch (e) { console.error(e); }
     };
 
     const q = query(collection(db, "gaestebuch"), orderBy("timestamp", "desc"));
@@ -260,28 +264,24 @@ function setupGuestbook() {
             const data = doc.data();
             const div = document.createElement('div');
             div.className = 'entry';
-            div.innerHTML = `
-                <div class="entry-header">
-                    <span class="name">⚔️ ${data.name}</span>
-                    <span style="font-size:0.8em; opacity:0.7;">${data.dateString || ''}</span>
-                </div>
-                <div class="message">${data.message}</div>
-            `;
+            div.innerHTML = `<div class="entry-header"><span class="name">⚔️ ${data.name}</span> <span style="font-size:0.8em; opacity:0.7;">${data.dateString || ''}</span></div><div class="message">${data.message}</div>`;
             entriesContainer.appendChild(div);
         });
     });
 }
 
-// ==========================================
 // START
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    renderSidebar();
-    renderSlideshow();
-    initHavamal();
-    initRunes();
-    initFirebase();
+document.addEventListener('DOMContentLoaded', initApp);
 
-});
-
-
+// Funktion zum Anzeigen der Toast-Nachricht
+function showToast(msg) {
+    let x = document.getElementById("toast");
+    if (!x) {
+        x = document.createElement("div");
+        x.id = "toast";
+        document.body.appendChild(x);
+    }
+    x.innerText = msg;
+    x.className = "show";
+    setTimeout(() => { x.className = x.className.replace("show", ""); }, 3000);
+}
