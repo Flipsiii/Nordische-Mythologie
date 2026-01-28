@@ -1,17 +1,17 @@
 /**
- * script.js - Dynamische Version mit JSON-Anbindung
- * Beinhaltet: Sidebar (Auto-Update), Slideshow, Firebase-Auth, Gästebuch & Hávamál
+ * script.js - ONLINE VERSION (Master Edition)
+ * Beinhaltet: Firebase, Sidebar (Sortiert + Auto-Update), Slideshow, Runen, Hávamál
  */
 
 // ==========================================
-// 1. IMPORTE
+// 1. IMPORTE (Firebase)
 // ==========================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 // ==========================================
-// 2. KONFIGURATION
+// 2. KONFIGURATION & LISTEN
 // ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyCG7peemk2I1MiRLXrS0uEGSa0kY9MsZjQ",
@@ -22,10 +22,32 @@ const firebaseConfig = {
   appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
 };
 
-// Diese Liste dient als Fallback, falls die JSON mal nicht lädt
-let dynamicPageSequence = [
-    "index.html", "Wikinger.html", "Yggdrasil.html", "9Welten.html", "Ragnarök.html"
+// Deine manuelle, logische Sortierung
+const manualSortOrder = [
+    "index.html",
+    // Mythologie
+    "Wikinger.html", "Yggdrasil.html", "Ragnarök.html", "Julfest.html",
+    // Welten
+    "9Welten.html", "Asgard.html", "Midgard.html", "Jotunheim.html", "Vanaheim.html", 
+    "Helheim.html", "Nidavellir.html", "Alfheim.html", "Muspelheim.html", "Niflheim.html",
+    // Götter
+    "Goetter.html", "Odin.html", "Thor.html", "Loki.html", "Freya.html", "Frigg.html", 
+    "Balder.html", "Freyr.html", "Heimdall.html", "Tyr.html", "Idun.html", "Njoerd.html", 
+    "Skadi.html", "Hel.html", "Nornen.html",
+    // Wesen & Mächte
+    "OdinsRaben.html", "Mjolnir.html", "Walkueren.html", "Riesen.html", "Fenrir.html", 
+    "Jormungandr.html", "Sleipnir.html",
+    // Neue Seiten (manuell hinzugefügt)
+    "die_einherjer.html", "bifroest_die_regenbogenbruecke.html", "draupnir.html",
+    "ratatoeskr.html", "nidhoegg.html", "gungnir.html", "skidbladnir.html",
+    "gleipnir.html", "hlidskjalf.html", "blutadler__rituale.html", "garm.html",
+    "berserker.html", "der_brunnen_von_mimir.html", "naglfar.html",
+    // Tools
+    "RunenUebersetzer.html", "Gaestebuch.html"
 ];
+
+// Diese Liste wird zur Laufzeit gefüllt (Manuell + Agenten-Seiten)
+let dynamicPageSequence = [...manualSortOrder];
 
 const havamalQuotes = [
     "Der Unweise, wenn er zum Volke kommt, so schweigt er am besten still.",
@@ -35,11 +57,9 @@ const havamalQuotes = [
     "Das Feuer ist das Beste für die Söhne der Männer, und der Sonne Anblick.",
     "Gastfreundschaft ist dem Wanderer willkommen, der mit kalten Knien ankommt.",
     "Teile dein Brot mit dem Hungrigen; was du gibst, kommt zu dir zurück.",
-    "Mittelweise soll jeder Mensch sein, niemals allzu weise; denn dessen Herz ist selten heiter, der vieles voraus schon weiß.",
-    "Hast du einen Freund, dem du wohl vertraust, so suche ihn oftmals auf; denn mit Gestrüpp und hohem Gras wächst zu der Weg, den niemand wandert.",
-    "Der unweise Mann wacht alle Nächte und sorgt um jede Sache; müde ist er, wenn der Morgen kommt, und der Jammer steht wie zuvor.",
-    "Besser ein Haus, und sei es noch so klein, als fremder Leute Bettler zu sein.",
-    "Bessere Bürde trägt keiner auf Reisen als Wissen und viel Verstand."
+    "Mittelweise soll jeder Mensch sein, niemals allzu weise.",
+    "Der unweise Mann wacht alle Nächte und sorgt um jede Sache.",
+    "Besser ein Haus, und sei es noch so klein, als fremder Leute Bettler zu sein."
 ];
 
 let db;
@@ -47,83 +67,80 @@ let auth;
 let currentUser = null;
 
 // ==========================================
-// 3. NEU: DATEN LADEN & INITIALISIERUNG
+// 3. INITIALISIERUNG
 // ==========================================
+document.addEventListener('DOMContentLoaded', initApp);
+
 async function initApp() {
-    let seitenVomAgent = [];
+    let extraSeiten = [];
+    
+    // 1. Versuch: Seiten vom Agenten laden (seiten.json)
     try {
         const response = await fetch('seiten.json');
         if (response.ok) {
-            seitenVomAgent = await response.json();
-            dynamicPageSequence = seitenVomAgent.map(s => s.url);
+            const seitenVomAgent = await response.json();
             
-            // OPTIONAL: Zeige Nachricht, wenn mehr als die Standardseiten da sind
-            if (seitenVomAgent.length > 37) { // 37 ist die Anzahl deiner aktuellen Seiten
-                 showToast("✨ Neue Saga in der Bibliothek entdeckt!");
+            // Wir filtern: Nur Seiten, die NICHT schon in unserer manuellen Liste sind
+            extraSeiten = seitenVomAgent.filter(s => !manualSortOrder.includes(s.url));
+            
+            // Wir erweitern die Playlist für die Pfeile
+            const extraUrls = extraSeiten.map(s => s.url);
+            dynamicPageSequence = [...manualSortOrder, ...extraUrls];
+
+            if (extraSeiten.length > 0) {
+                 showToast(`✨ ${extraSeiten.length} neue Saga(s) entdeckt!`);
             }
         }
     } catch (e) {
-        console.log("JSON noch nicht bereit.");
+        console.log("Offline-Modus oder JSON nicht verfügbar. Nutze Standard.");
     }
-    renderSidebar(seitenVomAgent);
+
+    // 2. UI Rendern
+    renderSidebar(extraSeiten); // Wir übergeben nur die wirklich neuen Seiten
     renderSlideshow();
     initHavamal();
     initRunes();
-    initFirebase();
+    initFirebase(); // Startet Datenbank
 }
 
 // ==========================================
-// 4. FUNKTION: SIDEBAR RENDERN (DYNAMISCH)
+// 4. SIDEBAR RENDERN (SOTIERT)
 // ==========================================
-function renderSidebar(extraSeiten = []) {
+function renderSidebar(neueSeitenVomAgent = []) {
     const container = document.getElementById('sidebar-container');
     if (!container) return;
 
-    const path = window.location.pathname;
-    let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
-    if (page === "/") page = "index.html";
+    let page = window.location.pathname.split("/").pop() || "index.html";
     page = decodeURIComponent(page);
-
-    // Wir filtern die extraSeiten, damit Standardseiten nicht doppelt erscheinen
-    const standardSeitenUrls = [
-        "index.html", "Wikinger.html", "Yggdrasil.html", "9Welten.html", "Ragnarök.html", "Julfest.html",
-        "Asgard.html", "Midgard.html", "Vanaheim.html", "Alfheim.html", "Jotunheim.html", "Nidavellir.html",
-        "Muspelheim.html", "Niflheim.html", "Helheim.html", "Goetter.html", "Odin.html", "Thor.html",
-        "Loki.html", "Freya.html", "Frigg.html", "Heimdall.html", "Tyr.html", "Balder.html", "Freyr.html",
-        "Idun.html", "Njoerd.html", "Skadi.html", "Riesen.html", "Fenrir.html", "Jormungandr.html",
-        "Sleipnir.html", "Hel.html", "OdinsRaben.html", "Walkueren.html", "Nornen.html", "Mjolnir.html"
-    ];
-
-    const neueEntdeckungen = extraSeiten.filter(s => !standardSeitenUrls.includes(s.url));
 
     container.innerHTML = `
         <nav class="sidebar">
             <h3>Menü</h3>
             <a href="index.html" class="${page === 'index.html' ? 'active' : ''}">Startseite</a>
 
-            <details ${['Wikinger.html', 'Yggdrasil.html', '9Welten.html', 'Ragnarök.html', 'Julfest.html', 'YggdrasilKarte.html'].includes(page) ? 'open' : ''}>
+            <details ${['Wikinger.html', 'Yggdrasil.html', 'Ragnarök.html', 'Julfest.html'].includes(page) ? 'open' : ''}>
                 <summary>Mythologie & Infos ▾</summary>
                 <a href="Wikinger.html" class="${page === 'Wikinger.html' ? 'active' : ''}">Die Wikinger</a>
                 <a href="Yggdrasil.html" class="${page === 'Yggdrasil.html' ? 'active' : ''}">Yggdrasil</a>
-                <a href="9Welten.html" class="${page === '9Welten.html' ? 'active' : ''}">Die 9 Welten (Übersicht)</a>
                 <a href="Ragnarök.html" class="${page === 'Ragnarök.html' ? 'active' : ''}">Ragnarök</a>
                 <a href="Julfest.html" class="${page === 'Julfest.html' ? 'active' : ''}">Das Julfest</a>
             </details>
             
-            <details ${['Asgard.html', 'Midgard.html', 'Vanaheim.html', 'Jotunheim.html', 'Alfheim.html', 'Nidavellir.html', 'Muspelheim.html', 'Niflheim.html', 'Helheim.html'].includes(page) ? 'open' : ''}>
+            <details ${['9Welten.html', 'Asgard.html', 'Midgard.html', 'Jotunheim.html', 'Vanaheim.html', 'Helheim.html', 'Nidavellir.html', 'Alfheim.html', 'Muspelheim.html', 'Niflheim.html'].includes(page) ? 'open' : ''}>
                 <summary>Die Welten ▾</summary>
-                <a href="Asgard.html" class="${page === 'Asgard.html' ? 'active' : ''}">Asgard (Asen)</a>
-                <a href="Midgard.html" class="${page === 'Midgard.html' ? 'active' : ''}">Midgard (Menschen)</a>
-                <a href="Vanaheim.html" class="${page === 'Vanaheim.html' ? 'active' : ''}">Vanaheim (Wanen)</a>
-                <a href="Alfheim.html" class="${page === 'Alfheim.html' ? 'active' : ''}">Alfheim (Lichtalben)</a>
-                <a href="Jotunheim.html" class="${page === 'Jotunheim.html' ? 'active' : ''}">Jötunheim (Riesen)</a>
-                <a href="Nidavellir.html" class="${page === 'Nidavellir.html' ? 'active' : ''}">Nidavellir (Zwerge)</a>
-                <a href="Muspelheim.html" class="${page === 'Muspelheim.html' ? 'active' : ''}">Muspelheim (Feuer)</a>
-                <a href="Niflheim.html" class="${page === 'Niflheim.html' ? 'active' : ''}">Niflheim (Eis)</a>
-                <a href="Helheim.html" class="${page === 'Helheim.html' ? 'active' : ''}">Helheim (Totenreich)</a>
+                <a href="9Welten.html" class="${page === '9Welten.html' ? 'active' : ''}">Die 9 Welten</a>
+                <a href="Asgard.html" class="${page === 'Asgard.html' ? 'active' : ''}">Asgard</a>
+                <a href="Midgard.html" class="${page === 'Midgard.html' ? 'active' : ''}">Midgard</a>
+                <a href="Jotunheim.html" class="${page === 'Jotunheim.html' ? 'active' : ''}">Jötunheim</a>
+                <a href="Vanaheim.html" class="${page === 'Vanaheim.html' ? 'active' : ''}">Vanaheim</a>
+                <a href="Helheim.html" class="${page === 'Helheim.html' ? 'active' : ''}">Helheim</a>
+                <a href="Nidavellir.html" class="${page === 'Nidavellir.html' ? 'active' : ''}">Nidavellir</a>
+                <a href="Alfheim.html" class="${page === 'Alfheim.html' ? 'active' : ''}">Alfheim</a>
+                <a href="Muspelheim.html" class="${page === 'Muspelheim.html' ? 'active' : ''}">Muspelheim</a>
+                <a href="Niflheim.html" class="${page === 'Niflheim.html' ? 'active' : ''}">Niflheim</a>
             </details>
 
-            <details ${['Goetter.html', 'Odin.html', 'OdinsRaben.html', 'Sleipnir.html', 'Frigg.html', 'Thor.html', 'Mjolnir.html', 'Loki.html', 'Freya.html', 'Balder.html', 'Freyr.html', 'Heimdall.html', 'Tyr.html', 'Idun.html', 'Njoerd.html', 'Skadi.html'].includes(page) ? 'open' : ''}>
+            <details ${['Goetter.html', 'Odin.html', 'Thor.html', 'Loki.html', 'Freya.html', 'Frigg.html', 'Balder.html', 'Freyr.html', 'Heimdall.html', 'Tyr.html', 'Idun.html', 'Njoerd.html', 'Skadi.html', 'Hel.html', 'Nornen.html'].includes(page) ? 'open' : ''}>
                 <summary>Die Götter ▾</summary>
                 <a href="Goetter.html" class="${page === 'Goetter.html' ? 'active' : ''}">Übersicht</a>
                 <a href="Odin.html" class="${page === 'Odin.html' ? 'active' : ''}">Odin</a>
@@ -131,34 +148,50 @@ function renderSidebar(extraSeiten = []) {
                 <a href="Loki.html" class="${page === 'Loki.html' ? 'active' : ''}">Loki</a>
                 <a href="Freya.html" class="${page === 'Freya.html' ? 'active' : ''}">Freya</a>
                 <a href="Frigg.html" class="${page === 'Frigg.html' ? 'active' : ''}">Frigg</a>
-                <a href="Heimdall.html" class="${page === 'Heimdall.html' ? 'active' : ''}">Heimdall</a>
-                <a href="Tyr.html" class="${page === 'Tyr.html' ? 'active' : ''}">Tyr</a>
                 <a href="Balder.html" class="${page === 'Balder.html' ? 'active' : ''}">Balder</a>
                 <a href="Freyr.html" class="${page === 'Freyr.html' ? 'active' : ''}">Freyr</a>
+                <a href="Heimdall.html" class="${page === 'Heimdall.html' ? 'active' : ''}">Heimdall</a>
+                <a href="Tyr.html" class="${page === 'Tyr.html' ? 'active' : ''}">Tyr</a>
                 <a href="Idun.html" class="${page === 'Idun.html' ? 'active' : ''}">Idun</a>
                 <a href="Njoerd.html" class="${page === 'Njoerd.html' ? 'active' : ''}">Njörd</a>
                 <a href="Skadi.html" class="${page === 'Skadi.html' ? 'active' : ''}">Skadi</a>
+                <a href="Hel.html" class="${page === 'Hel.html' ? 'active' : ''}">Hel</a>
+                <a href="Nornen.html" class="${page === 'Nornen.html' ? 'active' : ''}">Nornen</a>
             </details>
 
-            <details ${['Riesen.html', 'Fenrir.html', 'Jormungandr.html', 'Sleipnir.html', 'Nornen.html', 'Walkueren.html', 'Hel.html', 'OdinsRaben.html', 'Mjolnir.html'].includes(page) ? 'open' : ''}>
+            <details ${['Riesen.html', 'Fenrir.html', 'Jormungandr.html', 'Sleipnir.html', 'OdinsRaben.html', 'Mjolnir.html', 'Walkueren.html'].includes(page) ? 'open' : ''}>
                 <summary>Wesen & Mächte ▾</summary>
-                <a href="Riesen.html" class="${page === 'Riesen.html' ? 'active' : ''}">Die Riesen (Jötnar)</a>
-                <a href="Fenrir.html" class="${page === 'Fenrir.html' ? 'active' : ''}">Fenrir</a>
-                <a href="Jormungandr.html" class="${page === 'Jormungandr.html' ? 'active' : ''}">Midgardschlange</a>
-                <a href="Sleipnir.html" class="${page === 'Sleipnir.html' ? 'active' : ''}">Sleipnir</a>
-                <a href="Hel.html" class="${page === 'Hel.html' ? 'active' : ''}">Göttin Hel</a>
                 <a href="OdinsRaben.html" class="${page === 'OdinsRaben.html' ? 'active' : ''}">Odins Raben</a>
-                <a href="Walkueren.html" class="${page === 'Walkueren.html' ? 'active' : ''}">Die Walküren</a>
-                <a href="Nornen.html" class="${page === 'Nornen.html' ? 'active' : ''}">Die Nornen</a>
                 <a href="Mjolnir.html" class="${page === 'Mjolnir.html' ? 'active' : ''}">Mjölnir</a>
+                <a href="Walkueren.html" class="${page === 'Walkueren.html' ? 'active' : ''}">Walküren</a>
+                <a href="Riesen.html" class="${page === 'Riesen.html' ? 'active' : ''}">Die Riesen</a>
+                <a href="Fenrir.html" class="${page === 'Fenrir.html' ? 'active' : ''}">Fenrir</a>
+                <a href="Jormungandr.html" class="${page === 'Jormungandr.html' ? 'active' : ''}">Jörmungandr</a>
+                <a href="Sleipnir.html" class="${page === 'Sleipnir.html' ? 'active' : ''}">Sleipnir</a>
             </details>
 
-            ${neueEntdeckungen.length > 0 ? `
+            <details ${['die_einherjer.html', 'bifroest_die_regenbogenbruecke.html', 'draupnir.html', 'ratatoeskr.html', 'nidhoegg.html', 'gungnir.html', 'skidbladnir.html', 'gleipnir.html', 'hlidskjalf.html', 'blutadler__rituale.html', 'garm.html', 'berserker.html', 'der_brunnen_von_mimir.html', 'naglfar.html'].includes(page) ? 'open' : ''}>
+                <summary>Weitere Sagen ▾</summary>
+                <a href="die_einherjer.html" class="${page === 'die_einherjer.html' ? 'active' : ''}">Die Einherjer</a>
+                <a href="bifroest_die_regenbogenbruecke.html" class="${page === 'bifroest_die_regenbogenbruecke.html' ? 'active' : ''}">Bifröst</a>
+                <a href="draupnir.html" class="${page === 'draupnir.html' ? 'active' : ''}">Draupnir</a>
+                <a href="ratatoeskr.html" class="${page === 'ratatoeskr.html' ? 'active' : ''}">Ratatöskr</a>
+                <a href="nidhoegg.html" class="${page === 'nidhoegg.html' ? 'active' : ''}">Nidhögg</a>
+                <a href="gungnir.html" class="${page === 'gungnir.html' ? 'active' : ''}">Gungnir</a>
+                <a href="skidbladnir.html" class="${page === 'skidbladnir.html' ? 'active' : ''}">Skidbladnir</a>
+                <a href="gleipnir.html" class="${page === 'gleipnir.html' ? 'active' : ''}">Gleipnir</a>
+                <a href="hlidskjalf.html" class="${page === 'hlidskjalf.html' ? 'active' : ''}">Hlidskjalf</a>
+                <a href="blutadler__rituale.html" class="${page === 'blutadler__rituale.html' ? 'active' : ''}">Blutadler & Rituale</a>
+                <a href="garm.html" class="${page === 'garm.html' ? 'active' : ''}">Garm</a>
+                <a href="berserker.html" class="${page === 'berserker.html' ? 'active' : ''}">Berserker</a>
+                <a href="der_brunnen_von_mimir.html" class="${page === 'der_brunnen_von_mimir.html' ? 'active' : ''}">Mimirs Brunnen</a>
+                <a href="naglfar.html" class="${page === 'naglfar.html' ? 'active' : ''}">Naglfar</a>
+            </details>
+
+            ${neueSeitenVomAgent.length > 0 ? `
             <details open>
                 <summary style="color: #ffd700;">Neu entdeckt ▾</summary>
-                ${neueEntdeckungen.map(s => `
-                    <a href="${s.url}" class="${page === s.url ? 'active' : ''}">✨ ${s.titel}</a>
-                `).join('')}
+                ${neueSeitenVomAgent.map(s => `<a href="${s.url}" class="${page === s.url ? 'active' : ''}">✨ ${s.titel}</a>`).join('')}
             </details>
             ` : ''}
             
@@ -171,14 +204,13 @@ function renderSidebar(extraSeiten = []) {
 }
 
 // ==========================================
-// 5. FUNKTION: SLIDESHOW (DYNAMISCH)
+// 5. SLIDESHOW
 // ==========================================
 function renderSlideshow() {
     const container = document.getElementById('slideshow-container');
     if (!container) return;
-
-    const path = window.location.pathname;
-    let page = path.substring(path.lastIndexOf('/') + 1) || "index.html";
+    
+    let page = window.location.pathname.split("/").pop() || "index.html";
     page = decodeURIComponent(page);
 
     const index = dynamicPageSequence.indexOf(page);
@@ -187,40 +219,40 @@ function renderSlideshow() {
     const prev = dynamicPageSequence[(index - 1 + dynamicPageSequence.length) % dynamicPageSequence.length];
     const next = dynamicPageSequence[(index + 1) % dynamicPageSequence.length];
 
-    container.innerHTML = `
-        <a href="${prev}" class="nav-arrow nav-arrow-left">❮</a>
-        <a href="${next}" class="nav-arrow nav-arrow-right">❯</a>
-    `;
+    container.innerHTML = `<a href="${prev}" class="nav-arrow nav-arrow-left">❮</a><a href="${next}" class="nav-arrow nav-arrow-right">❯</a>`;
 }
 
-// ... (Restliche Funktionen: initHavamal, initRunes, initFirebase, setupGuestbook bleiben identisch)
-
+// ==========================================
+// 6. TOOLS (Runen & Havamal)
+// ==========================================
 function initHavamal() {
     const btn = document.getElementById('havamalBtn');
     const display = document.getElementById('havamalAusgabe');
-    if (!btn || !display) return;
-    btn.addEventListener('click', () => {
-        const randomIndex = Math.floor(Math.random() * havamalQuotes.length);
-        display.style.opacity = 0;
-        setTimeout(() => {
-            display.innerText = `"${havamalQuotes[randomIndex]}"`;
-            display.style.opacity = 1;
-        }, 200);
-    });
+    if (btn && display) {
+        btn.addEventListener('click', () => {
+            display.style.opacity = 0;
+            setTimeout(() => {
+                display.innerText = `"${havamalQuotes[Math.floor(Math.random() * havamalQuotes.length)]}"`;
+                display.style.opacity = 1;
+            }, 200);
+        });
+    }
 }
 
 function initRunes() {
     const input = document.getElementById('meinInput');
     const output = document.getElementById('runenAusgabe');
-    if (!input || !output) return;
-    const alphabet = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ','l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ','v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
-    input.addEventListener('input', (e) => {
-        let text = "";
-        for (let char of e.target.value.toLowerCase()) { text += alphabet[char] || char; }
-        output.innerText = text || "...";
-    });
+    if (input && output) {
+        const runes = {'a':'ᚨ','b':'ᛒ','c':'ᚲ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚺ','i':'ᛁ','j':'ᛃ','k':'ᚲ','l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᛟ','p':'ᛈ','q':'ᚲ','r':'ᚱ','s':'ᛊ','t':'ᛏ','u':'ᚢ','v':'ᚹ','w':'ᚹ','x':'ᛒ','y':'ᛃ','z':'ᛉ',' ':' ','ä':'ᛇ','ö':'ᛟ','ü':'ᚢ'};
+        input.addEventListener('input', (e) => {
+            output.innerText = e.target.value.toLowerCase().split('').map(c => runes[c] || c).join('') || "...";
+        });
+    }
 }
 
+// ==========================================
+// 7. FIREBASE & GÄSTEBUCH
+// ==========================================
 async function initFirebase() {
     try {
         const app = initializeApp(firebaseConfig);
@@ -270,10 +302,7 @@ function setupGuestbook() {
     });
 }
 
-// START
-document.addEventListener('DOMContentLoaded', initApp);
-
-// Funktion zum Anzeigen der Toast-Nachricht
+// Toast Notification für neue Seiten
 function showToast(msg) {
     let x = document.getElementById("toast");
     if (!x) {
