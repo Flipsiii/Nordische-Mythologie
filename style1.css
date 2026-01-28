@@ -201,7 +201,8 @@ h1::after {
     font-family: 'Times New Roman', serif; 
     
     background: linear-gradient(110deg, #8f6B29, #FDE08D, #FFFFFF, #FDE08D, #8f6B29);
-    -webkit-background-clip: text; 
+    -webkit-background-clip: text;
+    background-clip: text; 
     color: transparent; 
     animation: shine 5s linear infinite;
 }

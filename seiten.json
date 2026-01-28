@@ -190,5 +190,17 @@
     {
         "titel": "Garm",
         "url": "garm.html"
+    },
+    {
+        "titel": "Berserker",
+        "url": "berserker.html"
+    },
+    {
+        "titel": "Der Brunnen von Mimir",
+        "url": "der_brunnen_von_mimir.html"
+    },
+    {
+        "titel": "Naglfar",
+        "url": "naglfar.html"
     }
 ]
