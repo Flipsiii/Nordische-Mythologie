@@ -199,6 +199,7 @@ function renderSidebar(neueSeitenVomAgent = []) {
                 <a href="RunenUebersetzer.html" class="${page === 'RunenUebersetzer.html' ? 'active' : ''} guestbook-link">ᚱᚢᚾᛖᚾ Übersetzer</a>
                 <a href="Gaestebuch.html" class="${page === 'Gaestebuch.html' ? 'active' : ''} guestbook-link">📖 Gästebuch</a>
                 <a href="https://soundcloud.com/t-staude" target="_blank" class="soundcloud-btn" style="margin-top:10px;">Musik 🎵</a>
+                <a href="https://www.youtube.com/@MidgardWorrior" target="_blank" class=youtube-btn" style="margin-top:10px;">YoutUbe 🎵</a>
             </div>
         </nav>`;
 }
