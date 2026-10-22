@@ -6,21 +6,22 @@
 // ==========================================
 // 1. IMPORTE (Firebase)
 // ==========================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+//import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+//import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+//import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 // ==========================================
 // 2. KONFIGURATION & LISTEN
 // ==========================================
+/**
 const firebaseConfig = {
-  apiKey: "AIzaSyCG7peemk2I1MiRLXrS0uEGSa0kY9MsZjQ",
+  apiKey: "",
   authDomain: "wikinger-gaestebuch.firebaseapp.com",
   projectId: "wikinger-gaestebuch",
   storageBucket: "wikinger-gaestebuch.firebasestorage.app",
-  messagingSenderId: "890193877785",
-  appId: "1:890193877785:web:d08c8e74d8a0aeaced0388"
-};
+  messagingSenderId: "",
+  appId: ""
+};*/
 
 // Deine manuelle, logische Sortierung
 const manualSortOrder = [
